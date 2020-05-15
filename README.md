@@ -1,5 +1,1 @@
 # EXPRESS-STARTER
-
-Members:
-
-Lakshmi
