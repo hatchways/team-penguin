@@ -6,8 +6,16 @@ var conversationSchema = new Schema({
         type: [String],
         required: true
     },
-    messages: [String],
-    createdOn: { type: Date, default: Date.now }
+    messages: [{
+        author_id: {
+            type: [String],
+            required: true
+        },
+        body: String,
+        created_on: { type: Date, default: Date.now },
+        img_url: String
+    }],
+    created_on: { type: Date, default: Date.now }
 });
 
 module.exports = mongoose.model('Conversation', conversationSchema, 'conversations');
