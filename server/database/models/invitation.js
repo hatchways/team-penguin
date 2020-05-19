@@ -3,7 +3,10 @@ var Schema = mongoose.Schema;
 
 var invitationSchema = new Schema({
     rejected: Boolean,
-    approved: Boolean,
+    approved: {
+        type: Boolean,
+        default: false
+    },
     from_user: {
       type: String,
       required: true
