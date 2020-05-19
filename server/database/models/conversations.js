@@ -12,8 +12,8 @@ var conversationSchema = new Schema({
             required: true
         },
         body: String,
-        created_on: { type: Date, default: Date.now },
-        img_url: String
+        img_url: String,
+        created_on: { type: Date, default: Date.now }
     }],
     created_on: { type: Date, default: Date.now }
 });
