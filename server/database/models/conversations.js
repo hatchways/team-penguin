@@ -12,6 +12,7 @@ var conversationSchema = new Schema({
             required: true
         },
         body: String,
+        language: String,
         img_url: String,
         created_on: { type: Date, default: Date.now }
     }],
