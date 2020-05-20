@@ -15,14 +15,13 @@ router.get("/user/:id",
         const {id} = req.params;
         let objId = mongoose.Types.ObjectId;
         Conversation.find({users:{ "$in" : [new objId(id)]} })
-            .sort({created_on: 1})
+            .sort({updated_on: -1})
             .exec(function(err, conversations) {
                 if (err) {
                     return handleError(err);
                 }
                 if (conversations && conversations.length) {
                     let dictUidToObj = {};
-                    let innerIdx;
                     conversations.forEach((conversation, idx) => {
                         conversation.users.forEach((uid, idx2) => {
                             let innerIdx = idx2;
