@@ -45,6 +45,7 @@ router.get("/user/:id/contacts",
                 } 
             }]
         )
+        //Invitation.find({"to_user": new objId(id), "approved": true })
             .exec(function (err, invitations) {
                 if (err) {
                     return handleError(err);
@@ -55,21 +56,6 @@ router.get("/user/:id/contacts",
                     res.json({ type: "success", message: "There are no pending invitations"})
                 }
             })
-
-
-
-        // Invitation.find({"to_user": new objId(id), "approved": true })
-        //     .exec(function (err, invitations) {
-        //         if (err) {
-        //             return handleError(err);
-        //         }
-        //         if (invitations && invitations.length) {
-        //             res.json({ type: "success", invitations})
-        //         } else {
-        //             res.json({ type: "success", message: "There are no pending invitations"})
-        //         }
-        //     }
-        // )
     }
 );
 
