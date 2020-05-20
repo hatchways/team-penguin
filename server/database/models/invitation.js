@@ -8,11 +8,13 @@ var invitationSchema = new Schema({
         default: false
     },
     from_user: {
-      type: String,
-      required: true
+        type: ObjectId,
+        ref: 'users',
+        required: true
     },
     to_user: {
-        type: String,
+        type: ObjectId,
+        ref: 'users',
         required: true
     },
     to_user_email: {
