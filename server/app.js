@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 
 const indexRouter = require("./routes/index");
 const pingRouter = require("./routes/ping");
+const conversationRouter = require("./routes/conversation");
 
 const { json, urlencoded } = express;
 
@@ -26,6 +27,7 @@ app.use(express.static(join(__dirname, "public")));
 
 app.use("/", indexRouter);
 app.use("/ping", pingRouter);
+app.use("/conversations", conversationRouter);
 
 //connect to mongodb
 mongoose.connect(dbUrl, { useUnifiedTopology: true, useNewUrlParser: true})
