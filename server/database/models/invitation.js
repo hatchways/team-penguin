@@ -8,12 +8,12 @@ var invitationSchema = new Schema({
         default: false
     },
     from_user: {
-        type: ObjectId,
+        type: mongoose.Types.ObjectId,
         ref: 'users',
         required: true
     },
     to_user: {
-        type: ObjectId,
+        type: mongoose.Types.ObjectId,
         ref: 'users',
         required: true
     },
