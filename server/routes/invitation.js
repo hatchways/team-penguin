@@ -4,7 +4,7 @@ const passport = require("passport");
 const Invitation = require("../database/models/invitation");
 const router = express.Router();
 
-router.get("/user/:id/invitations",
+router.get("/user/:id",
     passport.authenticate('jwt', { session: false }),
     function(req, res, next) {
         const {id} = req.params;
