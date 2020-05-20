@@ -28,48 +28,35 @@ router.get("/user/:id",
 );
 
 // Returns contacts that the current user accepted invitations from
-// FE should display email and probably needs the _id in order to send messages
 router.get("/user/:id/contacts",
     passport.authenticate('jwt', { session: false }),
     function(req, res, next) {
         const {id} = req.params;
         var objId = mongoose.Types.ObjectId;
 
-        Invitation.aggregate([
-            { $match: {"to_user": new objId(id), "approved": true } },
-            {$lookup: {
-                from: "users",
-                localField: "from_user",
-                foreignField: "_id",
-                as: "user_data"
-                } 
-            }]
-        )
-            .exec(function (err, invitations) {
+        Invitation.find({"to_user": new objId(id), "approved": true },
+            function (err, invitations) {
                 if (err) {
                     return handleError(err);
                 }
                 if (invitations && invitations.length) {
-                    res.json({ type: "success", invitations})
+                    let contacts = [];
+                    invitations.forEach((invite, idx) => {
+                        User.findById(invite.from_user.toString(), function(err, user) {
+                            if (err) return handleError(err);
+                            if (user) {
+                                contacts.push(user);
+                                if (idx === invitations.length - 1) {
+                                    res.json({ type: "success", contacts});
+                                }
+                            }
+                        })
+                    })
                 } else {
                     res.json({ type: "success", message: "There are no pending invitations"})
                 }
-            })
-
-
-
-        // Invitation.find({"to_user": new objId(id), "approved": true })
-        //     .exec(function (err, invitations) {
-        //         if (err) {
-        //             return handleError(err);
-        //         }
-        //         if (invitations && invitations.length) {
-        //             res.json({ type: "success", invitations})
-        //         } else {
-        //             res.json({ type: "success", message: "There are no pending invitations"})
-        //         }
-        //     }
-        // )
+            }
+        )
     }
 );
 
