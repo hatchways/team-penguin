@@ -16,7 +16,8 @@ const { json, urlencoded } = express;
 const dbCredentials = require('./db-credentials.json');
 const dbUsername = dbCredentials["dbUsername"];
 const dbPwd = dbCredentials["dbPassword"];
-const dbUrl= `mongodb+srv://${dbUsername}:${dbPwd}@world-messenger-cluster-lmsnn.mongodb.net/test?retryWrites=true&w=majority`;
+const dbName = dbCredentials["dbName"];
+const dbUrl= `mongodb+srv://${dbUsername}:${dbPwd}@world-messenger-cluster-lmsnn.mongodb.net/${dbName}?retryWrites=true&w=majority`;
 
 var app = express();
 
