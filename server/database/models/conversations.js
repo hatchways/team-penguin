@@ -3,12 +3,14 @@ var Schema = mongoose.Schema;
 
 var conversationSchema = new Schema({
     users: {
-        type: [String],
+        type: [ObjectId],
+        ref: 'users',
         required: true
     },
     messages: [{
         author_id: {
-            type: [String],
+            type: ObjectId,
+            ref: 'users',
             required: true
         },
         body: String,
