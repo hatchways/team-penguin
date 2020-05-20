@@ -5,12 +5,15 @@ const Conversation = require("../database/models/conversation");
 const User = require("../database/models/user");
 const router = express.Router();
 
-router.get("/user/:id/conversations",
+/* on successful return, json includes this object, dictUidToObj
+    {uid_as_string: {email, language}}
+    as well as the conversations
+*/
+router.get("/user/:id",
     passport.authenticate('jwt', { session: false }),
     function(req, res, next) {
         const {id} = req.params;
         let objId = mongoose.Types.ObjectId;
-
         Conversation.find({users:{ "$in" : [new objId(id)]} })
             .sort({created_on: 1})
             .exec(function(err, conversations) {
@@ -20,7 +23,6 @@ router.get("/user/:id/conversations",
                 if (conversations && conversations.length) {
                     let dictUidToObj = {};
                     let innerIdx;
-                    //done so front end can display the user email/language per message
                     conversations.forEach((conversation, idx) => {
                         conversation.users.forEach((uid, idx2) => {
                             let innerIdx = idx2;
@@ -45,8 +47,8 @@ router.get("/user/:id/conversations",
                 } else {
                     res.json({ type: "success", message: "There are no current conversations"})
                 }
-            })
-        //)
+            }
+        )
     }
 );
 
