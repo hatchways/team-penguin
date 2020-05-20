@@ -35,7 +35,16 @@ router.get("/user/:id/contacts",
         const {id} = req.params;
         var objId = mongoose.Types.ObjectId;
 
-        Invitation.find({"to_user": new objId(id), "approved": true })
+        Invitation.aggregate([
+            { $match: {"to_user": new objId(id), "approved": true } },
+            {$lookup: {
+                from: "users",
+                localField: "from_user",
+                foreignField: "_id",
+                as: "user_data"
+                } 
+            }]
+        )
             .exec(function (err, invitations) {
                 if (err) {
                     return handleError(err);
@@ -45,8 +54,22 @@ router.get("/user/:id/contacts",
                 } else {
                     res.json({ type: "success", message: "There are no pending invitations"})
                 }
-            }
-        )
+            })
+
+
+
+        // Invitation.find({"to_user": new objId(id), "approved": true })
+        //     .exec(function (err, invitations) {
+        //         if (err) {
+        //             return handleError(err);
+        //         }
+        //         if (invitations && invitations.length) {
+        //             res.json({ type: "success", invitations})
+        //         } else {
+        //             res.json({ type: "success", message: "There are no pending invitations"})
+        //         }
+        //     }
+        // )
     }
 );
 
