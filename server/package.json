@@ -15,11 +15,11 @@
     "http-errors": "~1.6.3",
     "mongoose": "^5.9.14",
     "morgan": "~1.9.1",
-    "nodemon": "^1.19.1"
+    "nodemon": "^2.0.4"
   },
   "devDependencies": {
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
-    "mocha": "^6.2.0"
+    "mocha": "^7.1.2"
   }
 }
