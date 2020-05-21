@@ -4,6 +4,26 @@ const passport = require("passport");
 const Invitation = require("../models/invitation");
 const router = express.Router();
 
+router.post("/user/:id/create",
+    passport.authenticate('jwt', { session: false }),
+    function(req, res, next) {
+        const {id} = req.params;
+        const {to_user_id} = req.body;
+        let to_user_email = req.body.to_user_email ? req.body.to_user_email : null;
+        var objId = mongoose.Types.ObjectId;
+
+        const invite = new Invitation({
+            "from_user": new objId(id),
+            "to_user": new objId(to_user_id),
+            to_user_email
+        });
+        invite.save(function(err) {
+            if (err) return handleError(err);
+            res.json({ type: "success", message: "The invitation was saved."});
+        });
+    }
+);
+
 // Returns pending invitations that were sent to the given user
 router.get("/user/:id",
     passport.authenticate('jwt', { session: false }),
