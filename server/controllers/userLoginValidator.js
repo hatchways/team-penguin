@@ -25,3 +25,5 @@ const userLoginValidator = formData => {
   }
 
 }
+
+module.exports = userLoginValidator;
