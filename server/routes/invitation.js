@@ -1,7 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const passport = require("passport");
-const Invitation = require("../database/models/invitation");
+const Invitation = require("../models/invitation");
 const router = express.Router();
 
 // Returns pending invitations that were sent to the given user
