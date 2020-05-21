@@ -21,7 +21,7 @@ const userLoginValidator = formData => {
 
   return {
     validationErrors,
-    isRegistrationValid: isEmpty(validationErrors)
+    isLoginValid: isEmpty(validationErrors)
   }
 
 }
