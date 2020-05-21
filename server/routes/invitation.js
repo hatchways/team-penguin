@@ -34,29 +34,24 @@ router.get("/user/:id/contacts",
         const {id} = req.params;
         var objId = mongoose.Types.ObjectId;
 
-        Invitation.find({"to_user": new objId(id), "approved": true },
-            function (err, invitations) {
+        Invitation.aggregate([
+            { $match: {"to_user": new objId(id), "approved": true } },
+            { $lookup: {
+                from: "users",
+                localField: "from_user",
+                foreignField: "_id",
+                as: "user_data"
+                } 
+        }])
+            .exec(function (err, invitations) {
                 if (err) {
                     return handleError(err);
-                }
+                } 
                 if (invitations && invitations.length) {
-                    let contacts = [];
-                    invitations.forEach((invite, idx) => {
-                        User.findById(invite.from_user.toString(), function(err, user) {
-                            if (err) return handleError(err);
-                            if (user) {
-                                contacts.push(user);
-                                if (idx === invitations.length - 1) {
-                                    res.json({ type: "success", contacts});
-                                }
-                            }
-                        })
-                    })
-                } else {
-                    res.json({ type: "success", message: "There are no pending invitations"})
+                    let contacts = invitations.map(invite => { return invite.user_data[0]})
+                    res.json({ type: "success", contacts})
                 }
-            }
-        )
+            })
     }
 );
 
