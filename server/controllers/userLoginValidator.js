@@ -11,7 +11,7 @@ const userLoginValidator = formData => {
   if(Validator.isEmpty(formData.email)) {
     validationErrors.email = 'Email is a required field';
   }
-  else if(Validator.isEmail(formData.email)) {
+  else if(!Validator.isEmail(formData.email)) {
     validationErrors.email = 'Please enter a valid email';
   }
 

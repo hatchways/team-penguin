@@ -9,6 +9,7 @@ const indexRouter = require("./routes/index");
 const pingRouter = require("./routes/ping");
 const conversationRouter = require("./routes/conversation");
 const invitationRouter = require("./routes/invitation");
+const userRouter = require("./routes/user");
 
 const { json, urlencoded } = express;
 
@@ -31,6 +32,7 @@ app.use("/", indexRouter);
 app.use("/ping", pingRouter);
 app.use("/conversations", conversationRouter);
 app.use("/invitations", invitationRouter);
+app.use("/user", userRouter);
 
 //connect to mongodb
 mongoose.connect(dbUrl, { useUnifiedTopology: true, useNewUrlParser: true})

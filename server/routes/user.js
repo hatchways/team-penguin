@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../database/models/user');
 const registrationValidator = require('../controllers/userRegistrationValidator');
@@ -27,11 +27,13 @@ router.post('/register', (req, res) => {
             bcrypt.hash(newUser.password, salt, (err, hash) => {
               if(err) throw err;
               newUser.password = hash;
-              newUser.save().then(user => res.json(user))
+              newUser.save().then(user => res.json({ "success": `${user.email} successfully registered`}))
                             .catch(err => console.error(err));
             });
           });
         }
       });
-      
 });
+
+module.exports = router;
+
