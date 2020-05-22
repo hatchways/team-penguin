@@ -5,11 +5,13 @@ const { join } = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const mongoose = require('mongoose');
+const passport = require("passport");
 
 const indexRouter = require("./routes/index");
 const pingRouter = require("./routes/ping");
 const conversationRouter = require("./routes/conversation");
 const invitationRouter = require("./routes/invitation");
+const userRouter = require("./routes/user");
 
 const { json, urlencoded } = express;
 
@@ -17,7 +19,8 @@ const { json, urlencoded } = express;
 const dbCredentials = require('./db-credentials.json');
 const dbUsername = dbCredentials["dbUsername"];
 const dbPwd = dbCredentials["dbPassword"];
-const dbUrl= `mongodb+srv://${dbUsername}:${dbPwd}@world-messenger-cluster-lmsnn.mongodb.net/test?retryWrites=true&w=majority`;
+const dbName = dbCredentials["dbName"];
+const dbUrl= `mongodb+srv://${dbUsername}:${dbPwd}@world-messenger-cluster-lmsnn.mongodb.net/${dbName}?retryWrites=true&w=majority`;
 
 var app = express();
 
@@ -27,10 +30,14 @@ app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(join(__dirname, "public")));
 
+app.use(passport.initialize());
+require("./controllers/passportJwtStrategy")(passport);
+
 app.use("/", indexRouter);
 app.use("/ping", pingRouter);
 app.use("/conversations", conversationRouter);
 app.use("/invitations", invitationRouter);
+app.use("/user", userRouter);
 
 //connect to mongodb
 mongoose.connect(dbUrl, { useUnifiedTopology: true, useNewUrlParser: true})
