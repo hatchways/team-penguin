@@ -20,14 +20,17 @@ const useStyles = makeStyles((theme) => ({
     root: {
         '& > *': {
           margin: theme.spacing(1),
-        },
-      },
+        }
+    },
     margin: {
       margin: theme.spacing(1),
     },
     extendedIcon: {
       marginRight: theme.spacing(1),
     },
+    dialogContent: {
+      width: '80%'
+    }
   }));
 
 export default function InvitationDialog() {
@@ -48,9 +51,15 @@ export default function InvitationDialog() {
   const handleClose = (ev) => {
     ev.preventDefault();
     //build body to make post request to BE
-    //
+    let body = {email};
+    //make post request
     setOpen(false);
   };
+
+  const getEmailAr = () => {
+    let emailAr = [];
+
+  }
 
   const handleClickCopyBtn = (ev) => {
     ev.preventDefault();
@@ -74,9 +83,9 @@ export default function InvitationDialog() {
       <Button color="primary" onClick={handleClickOpen}>
         + Invite Friends
       </Button>
-      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" >
         <DialogTitle id="form-dialog-title">Invite Friends to Messenger</DialogTitle>
-        <DialogContent>
+        <DialogContent className={classes.dialogContent}>
           <DialogContentText>
             Send your friends an invite email.
           </DialogContentText>

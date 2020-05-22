@@ -7,9 +7,14 @@ export const theme = createMuiTheme({
     h1: {
       // could customize the h1 variant as well
       fontWeight: 600
+    },
+    button: {
+      fontWeight: 600
     }
   },
   palette: {
     primary: { main: "#3A8DFF" }
+  },
+  overrides: {
   }
 });
