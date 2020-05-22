@@ -1,8 +1,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const passport = require("passport");
-const Conversation = require("../database/models/conversation");
-const User = require("../database/models/user");
+const Conversation = require("../models/conversation");
+const User = require("../models/user");
 const router = express.Router();
 
 /* on successful return, json includes this object, dictUidToObj
