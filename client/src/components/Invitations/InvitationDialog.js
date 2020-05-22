@@ -8,13 +8,11 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Fab from '@material-ui/core/Fab';
 import NavigationIcon from '@material-ui/icons/Navigation';
-
-import FilledInput from '@material-ui/core/FilledInput';
-import FormControl from '@material-ui/core/FormControl';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
 import { makeStyles } from '@material-ui/core/styles';
+
+//REMOVE
+const testToUid = '5ec815fdfd43011d98648662';
+const testFromUid = '5ec816abfd43011d98648663';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -53,17 +51,29 @@ export default function InvitationDialog() {
   //handle submit form
   const handleClose = (ev) => {
     ev.preventDefault();
+    //TODO
+    let jwtToken = '';
+    let emailStr = email;
+    let emailAr = [];
     //clean up email field string
-    if (email.indexOf(',') > -1) {
-      getEmailAr(email.trim());
+    if (emailStr.indexOf(',') > -1) {
+      emailAr = getEmailAr(email.trim());
     } else {
-      email = [email.trim()];
+      emailAr.push(email.trim());
     }
 
     //build body to make post request to BE
 
-    let body = {email};
+    let body = {emailAr, to_user_id: `${testToUid}`};
     //make post request
+    fetch(`http://localhost:3001/invitations/user/${testFromUid}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'//,
+        //'Authorization': `Bearer ${jwtToken}`
+      },
+      body: JSON.stringify(body)
+    })
     setOpen(false);
   };
 
