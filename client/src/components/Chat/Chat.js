@@ -1,5 +1,6 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
 
 import ChatHeader from './ChatHeader';
 import MessageDisplay from './MessageDisplay';
@@ -9,8 +10,13 @@ const Chat = props => (
   
     <div>
       <h1>main body here this should fill up 2/3</h1>
-      test button
-      
+      test button to check theme primary color
+      <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+            ></Button>
     </div>
   
 
