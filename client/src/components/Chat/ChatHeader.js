@@ -14,7 +14,7 @@ const ChatHeader = props => (
     container
     spacing={3}
     alignItems='center'
-    className={props.classes.root}
+    //className={props.classes.root}
   >
     <Grid item>
       {props.selected.image ? (

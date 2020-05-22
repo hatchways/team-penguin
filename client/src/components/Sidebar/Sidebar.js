@@ -6,22 +6,17 @@ import Contacts from './Contacts/Contacts';
 
 const Sidebar = props => {
   return (
-    <Grid
-      item
-      container
-      sm={3}
-      direction='column'
-      className={props.classes.root}
-    >
+    <div>
+      <h1>left pane here</h1>
     
-      <Contacts 
+      {/* <Contacts 
         contacts={props.contacts}
         selected={props.selected}
         requestContact={props.requestContact}
         updateContact={props.updateContact}
         selectContact={props.selectContact}
-      />
-    </Grid>
+      /> */}
+    </div>
   );
 }
 
