@@ -30,7 +30,10 @@ const useStyles = makeStyles((theme) => ({
     },
     dialogContent: {
       width: '80%'
-    }
+    },
+    btnMixedCase: {
+      textTransform: 'unset !important'
+    },
   }));
 
 export default function InvitationDialog() {
@@ -50,15 +53,24 @@ export default function InvitationDialog() {
   //handle submit form
   const handleClose = (ev) => {
     ev.preventDefault();
+    //clean up email field string
+    if (email.indexOf(',') > -1) {
+      getEmailAr(email.trim());
+    } else {
+      email = [email.trim()];
+    }
+
     //build body to make post request to BE
+
     let body = {email};
     //make post request
     setOpen(false);
   };
 
-  const getEmailAr = () => {
-    let emailAr = [];
-
+  const getEmailAr = (emailStr) => {
+    let emailAr = emailStr.split(',');
+    emailAr = emailAr.map(email => email.trim());
+    return emailAr;
   }
 
   const handleClickCopyBtn = (ev) => {
@@ -78,12 +90,15 @@ export default function InvitationDialog() {
 
   }
 
+  //        contentstyle={{width: "100%", maxWidth: "none"}}>
+  //maxWidth="large"
   return (
     <div>
-      <Button color="primary" onClick={handleClickOpen}>
+      <Button color="primary" onClick={handleClickOpen} className={classes.btnMixedCase}>
         + Invite Friends
       </Button>
-      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" >
+      <Dialog open={open} onClose={handleClose} 
+        aria-labelledby="form-dialog-title" >
         <DialogTitle id="form-dialog-title">Invite Friends to Messenger</DialogTitle>
         <DialogContent className={classes.dialogContent}>
           <DialogContentText>
@@ -97,6 +112,7 @@ export default function InvitationDialog() {
             variant="outlined"
             value={email}
             onChange={handleChange}
+            helperText="Separate multiple emails with a comma."
             fullWidth
           />
         </DialogContent>
@@ -130,7 +146,8 @@ export default function InvitationDialog() {
         </DialogActions>
 
         <DialogActions>
-          <Button onClick={handleClose} color="primary" variant="contained">
+          <Button onClick={handleClose} color="primary" variant="contained"
+            className={classes.btnMixedCase} size="lg">
             Send Invite
           </Button>
         </DialogActions>
