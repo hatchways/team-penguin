@@ -15,9 +15,9 @@ const Contacts = props => {
     setDisplay(setting);
   }
 
-  const friends = props.contacts.filter(curr => curr.status === 3);
-  const requests = props.contacts.filter(curr => curr.status === 2);
-  const pending = props.contacts.filter(curr => curr.status === 1);
+  //const friends; //= props.contacts.filter(curr => curr.status === 3);
+  //const requests; //= props.contacts.filter(curr => curr.status === 2);
+  //const pending; //= props.contacts.filter(curr => curr.status === 1);
 
   return (
     <Grid
@@ -25,49 +25,50 @@ const Contacts = props => {
       container
       direction='column'
     >
-      <Grid item className={props.classes.tabsContainer}>
+      {/*  className={props.classes.tabsContainer} */}
+      <Grid item >
         <Tabs 
           value={display} 
           onChange={toggleDisplay} 
           variant='scrollable' 
           scrollButtons='auto' 
-          classes={{
-            indicator: props.classes.tabsIndicator
-          }}
+          // classes={{
+          //   indicator: props.classes.tabsIndicator
+          // }}
         >
           <Tab 
             value='friends' 
             label='Friends' 
             disableRipple
-            className={props.classes.tab}
-            classes={{
-              selected: props.classes.selectedTab
-            }}
+            // className={props.classes.tab}
+            // classes={{
+            //   selected: props.classes.selectedTab
+            // }}
           />
           <Tab 
             value='requests' 
             label='Requests'
             disableRipple 
-            className={props.classes.tab}
-            classes={{
-              selected: props.classes.selectedTab
-            }}
+            // className={props.classes.tab}
+            // classes={{
+            //   selected: props.classes.selectedTab
+            // }}
           />
           <Tab 
             value='pending' 
             label='Pending'
             disableRipple 
-            className={props.classes.tab}
-            classes={{
-              selected: props.classes.selectedTab
-            }}
+            // className={props.classes.tab}
+            // classes={{
+            //   selected: props.classes.selectedTab
+            // }}
           />
         </Tabs>
       </Grid>
 
       {display === 'friends' && 
         <Friends 
-          friends={friends}
+          //friends={friends}
           selected={props.selected} 
           requestContact={props.requestContact}
           selectContact={props.selectContact}
@@ -75,11 +76,11 @@ const Contacts = props => {
       }
       {display === 'requests' && 
         <Requests 
-          requests={requests} 
+          //requests={requests} 
           updateContact={props.updateContact}
         />
       }
-      {display === 'pending' && <Pending pending={pending} />}
+      {/* {display === 'pending' && <Pending pending={pending} />} */}
     </Grid>
   );
 }
