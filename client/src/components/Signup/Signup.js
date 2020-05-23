@@ -17,6 +17,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import UnauthenticatedSidebar from '../UnauthenticatedSidebar/UnauthenticatedSidebar';
 
 function Copyright() {
   return (
@@ -59,83 +60,106 @@ export default function SignUp() {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign up
-        </Typography>
-        <form className={classes.form} noValidate>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-              />
+    <div>
+        <Grid container spacing={3}>
+            <Grid
+                item xs={4}
+                direction='row'
+            >
+                <UnauthenticatedSidebar/>
             </Grid>
-            <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-              />
+
+            <Grid
+                item xs={8}
+                direction='row' >
+              <Container component="main" maxWidth="xs">
+                <CssBaseline />
+                <div className={classes.paper}>
+                  <Avatar className={classes.avatar}>
+                    <LockOutlinedIcon />
+                  </Avatar>
+                  <Typography component="h1" variant="h5">
+                    Sign up
+                  </Typography>
+                  <form className={classes.form} noValidate>
+                    <Grid container spacing={2}>
+                      <Grid item xs={12}>
+                        <TextField
+                          required
+                          fullWidth
+                          id="email"
+                          label="Email Address"
+                          name="email"
+                          autoComplete="email"
+                        />
+                      </Grid>
+                      <Grid item xs={12}>
+                        <TextField
+                          required
+                          fullWidth
+                          name="password"
+                          label="Password"
+                          type="password"
+                          id="password"
+                          autoComplete="current-password"
+                        />
+                      </Grid>
+                      <Grid item xs={12}>
+                        <FormControl className={classes.formControl}>
+                          <InputLabel shrink id="demo-simple-select-placeholder-label-label">
+                            Age
+                          </InputLabel>
+                          <Select
+                            labelId="demo-simple-select-placeholder-label-label"
+                            id="demo-simple-select-placeholder-label"
+                            value={age}
+                            onChange={handleChange}
+                            displayEmpty
+                            className={classes.selectEmpty}
+                          >
+                            <MenuItem value="">
+                              <em>None</em>
+                            </MenuItem>
+                            <MenuItem value={10}>Ten</MenuItem>
+                            <MenuItem value={20}>Twenty</MenuItem>
+                            <MenuItem value={30}>Thirty</MenuItem>
+                          </Select>
+                          <FormHelperText>Label + placeholder</FormHelperText>
+                        </FormControl>
+                      </Grid>
+                    </Grid>
+                    <Button
+                      type="submit"
+                      fullWidth
+                      variant="contained"
+                      color="primary"
+                      className={classes.submit}
+                    >
+                      Create
+                    </Button>
+                    <Grid container justify="flex-end">
+                      <Grid item>
+                        <Link href="#" variant="body2">
+                          Already have an account? Sign in
+                        </Link>
+                      </Grid>
+                    </Grid>
+                  </form>
+                </div>
+                <Box mt={5}>
+                  <Copyright />
+                </Box>
+              </Container>
             </Grid>
-            <Grid item xs={12}>
-              <FormControl className={classes.formControl}>
-                <InputLabel shrink id="demo-simple-select-placeholder-label-label">
-                  Age
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-placeholder-label-label"
-                  id="demo-simple-select-placeholder-label"
-                  value={age}
-                  onChange={handleChange}
-                  displayEmpty
-                  className={classes.selectEmpty}
-                >
-                  <MenuItem value="">
-                    <em>None</em>
-                  </MenuItem>
-                  <MenuItem value={10}>Ten</MenuItem>
-                  <MenuItem value={20}>Twenty</MenuItem>
-                  <MenuItem value={30}>Thirty</MenuItem>
-                </Select>
-                <FormHelperText>Label + placeholder</FormHelperText>
-              </FormControl>
-            </Grid>
-          </Grid>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
-            Create
-          </Button>
-          <Grid container justify="flex-end">
-            <Grid item>
-              <Link href="#" variant="body2">
-                Already have an account? Sign in
-              </Link>
-            </Grid>
-          </Grid>
-        </form>
-      </div>
-      <Box mt={5}>
-        <Copyright />
-      </Box>
-    </Container>
+        </Grid>
+    </div>
+
+
+
+
+
+
+
+
   );
 }
