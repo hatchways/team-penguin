@@ -9,22 +9,27 @@ const getUser = () => sleep(1000).then(() => ({username: 'elmo'}))
 //comment following line to test authenticated
 // .then(() => null)
 
-const AuthContext = React.createContext()
+const AuthContext = React.createContext([{}, () => {}])
 function AuthProvider({children}) {
   const [state, setState] = React.useState({
     status: 'pending',
     error: null,
     user: null,
   })
+
+  const logout = () => {
+    setState({status: 'logged out', error: null, user: null})
+  }
+
   React.useEffect(() => {
     getUser().then(
       user => setState({status: 'success', error: null, user}),
-      error => setState({status: 'error', error, user: null}),
+      error => setState({status: 'error', error: 'err', user: null}),
     )
   }, [])
-
+  let authState = {...state, logout}
   return (
-    <AuthContext.Provider value={state}>
+    <AuthContext.Provider value={authState}>
       {state.status === 'pending' ? (
         'Loading...'
       ) : state.status === 'error' ? (
@@ -34,11 +39,22 @@ function AuthProvider({children}) {
             <pre>{state.error.message}</pre>
           </div>
         </div>
+      ) : state.status === 'logged out' ? (
+        children
       ) : (
         children
       )}
     </AuthContext.Provider>
   )
+}
+
+//this seems simpler method to pass functions from context to consumers
+function useAuth() {
+  const context = React.useContext(AuthContext)
+  if (context === undefined) {
+    throw new Error(`useAuth must be used within a AuthProvider`)
+  }
+  return context;
 }
 
 function useAuthState() {
@@ -56,4 +72,4 @@ function useAuthState() {
   }
 }
 
-export {AuthProvider, useAuthState};
+export {AuthProvider, useAuth, useAuthState};
