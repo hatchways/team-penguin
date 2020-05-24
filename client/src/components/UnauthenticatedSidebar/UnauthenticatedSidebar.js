@@ -4,11 +4,18 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(() => ({
   image: {
-    backgroundImage: `url(${messengerImg})`,
+    backgroundImage: `linear-gradient(rgba(58, 141, 255,0.85),rgba(134, 185, 255,1)),url(${messengerImg})`,
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    height: '100vh'
+    height: '100vh',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  imageHeading: {
+    color: 'white',
+    padding: '0 2rem',
+    textAlign: 'center'
   }
 }));
 
@@ -16,7 +23,7 @@ const UnauthenticatedSidebar = props => {
   const classes = useStyles();
   return (
     <div className={ classes.image }>
-      {/* <h1>Unauthenticated image</h1> */}
+      <h1 className= { classes.imageHeading }>Converse with anyone in any language</h1>
     </div>
   );
 }
