@@ -23,6 +23,9 @@ const useStyles = makeStyles((theme) => ({
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(3),
   },
+  formControl: {
+    width: '100%',
+  },
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
@@ -96,6 +99,7 @@ export default function SignUp() {
                             Select Primary Language
                           </InputLabel>
                           <Select
+                            fullWidth
                             labelId="demo-simple-select-placeholder-label-label"
                             id="demo-simple-select-placeholder-label"
                             value={language}
@@ -105,13 +109,12 @@ export default function SignUp() {
                           >
                             <MenuItem value="">
                               English
-                            </MenuItem>
-                            <MenuItem value={10}>French</MenuItem>
-                            <MenuItem value={20}>Hindi</MenuItem>
-                            <MenuItem value={30}>Spanish</MenuItem>
-                            <MenuItem value={40}>Mandarin</MenuItem>
+                            </MenuItem> 
+                            <MenuItem value={10}>Mandarin</MenuItem>
+                            <MenuItem value={20}>French</MenuItem>
+                            <MenuItem value={30}>Hindi</MenuItem>
+                            <MenuItem value={40}>Spanish</MenuItem>
                           </Select>
-                          <FormHelperText>Label + placeholder</FormHelperText>
                         </FormControl>
                       </Grid>
                     </Grid>
