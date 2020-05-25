@@ -55,6 +55,13 @@ const useStyles = makeStyles((theme) => ({
   },
   selectTopPadding: {
     paddingTop: '10px'
+  },
+  buttonMarginRight : {
+    marginLeft: '1rem'
+  },
+  body2Style : {
+    marginBottom: '40px',
+    fontSize: '15px'
   }
 }));
 
@@ -74,12 +81,22 @@ export default function SignUp() {
             >
                 <UnauthenticatedSidebar/>
             </Grid>
-
             <Grid
                 item xs={8}
                 direction='row' >
-              <Container className={classes.mainContainer} component="main" maxWidth="xs">
+                  
+              <Container  className={classes.mainContainer} component="main" maxWidth="xs">
                 <CssBaseline />
+                <Grid container justify='flex-end'>
+                      <Grid item>
+                        <Typography classes = {{ body2: classes.body2Style }} component="p" variant="body2">
+                          Already have an account? 
+                          <Button color='primary' classes = {{ root: classes.buttonMarginRight }} variant="outlined" size="large">
+                                Login
+                          </Button>
+                          </Typography>                     
+                      </Grid>
+                </Grid>
                 <div className={classes.paper}>
                   <Typography className={classes.createAccountHeading} component="h2" variant="h4">
                     Create an account
@@ -153,13 +170,13 @@ export default function SignUp() {
                     >
                       Create
                     </Button>
-                    <Grid container justify="flex-end">
+                    {/* <Grid container justify="flex-end">
                       <Grid item>
                         <Link href="#" variant="body2">
-                          Already have an account? Sign in
+                          Already have an account? Login
                         </Link>
                       </Grid>
-                    </Grid>
+                    </Grid> */}
                   </form>
                 </div>
               </Container>
