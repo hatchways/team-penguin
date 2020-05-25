@@ -24,19 +24,14 @@ const AuthenticatedApp = () => {
 
     return (
         <div>
-            <Grid container spacing={3}>
-                <Grid
-                    item xs={4}
-                    direction='row'
-                >
+            <Grid container 
+                spacing={3} direction='row'>
+                <Grid item xs={4}>
                     <Sidebar/>
                 </Grid>
 
-                <Grid
-                    item xs={8}
-                    direction='row' >
+                <Grid item xs={8}>
                     <Chat messages={messages} user={user} selectedContact={selectedContact} />
-
                 </Grid>
             </Grid>
 
