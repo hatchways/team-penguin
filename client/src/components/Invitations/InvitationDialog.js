@@ -27,11 +27,9 @@ const useStyles = makeStyles((theme) => ({
       },
     },
     dialogContentTextRoot: {
-      fontSize: 30,
-      color: "red",
-      "&$labelFocused": {
-        color: "purple"
-      }
+      fontWeight: 'bold',
+      color: theme.palette.text.primary,
+      marginBottom: 0,
     },
     dialogActionsRoot: {
       justifyContent: 'center',
@@ -49,7 +47,6 @@ const useStyles = makeStyles((theme) => ({
       textTransform: 'unset !important',
       fontWeight: '600',
       fontSize: theme.spacing(2),
-      //textAlign: 'center',
       alignItem: 'center',
     },
     closeButton: {
@@ -62,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
       zIndex: '2000',
       position: 'absolute',
       right: theme.spacing(4),
-      top: theme.spacing(35.5),
+      top: theme.spacing(32.5),
     }
   }));
 
@@ -183,8 +180,8 @@ export default function InvitationDialog() {
         <DialogTitle id="form-dialog-title" onClose={handleClose}>
           Invite Friends to Messenger
         </DialogTitle>
-        <DialogContent className={classes.dialogContent}>
-          <DialogContentText className={classes.dialogContentText}>
+        <DialogContent>
+          <DialogContentText className={classes.dialogContentTextRoot}>
             Send your friends an invite email.
           </DialogContentText>
           <TextField
@@ -202,7 +199,7 @@ export default function InvitationDialog() {
         </DialogContent>
 
         <DialogContent>
-          <DialogContentText>
+          <DialogContentText className={classes.dialogContentTextRoot}>
             Or share referral link:
           </DialogContentText>
           <TextField
