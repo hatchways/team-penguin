@@ -6,6 +6,8 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Modal from '@material-ui/core/Modal';
 
+import InvitationDialog from '../../Invitations/InvitationDialog';
+
 
 const Friends = props => {
   const entries = (selected, select) => props.friends.map(curr => (
@@ -44,34 +46,13 @@ const Friends = props => {
     </Grid>
   ));
 
-  const [open, setOpen] = React.useState(false);
-
-  const openModal = () => {
-    setOpen(true);
-  }
-
-  const closeModal = () => {
-    setOpen(false);
-  }
-
   return (
     <Grid 
       container
       direction='column'
     >
-      <Modal 
-        open={open} 
-        onClose={closeModal} 
-       // className={props.classes.friendModal}
-      >
-      </Modal>
-      {/* className={props.classes.addFriend} */}
       <Grid item >
-        <Button color='primary' onClick={openModal} disableRipple>
-        {/* classes={{root: props.classes.addFriendIcon}} */}
-          <Icon className='fas fa-plus' />
-          <Typography variant='body1'>Add friend</Typography>
-        </Button>
+        <InvitationDialog />
       </Grid>
       {entries(props.selected, props.selectContact)}
     </Grid>
