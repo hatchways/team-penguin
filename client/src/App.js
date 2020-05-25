@@ -1,24 +1,16 @@
-import React from "react";
-import { MuiThemeProvider } from "@material-ui/core";
-import { BrowserRouter, Route } from "react-router-dom";
-import Home from "./components/Home/Home";
-import {Theme} from "./themes/Theme";
-import LandingPage from "./pages/Landing";
-import InvitationDialog from "./components/Invitations/InvitationDialog";
-
+import React from 'react';
+import Home from './components/Home/Home';
+import './App.css';
+import {AuthProvider} from './context/auth-context';
 
 function App() {
   return (
-    <div>
-    <MuiThemeProvider Theme={Theme}>
-      <BrowserRouter>
-        <Route path="/Home" component={Home} />
-        <Route path="/" component={LandingPage} />
-        <Route path="/invitation_dialog" component={InvitationDialog} />
-      </BrowserRouter>
-    </MuiThemeProvider>
-    </div>
-  );
+    <AuthProvider>
+      <div>
+        <Home />
+      </div>
+    </AuthProvider>
+  )
 }
 
 export default App;

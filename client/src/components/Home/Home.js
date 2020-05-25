@@ -1,19 +1,11 @@
-import React, { Component } from 'react'
+import React from 'react';
+import {useAuthState} from '../../context/auth-context';
+import AuthenticatedApp from '../AuthenticatedApp/AuthenticatedApp';
+import UnauthenticatedApp from '../UnauthenticatedApp/UnauthenticatedApp';
 
-import Sidebar from './Sidebar/Sidebar';
-import Chat from './Chat/Chat';
-
-class Home extends Component {
-    render() {
-        return (
-    
-         <div>
-                <Sidebar/>
-                <Chat/>
-            </div>
-        )
-    }
+function Home() {
+  const {user} = useAuthState()
+  return user ? <AuthenticatedApp /> : <UnauthenticatedApp />
 }
 
-export default Home
-
+export default Home;
