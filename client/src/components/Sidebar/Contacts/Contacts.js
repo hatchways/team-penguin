@@ -17,7 +17,18 @@ const Contacts = props => {
     {username: 'test friend1'},
     {username: 'test friend2'},
     {username: 'test friend3'}
-  ]
+  ];
+  const requests = [
+    {username: 'test request1'},
+    {username: 'test request2'},
+    {username: 'test request3'}
+  ];
+  const pending = [
+    {username: 'test pending1'},
+    {username: 'test pending2'},
+    {username: 'test pending3'}
+  ];
+
   //const friends = props.contacts.filter(curr => curr.status === 3);
   //const requests = props.contacts.filter(curr => curr.status === 2);
   //const pending = props.contacts.filter(curr => curr.status === 1);
@@ -78,11 +89,11 @@ const Contacts = props => {
       }
       {display === 'requests' && 
         <Requests 
-          //requests={requests} 
+          requests={requests} 
           updateContact={props.updateContact}
         />
       }
-      {/* {display === 'pending' && <Pending pending={pending} />} */}
+      {display === 'pending' && <Pending pending={pending} />}
     </Grid>
   );
 }
