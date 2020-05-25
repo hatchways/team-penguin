@@ -3,7 +3,6 @@ import {theme} from "../../themes/theme";
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
-import MuiDialogActions from '@material-ui/core/DialogActions';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
@@ -13,8 +12,9 @@ import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
-import { makeStyles } from '@material-ui/core/styles';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
+
+import {isEmailValid} from '../../util/helpers';
 
 //REMOVE
 const testToUid = '5ec815fdfd43011d98648662';
@@ -115,47 +115,63 @@ export default function InvitationDialog() {
     ev.preventDefault();
     //TODO
     let jwtToken = '';
-    if (email.length) {
-      let emailStr = email;
-      let emailAr = [];
-      //clean up email field string
-      if (emailStr.indexOf(',') > -1) {
-        emailAr = getEmailAr(email);
-      } else {
-        emailAr.push(email);
-      }
-  
-      let body = {emailAr, to_user_id: `${testToUid}`};
-      //make post request
-      fetch(`http://localhost:3001/invitation/user/${testFromUid}/create`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'//,
-          //'Authorization': `Bearer ${jwtToken}`
-        },
-        body: JSON.stringify(body)
-      })
-        .then(resp => {
-          setEmail('');
-          setOpen(false);
-        })
-        .catch(err => {
-          console.error(err)
-        })
-    }// else if () {
-    //if email string value is invalid
-    /*
-          const invalidEmailError = 'Please enter a valid email.';
-      if (errorMessages.indexOf(invalidEmailError) === -1) {
-        setErrorMessages(errorMessages.concat([invalidEmailError]));
-      }
 
-    */
-  //} 
-    else {
+    //handle 3 cases
+    //email is empty
+    //email is populated
+      //email is invalid (any email)
+      //email is valid (all)
+
+    if (!email.length) {
       const emptyEmailError = 'Please enter an email.';
       if (errorMessages.indexOf(emptyEmailError) === -1) {
         setErrorMessages(errorMessages.concat([emptyEmailError]));
+        console.log('err', errorMessages)
+      }
+    } else {
+      let emailAr = getEmailAr(email);
+      let emailsAreValid = true;
+      for (let i = 0; i < emailAr.length; i++) {
+        if (!isEmailValid(emailAr[i])) {
+          emailsAreValid = false;
+          break;
+        }
+      }
+
+      if (!emailsAreValid) {
+        const invalidEmailError = 'Please enter a valid email.';
+        if (errorMessages.indexOf(invalidEmailError) === -1) {
+          setErrorMessages(errorMessages.concat([invalidEmailError]));
+        }
+        console.log('err', errorMessages)
+
+      } else {
+        let emailStr = email;
+        let emailAr = [];
+        //clean up email field string
+        if (emailStr.indexOf(',') > -1) {
+          emailAr = getEmailAr(email);
+        } else {
+          emailAr.push(email);
+        }
+    
+        let body = {emailAr, to_user_id: `${testToUid}`};
+        //make post request
+        fetch(`http://localhost:3001/invitation/user/${testFromUid}/create`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'//,
+            //'Authorization': `Bearer ${jwtToken}`
+          },
+          body: JSON.stringify(body)
+        })
+          .then(resp => {
+            setEmail('');
+            setOpen(false);
+          })
+          .catch(err => {
+            console.error(err)
+          })
       }
     }
   };
