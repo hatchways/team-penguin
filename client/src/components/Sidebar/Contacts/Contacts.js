@@ -21,7 +21,6 @@ const Contacts = props => {
 
   return (
     <Grid
-      item
       container
       direction='column'
     >
