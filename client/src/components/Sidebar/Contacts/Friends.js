@@ -56,7 +56,6 @@ const Friends = props => {
 
   return (
     <Grid 
-      item 
       container
       direction='column'
     >
@@ -65,7 +64,6 @@ const Friends = props => {
         onClose={closeModal} 
        // className={props.classes.friendModal}
       >
-        
       </Modal>
       {/* className={props.classes.addFriend} */}
       <Grid item >
