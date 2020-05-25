@@ -4,20 +4,19 @@ import Grid from '@material-ui/core/Grid';
 import Contacts from './Contacts/Contacts';
 
 const contacts = [];
-const selectedContact;
+const selectedContact = {username: 'test selected contact'};
 
 const Sidebar = props => {
   return (
     <div>
-      <h1>left pane here</h1>
-
-      {/* <Contacts 
+      <h1>user avatar</h1>
+      <Contacts 
         contacts={props.contacts}
         selected={props.selected}
         requestContact={props.requestContact}
         updateContact={props.updateContact}
         selectContact={props.selectContact}
-      /> */}
+      />
     </div>
   );
 }
