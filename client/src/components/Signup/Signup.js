@@ -25,9 +25,11 @@ const useStyles = makeStyles((theme) => ({
   },
   formControl: {
     width: '100%',
+    marginTop: theme.spacing(3)
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
+    width: '8rem'
   },
   mainContainer : {
     height: '100%',
@@ -37,6 +39,18 @@ const useStyles = makeStyles((theme) => ({
   },
   createAccountHeading : {
     fontWeight: theme.typography.fontWeightBold
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(3),
+  },
+  selectRoot: {
+    fontSize: '20px',
+  },
+  textFieldSelectLabel: {
+    fontSize: '15px',
+  },
+  selectTopPadding: {
+    paddingTop: '10px'
   }
 }));
 
@@ -76,8 +90,12 @@ export default function SignUp() {
                           label="Email Address"
                           name="email"
                           autoComplete="email"
-                          inputProps={{style: {fontSize: 15}}}
-                          InputLabelProps={{style: {fontSize: 15}}}
+                          InputProps = {{ 
+                            classes: {root: classes.textFieldSelectLabel} 
+                          }}
+                          InputLabelProps = {{ 
+                            classes: {root: classes.textFieldSelectLabel} 
+                          }}
                         />
                       </Grid>
                       <Grid item xs={12}>
@@ -89,13 +107,17 @@ export default function SignUp() {
                           type="password"
                           id="password"
                           autoComplete="current-password"
-                          inputProps={{style: {fontSize: 15}}}
-                          InputLabelProps={{style: {fontSize: 15}}}
+                          InputProps = {{ 
+                            classes: {root: classes.textFieldSelectLabel} 
+                          }}
+                          InputLabelProps = {{ 
+                            classes: {root: classes.textFieldSelectLabel} 
+                          }}
                         />
                       </Grid>
                       <Grid item xs={12}>
                         <FormControl className={classes.formControl}>
-                          <InputLabel shrink id="demo-simple-select-placeholder-label-label">
+                          <InputLabel classes = {{ root: classes.selectRoot }} shrink id="demo-simple-select-placeholder-label-label">
                             Select Primary Language
                           </InputLabel>
                           <Select
@@ -106,6 +128,7 @@ export default function SignUp() {
                             onChange={handleChange}
                             displayEmpty
                             className={classes.selectEmpty}
+                            classes = {{ select: classes.selectTopPadding}}
                           >
                             <MenuItem value="">
                               English
@@ -120,7 +143,6 @@ export default function SignUp() {
                     </Grid>
                     <Button
                       type="submit"
-                      fullWidth
                       variant="contained"
                       color="primary"
                       className={classes.submit}
