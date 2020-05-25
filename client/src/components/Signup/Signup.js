@@ -34,14 +34,8 @@ function Copyright() {
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    marginTop: theme.spacing(8),
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
   },
   form: {
     width: '100%', // Fix IE 11 issue.
@@ -50,18 +44,27 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  mainContainer : {
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center'
+  },
+  createAccountHeading : {
+    fontWeight: theme.typography.fontWeightBold
+  }
 }));
 
 export default function SignUp() {
   const classes = useStyles();
-  const [age, setAge] = React.useState('');
+  const [language, setLanguague] = React.useState('');
   const handleChange = (event) => {
-    setAge(event.target.value);
+    setLanguague(event.target.value);
   };
 
   return (
     <div>
-        <Grid container spacing={3}>
+        <Grid container>
             <Grid
                 item xs={4}
                 direction='row'
@@ -72,14 +75,11 @@ export default function SignUp() {
             <Grid
                 item xs={8}
                 direction='row' >
-              <Container component="main" maxWidth="xs">
+              <Container className={classes.mainContainer} component="main" maxWidth="xs">
                 <CssBaseline />
                 <div className={classes.paper}>
-                  <Avatar className={classes.avatar}>
-                    <LockOutlinedIcon />
-                  </Avatar>
-                  <Typography component="h1" variant="h5">
-                    Sign up
+                  <Typography className={classes.createAccountHeading} component="h2" variant="h4">
+                    Create an account
                   </Typography>
                   <form className={classes.form} noValidate>
                     <Grid container spacing={2}>
@@ -107,22 +107,23 @@ export default function SignUp() {
                       <Grid item xs={12}>
                         <FormControl className={classes.formControl}>
                           <InputLabel shrink id="demo-simple-select-placeholder-label-label">
-                            Age
+                            Select Primary Language
                           </InputLabel>
                           <Select
                             labelId="demo-simple-select-placeholder-label-label"
                             id="demo-simple-select-placeholder-label"
-                            value={age}
+                            value={language}
                             onChange={handleChange}
                             displayEmpty
                             className={classes.selectEmpty}
                           >
                             <MenuItem value="">
-                              <em>None</em>
+                              English
                             </MenuItem>
-                            <MenuItem value={10}>Ten</MenuItem>
-                            <MenuItem value={20}>Twenty</MenuItem>
-                            <MenuItem value={30}>Thirty</MenuItem>
+                            <MenuItem value={10}>French</MenuItem>
+                            <MenuItem value={20}>Hindi</MenuItem>
+                            <MenuItem value={30}>Spanish</MenuItem>
+                            <MenuItem value={40}>Mandarin</MenuItem>
                           </Select>
                           <FormHelperText>Label + placeholder</FormHelperText>
                         </FormControl>

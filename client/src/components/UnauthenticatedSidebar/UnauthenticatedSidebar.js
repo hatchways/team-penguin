@@ -1,6 +1,7 @@
 import React from 'react';
 import messengerImg from '../../assets/messenger-img.png';
 import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles(theme => ({
   image: {
@@ -14,9 +15,8 @@ const useStyles = makeStyles(theme => ({
   },
   imageHeading: {
     color: 'white',
-    padding: '0 6rem',
+    padding: '0 4rem',
     textAlign: 'center',
-    fontWeight: theme.typography.fontWeightMedium
   }
 }));
 
@@ -24,7 +24,7 @@ const UnauthenticatedSidebar = props => {
   const classes = useStyles();
   return (
     <div className={ classes.image }>
-      <h1 className= { classes.imageHeading }>Converse with anyone in any language</h1>
+      <Typography component='h1' variant='h4' className= { classes.imageHeading }>Converse with anyone in any language</Typography>
     </div>
   );
 }
