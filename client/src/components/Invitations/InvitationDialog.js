@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {theme} from "../../themes/theme";
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
       zIndex: '2000',
       position: 'absolute',
       right: theme.spacing(4),
-      top: theme.spacing(32.5),
+      top: theme.spacing(32),
     }
   }));
 
@@ -91,10 +91,11 @@ const DialogTitle = withStyles(dialogTitleStyles)((props) => {
 });
 
 export default function InvitationDialog() {
-  const [open, setOpen] = React.useState(false);
-  const [email, setEmail] = React.useState('');
-  const [errorMessages, setErrorMessages] = React.useState([]);
-  const [referralUrl, setReferralUrl] = React.useState('http://www.messenger.com/join/123456');
+  const [open, setOpen] = useState(false);
+  const [email, setEmail] = useState('');
+  const [emailErrorMessage, setEmailErrorMessage] = useState('');
+  const [submitError, setSubmitError] = useState('');
+  const [referralUrl, setReferralUrl] = useState('http://www.messenger.com/join/123456');
   const classes = useStyles();
 
   const handleChange = (event) => {
@@ -124,27 +125,25 @@ export default function InvitationDialog() {
 
     if (!email.length) {
       const emptyEmailError = 'Please enter an email.';
-      if (errorMessages.indexOf(emptyEmailError) === -1) {
-        setErrorMessages(errorMessages.concat([emptyEmailError]));
-        console.log('err', errorMessages)
-      }
+      setEmailErrorMessage(emptyEmailError);
     } else {
       let emailAr = getEmailAr(email);
       let emailsAreValid = true;
-      for (let i = 0; i < emailAr.length; i++) {
-        if (!isEmailValid(emailAr[i])) {
-          emailsAreValid = false;
-          break;
-        }
+
+      if (emailAr.length === 1) {
+        emailsAreValid = isEmailValid(email);
+      } else {
+        for (let i = 0; i < emailAr.length; i++) {
+          if (!isEmailValid(emailAr[i])) {
+            emailsAreValid = false;
+            break;
+          }
+        }  
       }
 
       if (!emailsAreValid) {
         const invalidEmailError = 'Please enter a valid email.';
-        if (errorMessages.indexOf(invalidEmailError) === -1) {
-          setErrorMessages(errorMessages.concat([invalidEmailError]));
-        }
-        console.log('err', errorMessages)
-
+        setEmailErrorMessage(invalidEmailError);
       } else {
         let emailStr = email;
         let emailAr = [];
@@ -175,6 +174,10 @@ export default function InvitationDialog() {
       }
     }
   };
+
+  useEffect(() => {
+    console.log('err', emailErrorMessage)
+  }, [emailErrorMessage])
 
   const getEmailAr = (emailStr) => {
     let emailAr = emailStr.split(',');
