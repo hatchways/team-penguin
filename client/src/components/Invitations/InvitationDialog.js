@@ -3,15 +3,16 @@ import {theme} from "../../themes/theme";
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
+import MuiDialogActions from '@material-ui/core/DialogActions';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
-//import DialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import NavigationIcon from '@material-ui/icons/Navigation';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
+import Container from '@material-ui/core/Container';
 import { makeStyles } from '@material-ui/core/styles';
 import { withStyles } from '@material-ui/core/styles';
 
@@ -25,12 +26,16 @@ const useStyles = makeStyles((theme) => ({
         margin: theme.spacing(1),
       },
     },
-    labelRoot: {
+    dialogContentTextRoot: {
       fontSize: 30,
       color: "red",
       "&$labelFocused": {
         color: "purple"
       }
+    },
+    dialogActionsRoot: {
+      justifyContent: 'center',
+      margin: theme.spacing(3),
     },
     btn: {
       fontWeight: '600'
@@ -40,11 +45,18 @@ const useStyles = makeStyles((theme) => ({
       fontWeight: '600',
       fontSize: theme.spacing(2),
     },
+    btnMixedCaseCenter: {
+      textTransform: 'unset !important',
+      fontWeight: '600',
+      fontSize: theme.spacing(2),
+      //textAlign: 'center',
+      alignItem: 'center',
+    },
     closeButton: {
       position: 'absolute',
       right: theme.spacing(1),
       top: theme.spacing(1),
-      color: theme.palette.action.disabled, //theme.palette.grey[500],
+      color: theme.palette.action.disabled,
     },
     btnOverlay: {
       zIndex: '2000',
@@ -54,32 +66,32 @@ const useStyles = makeStyles((theme) => ({
     }
   }));
 
-  const dialogTitleStyles = (theme) => ({
-    root: {
-      margin: 0,
-      padding: theme.spacing(2),
-    },
-    title: {
-      color: theme.palette.text.primary,
-      align: 'center',
-      margin: theme.spacing(3),
-      fontWeight: 'bold'
-    }
-  });
+const dialogTitleStyles = (theme) => ({
+  root: {
+    margin: 0,
+    padding: theme.spacing(2),
+  },
+  title: {
+    color: theme.palette.text.primary,
+    align: 'center',
+    margin: theme.spacing(3),
+    fontWeight: 'bold'
+  }
+});
 
-  const DialogTitle = withStyles(dialogTitleStyles)((props) => {
-    const { children, classes, ...other } = props;
-    return (
-      <MuiDialogTitle disableTypography className={classes.root} {...other}>
-        <div>
-          <Typography variant="h5" className={classes.title}
-            align="center">
-              {children}
-          </Typography>
-        </div>
-      </MuiDialogTitle>
-    );
-  });
+const DialogTitle = withStyles(dialogTitleStyles)((props) => {
+  const { children, classes, ...other } = props;
+  return (
+    <MuiDialogTitle disableTypography className={classes.root} {...other}>
+      <div>
+        <Typography variant="h5" className={classes.title}
+          align="center">
+            {children}
+        </Typography>
+      </div>
+    </MuiDialogTitle>
+  );
+});
 
 export default function InvitationDialog() {
   const [open, setOpen] = React.useState(false);
@@ -88,7 +100,8 @@ export default function InvitationDialog() {
   const classes = useStyles();
 
   const handleChange = (event) => {
-    setEmail(event.target.value);
+    const {value} = event.target
+    setEmail(value.trim());
   };
 
   const handleClickOpen = () => {
@@ -108,12 +121,10 @@ export default function InvitationDialog() {
     let emailAr = [];
     //clean up email field string
     if (emailStr.indexOf(',') > -1) {
-      emailAr = getEmailAr(email.trim());
+      emailAr = getEmailAr(email);
     } else {
-      emailAr.push(email.trim());
+      emailAr.push(email);
     }
-
-    //build body to make post request to BE
 
     let body = {emailAr, to_user_id: `${testToUid}`};
     //make post request
@@ -149,7 +160,6 @@ export default function InvitationDialog() {
           navigator.clipboard.writeText(url).then(function() {
           }, function() {
             console.log('Cannot copy url to the clipboard. Please copy it manually.')
-            /* clipboard write failed */
           });  
         }
       }
@@ -158,7 +168,8 @@ export default function InvitationDialog() {
 
   return (
     <div>
-      <Button color="primary" onClick={handleClickOpen} className={classes.btnMixedCase}>
+      <Button color="primary" onClick={handleClickOpen}
+        className={classes.btnMixedCase} >
         + Invite Friends
       </Button>
       <Dialog open={open} onClose={handleClose} 
@@ -173,7 +184,7 @@ export default function InvitationDialog() {
           Invite Friends to Messenger
         </DialogTitle>
         <DialogContent className={classes.dialogContent}>
-          <DialogContentText>
+          <DialogContentText className={classes.dialogContentText}>
             Send your friends an invite email.
           </DialogContentText>
           <TextField
@@ -219,14 +230,14 @@ export default function InvitationDialog() {
             id="referral-url-btn"
             value={referralUrl}
             onClick={handleClickCopyBtn}
-            className={classes.btnOverlay}>
+            className={classes.btnOverlay}
+            disableElevation>
             Copy Link
           </Button>
         </DialogActions>
-
-        <DialogActions>
+        <DialogActions className={classes.dialogActionsRoot}>
           <Button onClick={handleSave} color="primary" variant="contained"
-            className={classes.btnMixedCase} size="lg">
+            size="large" disableElevation className={classes.btnMixedCase}>
             Send Invite
           </Button>
         </DialogActions>
@@ -234,17 +245,3 @@ export default function InvitationDialog() {
     </div>
   );
 }
-
-/*
-<TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Email Address"
-            variant="filled"
-            InputProps={{
-                readOnly: true,
-              }}
-            fullWidth
-          />
-          */
