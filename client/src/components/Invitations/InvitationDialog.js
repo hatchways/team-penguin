@@ -125,7 +125,7 @@ export default function InvitationDialog() {
 
     let body = {emailAr, to_user_id: `${testToUid}`};
     //make post request
-    fetch(`http://localhost:3001/invitations/user/${testFromUid}`, {
+    fetch(`http://localhost:3001/invitation/user/${testFromUid}/create`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'//,
