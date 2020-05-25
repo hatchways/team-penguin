@@ -14,19 +14,6 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import UnauthenticatedSidebar from '../UnauthenticatedSidebar/UnauthenticatedSidebar';
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
-
 const useStyles = makeStyles((theme) => ({
   paper: {
     display: 'flex',
@@ -86,6 +73,8 @@ export default function SignUp() {
                           label="Email Address"
                           name="email"
                           autoComplete="email"
+                          inputProps={{style: {fontSize: 15}}}
+                          InputLabelProps={{style: {fontSize: 15}}}
                         />
                       </Grid>
                       <Grid item xs={12}>
@@ -97,6 +86,8 @@ export default function SignUp() {
                           type="password"
                           id="password"
                           autoComplete="current-password"
+                          inputProps={{style: {fontSize: 15}}}
+                          InputLabelProps={{style: {fontSize: 15}}}
                         />
                       </Grid>
                       <Grid item xs={12}>
