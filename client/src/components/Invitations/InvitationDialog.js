@@ -93,6 +93,7 @@ const DialogTitle = withStyles(dialogTitleStyles)((props) => {
 export default function InvitationDialog() {
   const [open, setOpen] = React.useState(false);
   const [email, setEmail] = React.useState('');
+  const [errorMessages, setErrorMessages] = React.useState([]);
   const [referralUrl, setReferralUrl] = React.useState('http://www.messenger.com/join/123456');
   const classes = useStyles();
 
@@ -114,32 +115,49 @@ export default function InvitationDialog() {
     ev.preventDefault();
     //TODO
     let jwtToken = '';
-    let emailStr = email;
-    let emailAr = [];
-    //clean up email field string
-    if (emailStr.indexOf(',') > -1) {
-      emailAr = getEmailAr(email);
-    } else {
-      emailAr.push(email);
-    }
+    if (email.length) {
+      let emailStr = email;
+      let emailAr = [];
+      //clean up email field string
+      if (emailStr.indexOf(',') > -1) {
+        emailAr = getEmailAr(email);
+      } else {
+        emailAr.push(email);
+      }
+  
+      let body = {emailAr, to_user_id: `${testToUid}`};
+      //make post request
+      fetch(`http://localhost:3001/invitation/user/${testFromUid}/create`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'//,
+          //'Authorization': `Bearer ${jwtToken}`
+        },
+        body: JSON.stringify(body)
+      })
+        .then(resp => {
+          setEmail('');
+          setOpen(false);
+        })
+        .catch(err => {
+          console.error(err)
+        })
+    }// else if () {
+    //if email string value is invalid
+    /*
+          const invalidEmailError = 'Please enter a valid email.';
+      if (errorMessages.indexOf(invalidEmailError) === -1) {
+        setErrorMessages(errorMessages.concat([invalidEmailError]));
+      }
 
-    let body = {emailAr, to_user_id: `${testToUid}`};
-    //make post request
-    fetch(`http://localhost:3001/invitation/user/${testFromUid}/create`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'//,
-        //'Authorization': `Bearer ${jwtToken}`
-      },
-      body: JSON.stringify(body)
-    })
-      .then(resp => {
-        setEmail('');
-        setOpen(false);
-      })
-      .catch(err => {
-        console.error(err)
-      })
+    */
+  //} 
+    else {
+      const emptyEmailError = 'Please enter an email.';
+      if (errorMessages.indexOf(emptyEmailError) === -1) {
+        setErrorMessages(errorMessages.concat([emptyEmailError]));
+      }
+    }
   };
 
   const getEmailAr = (emailStr) => {
