@@ -47,11 +47,10 @@ const AuthenticatedApp = () => {
 export default AuthenticatedApp;
 
 /*
-                    <h1>Username: {user.username}</h1>
-                    <button onClick={logout}>test logout
-                    </button> 
+    <h1>Username: {user.username}</h1>
+    <button onClick={logout}>test logout
+    </button> 
 */
-
 /*
 shared state, user and/or contacts
     <MuiThemeProvider theme={theme}>
