@@ -12,6 +12,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 import UnauthenticatedSidebar from '../UnauthenticatedSidebar/UnauthenticatedSidebar';
 import useForm from '../../custom-hooks/useForm';
 import validate from '../Signup/validateSignup';
@@ -73,9 +75,19 @@ const useStyles = makeStyles((theme) => ({
 export default function SignUp() {
   const classes = useStyles();
   const { handleChange, handleSubmit, formValues, formErrors  } = useForm(submit, validate);
+  const [successAlertMsg, setSuccessAlertMsg] = useState(false);
 
   function submit() {
+    setSuccessAlertMsg(true);
     console.log('submitted');
+  }
+
+  function closeAlertHandler() {
+    setSuccessAlertMsg(false);
+  }
+
+  function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
   }
 
   return (
@@ -207,10 +219,16 @@ export default function SignUp() {
                       Create
                     </Button>
                   </form>
+                  <Snackbar open = {successAlertMsg} autoHideDuration={5000} onClose = { closeAlertHandler }>
+                          <Alert>
+                            Sign Up Successful!
+                          </Alert>
+                  </Snackbar>
                 </div>
               </Container>
             </Grid>
         </Grid>
+
     </div>
   );
 }
