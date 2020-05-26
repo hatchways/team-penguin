@@ -48,7 +48,11 @@ const useStyles = makeStyles((theme) => ({
   },
   routerLink : {
     textDecoration: 'none'
+  },
+  adornmentStyle: {
+    color: theme.palette.primary.main
   }
+
 }));
 
 export default function Login() {
@@ -140,7 +144,11 @@ export default function Login() {
                       id="password"
                       autoComplete="current-password"
                       InputProps = {{ 
-                        endAdornment: <InputAdornment position='end'> Forgot? </InputAdornment>,
+                        endAdornment: <InputAdornment position='end'>
+                          <Typography className={classes.adornmentStyle}>
+                           Forgot? 
+                           </Typography>
+                          </InputAdornment>,
                         classes: {root: classes.textFieldSelectLabel}
                       }}
                       InputLabelProps = {{ 

@@ -187,12 +187,13 @@ export default function SignUp() {
                             onChange={handleChange}
                             className={classes.selectEmpty}
                             classes = {{ select: classes.selectTopPadding}}
+                            name="language"
                           >
-                            <MenuItem value={10}> English </MenuItem> 
-                            <MenuItem value={20}>Mandarin</MenuItem>
-                            <MenuItem value={30}>French</MenuItem>
-                            <MenuItem value={40}>Hindi</MenuItem>
-                            <MenuItem value={50}>Spanish</MenuItem>
+                            <MenuItem value='english'> English </MenuItem> 
+                            <MenuItem value='mandarin'>Mandarin</MenuItem>
+                            <MenuItem value='french'>French</MenuItem>
+                            <MenuItem value='hindi'>Hindi</MenuItem>
+                            <MenuItem value='spanish'>Spanish</MenuItem>
                           </Select>
                         </FormControl>
                       </Grid>

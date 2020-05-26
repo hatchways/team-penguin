@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 const useForm = (submitCallback, validate) => {
-  const [formValues, setFormValues] = useState({ email: '', password: '', confirmPassword: '', language: 10});
+  const [formValues, setFormValues] = useState({ email: '', password: '', confirmPassword: '', language: 'english'});
   const [formErrors, setFormErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -20,8 +20,6 @@ const useForm = (submitCallback, validate) => {
   }
 
   useEffect(() => {
-    console.log(Object.keys(formErrors).length);
-    console.log(formErrors);
     if(Object.keys(formErrors).length === 0 && isSubmitting) {
       submitCallback();
     }
