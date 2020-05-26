@@ -4,106 +4,44 @@ const passport = require("passport");
 const validator = require("validator");
 const Invitation = require("../models/invitation");
 const User = require("../models/user");
-const {sendEmail, sendEmailMultiple} = require("../util/sendgrid_helpers")
+//const {sendEmail, sendEmailMultiple} = require("../util/sendgrid_helpers")
 const router = express.Router();
 
-router.post("/",
-    passport.authenticate('jwt', { session: false }),
+router.post("/user",
+    //passport.authenticate('jwt', { session: false }),
     function(req, res, next) {
-        //const {email} = req.params;
-        const {emailAr, fromEmail, referralId} = req.body;
-        let invalidEmails = [];
-        let validEmails = [];
-        let curUserEmails = [];
-        let nonCurUserEmails = [];
+        const {toEmailAr, fromEmail, referralId} = req.body;
+        // let invalidEmails = [];
+        // let validEmails = [];
+        // let curUserEmails = [];
+        // let nonCurUserEmails = [];
 
 //test with one recipient
-//test with multiple recipients (mix of existing users, nonexisting users)
+    //recipient is cur user (trigger invitation creation)
 
-/*
-email validation
-    no empty arr
-    valid email values
-list of valid emails
-list of invalid emails
-*/
-        if (emailAr.length === 0) {
-            return res.status(400).json({error: 'No email addresses for invitation recipients were provided.'})
-        }
-        emailAr.forEach(email => {
-            if (validator.isEmail(email)) {
-                validEmails.push(email);
-            } else {
-                invalidEmails.push(email);
-            }
-        })
-
-/*
-get list of recipients who are already users
-make list of recipients who are not users
-*/
-        if (!validEmails.length) {
-            return res.status(400).json({error: 'Email addresses for invitation recipients were invalid. Please check the spelling.'})
-        } else {
-
-//query for existing users (TODO)
-            validEmails.forEach((to_email, idx) => {
-                User.find({email: to_email}, function(err, user) {
-                    if (err) console.error(err);
+        //no validation, one touser existing user
+        //if (toEmailAr.length === 1) {
+            User.findOne({email: toEmailAr[0]})
+                .then(user => {
                     if (user) {
-                        curUserEmails.push(to_email);
-                    } else {
-                        nonCurUserEmails.push(to_email);
-                    }
-
-                    if (idx === validEmails.length - 1) {
-                        //1 create invites for existing users
-                        let newInvites = [];
-                        curUserEmails.forEach(to_user_email => {
-                            let newInvite = {to_user_email, from_user_email: fromEmail};
-                            newInvites.push(newInvite);
+                        const invite = new Invitation({
+                                        "from_user_email": fromEmail,
+                                        "to_user_email": toEmailAr[0]
+                                    });
+                        invite.save(function(err) {
+                            if (err) return handleError(err);
+                            res.json({ type: "success", message: "The invitation was saved."});
                         });
-                        Invitation.insertMany(newInvites, function(err, invitations) {
-                            if (err) console.error(err);
-                            if (invitations) {
-                                console.log('invitation created', resp)
-                            }
-                        })
-
-                        //2 (slower) sendgrid for non existing users
-                        if (nonCurUserEmails.length === 1) {
-                            sendEmail({from_email: fromEmail, 
-                                        to_email: nonCurUserEmails[0], 
-                                        referral_id: referralId})
-                                .then(resp => console.log('sendgrid email sent', resp))
-                                .catch(err => console.error('sendgrid email err', err))
-                        } else if (nonCurUserEmails.length > 1) {
-                            sendEmailMultiple({from_email: fromEmail,
-                                        to_email_ar: nonCurUserEmails,
-                                        referral_id: referralId})
-                                .then(resp => console.log('sendgrid email group sent', resp))
-                                .catch(err => console.error('sendgrid email err', err))
-                        }
+                    } else {
+                        console.log('send email')
                     }
                 })
-            })
-        }
-
-/*
-create invitations for recipients who are users
-    then trigger sendgrid requests for recipients who are not users
-*/
-        // const invite = new Invitation({
-        //     "from_user_email": email,
-        //     "to_user": new objId(to_user_id),
-        //     to_user_email
-        // });
-        // invite.save(function(err) {
-        //     if (err) return handleError(err);
-        //     res.json({ type: "success", message: "The invitation was saved."});
-        // });
+                .catch(err => console.error('find user err', err))
+        //}
     }
 );
+
+
 
 // Returns pending invitations that were sent to the given user
 router.get("/user/:id",
