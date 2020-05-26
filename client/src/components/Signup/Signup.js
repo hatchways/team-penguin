@@ -128,8 +128,9 @@ export default function SignUp() {
                           }}
                           value={formValues.email}
                           onChange = { handleChange }
+                          error = { formErrors.email }
+                          helperText= { formErrors.email || null} 
                         />
-                        { formErrors.email && <p>{formErrors.email}</p> }
                       </Grid>
                       <Grid item xs={12}>
                         <TextField
@@ -148,6 +149,8 @@ export default function SignUp() {
                           }}
                           value={formValues.password}
                           onChange= { handleChange }
+                          error = { formErrors.password }
+                          helperText= { formErrors.password || null}
                         />
                       </Grid>
                       <Grid item xs={12}>
@@ -167,6 +170,8 @@ export default function SignUp() {
                           }}
                           value={formValues.confirmPassword}
                           onChange = { handleChange }
+                          error = { formErrors.confirmPassword }
+                          helperText= { formErrors.confirmPassword || null}
                         />
                       </Grid>
                       <Grid item xs={12}>
