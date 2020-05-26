@@ -4,10 +4,10 @@ const passport = require("passport");
 const validator = require("validator");
 const Invitation = require("../models/invitation");
 const User = require("../models/user");
-const {sendEmail} = require("../util/sendgrid_helpers")
+const {sendEmail, sendEmailMultiple} = require("../util/sendgrid_helpers")
 const router = express.Router();
 
-router.post("/user",
+router.post("/",
     passport.authenticate('jwt', { session: false }),
     function(req, res, next) {
         //const {email} = req.params;
@@ -76,11 +76,13 @@ make list of recipients who are not users
                                         to_email: nonCurUserEmails[0], 
                                         referral_id: referralId})
                                 .then(resp => console.log('sendgrid email sent', resp))
-                                .catch(err => console.error(err))
+                                .catch(err => console.error('sendgrid email err', err))
                         } else if (nonCurUserEmails.length > 1) {
-                            nonCurUserEmails.forEach(to_user_email => {
-                                //TODO
-                            })
+                            sendEmailMultiple({from_email: fromEmail,
+                                        to_email_ar: nonCurUserEmails,
+                                        referral_id: referralId})
+                                .then(resp => console.log('sendgrid email group sent', resp))
+                                .catch(err => console.error('sendgrid email err', err))
                         }
                     }
                 })
