@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const passport = require("passport");
 const validator = require("validator");
 const Invitation = require("../models/invitation");
+const User = require("../models/user");
 const router = express.Router();
 
 router.post("/user/:email",
@@ -45,19 +46,34 @@ make list of recipients who are not users
         } else {
 
 //query for existing users (TODO)
-    //sendgrid for non existing users
+            validEmails.forEach((to_email, idx) => {
+                User.find({email: to_email}, function(err, user) {
+                    if (err) console.error(err);
+                    if (user) {
+                        curUserEmails.push(to_email);
+                    } else {
+                        nonCurUserEmails.push(to_email);
+                    }
 
-    //create invites for existing users
-            let newInvites = [];
-            validEmails.forEach(to_user_email => {
-                let newInvite = {to_user_email, from_user_email: fromEmail};
-                newInvites.push(newInvite);
-            });
-            Invitation.insertMany(newInvites, function(err, invitations) {
-                if (err) console.error(err);
+                    if (idx === validEmails.length - 1) {
+                        //1 create invites for existing users
+                        let newInvites = [];
+                        curUserEmails.forEach(to_user_email => {
+                            let newInvite = {to_user_email, from_user_email: fromEmail};
+                            newInvites.push(newInvite);
+                        });
+                        Invitation.insertMany(newInvites, function(err, invitations) {
+                            if (err) console.error(err);
+                        })
 
+                        //2 (slower) sendgrid for non existing users
+                        nonCurUserEmails.forEach(to_user_email => {
+                            //TODO
+                        })
+
+                    }
+                })
             })
-
         }
 
 /*
