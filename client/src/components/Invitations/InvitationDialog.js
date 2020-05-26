@@ -112,13 +112,9 @@ export default function InvitationDialog() {
   }
 
   const emailsAreValid = (emailArray) => {
-    for (let i = 0; i < emailArray.length; i++) {
-      if (!isEmailValid(emailArray[i])) return false;
-    }
-    return true;
+    return emailArray.every(email => isEmailValid(email) === true);
   }
 
-  //handle submit form
   const handleSave = (ev) => {
     ev.preventDefault();
 
