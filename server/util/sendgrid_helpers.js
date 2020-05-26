@@ -8,9 +8,7 @@ const sendEmail = ({from_email, to_email, referral_id}) => {
     subject: 'World messenger invitation',
     text: `${from_email} has invited you to connect on World messenger! Here’s the link to it! localhost:3000/join/${referral_id}`,
   };
-  sgMail.send(msg)
-      .then(resp => console.log(resp))
-      .catch(err => console.log(err));
+  return sgMail.send(msg);
 }
 
 const sendEmailMultiple = ({from_email, to_email_ar, referral_id}) => {
@@ -24,10 +22,7 @@ const sendEmailMultiple = ({from_email, to_email_ar, referral_id}) => {
   
     return msg;
   })
-  Promises.all(messages.map(msg => sgMail.send(msg)))
-    .then(resp => resp.json())
-    .then(json => console.log('sendgrid group results', json))
-    .catch(err => console.error('sendgrid errors', err))
+  return Promises.all(messages.map(msg => sgMail.send(msg)));
 }
 
 module.exports = {sendEmail, sendEmailMultiple};
