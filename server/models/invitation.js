@@ -7,19 +7,13 @@ var invitationSchema = new Schema({
         type: Boolean,
         default: false
     },
-    from_user: {
-        type: mongoose.Types.ObjectId,
-        ref: 'users',
-        required: true
-    },
-    to_user: {
-        type: mongoose.Types.ObjectId,
-        ref: 'users',
+    from_user_email: {
+        type: String,
         required: true
     },
     to_user_email: {
         type: String,
-        default: null
+        required: true
     },
     createdOn: { type: Date, default: Date.now }
 });
