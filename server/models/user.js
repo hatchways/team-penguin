@@ -14,6 +14,10 @@ const userSchema = new Schema( {
     type: String,
     required: true,
     default: 'English'
+  },
+  referral_id: {
+    type: mongoose.Types.ObjectId,
+    default: mongoose.Types.ObjectId()
   }
 });
 
