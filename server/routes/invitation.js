@@ -4,16 +4,15 @@ const passport = require("passport");
 const Invitation = require("../models/invitation");
 const router = express.Router();
 
-router.post("/user/:id/create",
+router.post("/user/:email/create",
     passport.authenticate('jwt', { session: false }),
     function(req, res, next) {
-        const {id} = req.params;
+        const {email} = req.params;
         const {to_user_id} = req.body;
         let to_user_email = req.body.to_user_email ? req.body.to_user_email : null;
-        var objId = mongoose.Types.ObjectId;
 
         const invite = new Invitation({
-            "from_user": new objId(id),
+            "from_user_email": email,
             "to_user": new objId(to_user_id),
             to_user_email
         });
