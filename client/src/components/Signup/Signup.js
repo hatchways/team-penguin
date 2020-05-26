@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -13,6 +13,8 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import UnauthenticatedSidebar from '../UnauthenticatedSidebar/UnauthenticatedSidebar';
+import useForm from '../../custom-hooks/useForm';
+import validate from '../Signup/validateSignup';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -70,10 +72,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignUp() {
   const classes = useStyles();
-  const [language, setLanguague] = React.useState('');
-  const handleChange = (event) => {
-    setLanguague(event.target.value);
-  };
+  const { handleChange, handleSubmit, formValues, formErrors  } = useForm(submit, validate);
+
+  function submit() {
+    console.log('submitted');
+  }
 
   return (
     <div>
@@ -106,7 +109,7 @@ export default function SignUp() {
                   <Typography className={classes.createAccountHeading} component="h2" variant="h4">
                     Create an account
                   </Typography>
-                  <form className={classes.form} noValidate>
+                  <form onSubmit={ handleSubmit } className={classes.form} noValidate>
                     <Grid container spacing={2}>
                       <Grid item xs={12}>
                         <TextField
@@ -116,13 +119,17 @@ export default function SignUp() {
                           label="Email Address"
                           name="email"
                           autoComplete="email"
+                          type="email"
                           InputProps = {{ 
                             classes: {root: classes.textFieldSelectLabel} 
                           }}
                           InputLabelProps = {{ 
                             classes: {root: classes.textFieldSelectLabel} 
                           }}
+                          value={formValues.email}
+                          onChange = { handleChange }
                         />
+                        { formErrors.email && <p>{formErrors.email}</p> }
                       </Grid>
                       <Grid item xs={12}>
                         <TextField
@@ -139,6 +146,8 @@ export default function SignUp() {
                           InputLabelProps = {{ 
                             classes: {root: classes.textFieldSelectLabel} 
                           }}
+                          value={formValues.password}
+                          onChange= { handleChange }
                         />
                       </Grid>
                       <Grid item xs={12}>
@@ -156,6 +165,8 @@ export default function SignUp() {
                           InputLabelProps = {{ 
                             classes: {root: classes.textFieldSelectLabel} 
                           }}
+                          value={formValues.confirmPassword}
+                          onChange = { handleChange }
                         />
                       </Grid>
                       <Grid item xs={12}>
@@ -167,19 +178,16 @@ export default function SignUp() {
                             fullWidth
                             labelId="demo-simple-select-placeholder-label-label"
                             id="demo-simple-select-placeholder-label"
-                            value={language}
+                            value={formValues.language}
                             onChange={handleChange}
-                            displayEmpty
                             className={classes.selectEmpty}
                             classes = {{ select: classes.selectTopPadding}}
                           >
-                            <MenuItem value="">
-                              English
-                            </MenuItem> 
-                            <MenuItem value={10}>Mandarin</MenuItem>
-                            <MenuItem value={20}>French</MenuItem>
-                            <MenuItem value={30}>Hindi</MenuItem>
-                            <MenuItem value={40}>Spanish</MenuItem>
+                            <MenuItem value={10}> English </MenuItem> 
+                            <MenuItem value={20}>Mandarin</MenuItem>
+                            <MenuItem value={30}>French</MenuItem>
+                            <MenuItem value={40}>Hindi</MenuItem>
+                            <MenuItem value={50}>Spanish</MenuItem>
                           </Select>
                         </FormControl>
                       </Grid>
