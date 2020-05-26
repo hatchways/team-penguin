@@ -75,7 +75,6 @@ export default function SignUp() {
     setLanguague(event.target.value);
   };
 
-  const preventDefault = e => e.preventDefault();
   return (
     <div>
         <Grid container>
@@ -176,26 +175,11 @@ export default function SignUp() {
                     >
                       Create
                     </Button>
-                    {/* <Grid container justify="flex-end">
-                      <Grid item>
-                        <Link href="#" variant="body2">
-                          Already have an account? Login
-                        </Link>
-                      </Grid>
-                    </Grid> */}
                   </form>
                 </div>
               </Container>
             </Grid>
         </Grid>
     </div>
-
-
-
-
-
-
-
-
   );
 }
