@@ -142,6 +142,23 @@ export default function SignUp() {
                         />
                       </Grid>
                       <Grid item xs={12}>
+                        <TextField
+                          required
+                          fullWidth
+                          name="confirmPassword"
+                          label="Confirm Password"
+                          type="password"
+                          id="confirmPassword"
+                          autoComplete="current-password"
+                          InputProps = {{ 
+                            classes: {root: classes.textFieldSelectLabel} 
+                          }}
+                          InputLabelProps = {{ 
+                            classes: {root: classes.textFieldSelectLabel} 
+                          }}
+                        />
+                      </Grid>
+                      <Grid item xs={12}>
                         <FormControl className={classes.formControl}>
                           <InputLabel classes = {{ root: classes.selectRoot }} shrink id="demo-simple-select-placeholder-label-label">
                             Select Primary Language
