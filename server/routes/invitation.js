@@ -37,7 +37,25 @@ list of invalid emails
         if (!validEmails.length) {
             return res.status(400).json({error: 'Email addresses for invitation recipients were invalid. Please check the spelling.'})
         } else {
-            console.log('valid emails exist')
+            validEmails.forEach((to_email, idx) => {
+                User.find({email: to_email}, function(err, user) {
+                    if (err) console.error('unable to find user', err);
+                    if (user) {
+                        console.log('user', user)
+                        curUserEmails.push(to_email);
+                        if (idx === validEmails.length - 1) {
+                            console.log('got to end of user searches')
+
+
+
+
+
+
+
+                        }
+                    }
+                })
+            })
         }
 
 
