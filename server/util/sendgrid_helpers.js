@@ -1,7 +1,7 @@
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-export const sendEmail = (from_email, to_email, referral_id) => {
+const sendEmail = ({from_email, to_email, referral_id}) => {
   let msg = {
     to: `${to_email}`,
     from: 'hatchways.tester99@gmail.com',
@@ -12,3 +12,9 @@ export const sendEmail = (from_email, to_email, referral_id) => {
       .then(resp => console.log(resp))
       .catch(err => console.log(err));
 }
+
+const sendEmailMultiple = () => {
+
+}
+
+module.exports = {sendEmail};
