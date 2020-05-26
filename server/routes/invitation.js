@@ -4,13 +4,14 @@ const passport = require("passport");
 const validator = require("validator");
 const Invitation = require("../models/invitation");
 const User = require("../models/user");
+const {sendEmail} = require("../util/sendgrid_helpers")
 const router = express.Router();
 
-router.post("/user/:email",
+router.post("/user",
     passport.authenticate('jwt', { session: false }),
     function(req, res, next) {
-        const {email} = req.params;
-        const {emailAr, fromEmail} = req.body;
+        //const {email} = req.params;
+        const {emailAr, fromEmail, referralId} = req.body;
         let invalidEmails = [];
         let validEmails = [];
         let curUserEmails = [];
@@ -64,13 +65,23 @@ make list of recipients who are not users
                         });
                         Invitation.insertMany(newInvites, function(err, invitations) {
                             if (err) console.error(err);
+                            if (invitations) {
+                                console.log('invitation created', resp)
+                            }
                         })
 
                         //2 (slower) sendgrid for non existing users
-                        nonCurUserEmails.forEach(to_user_email => {
-                            //TODO
-                        })
-
+                        if (nonCurUserEmails.length === 1) {
+                            sendEmail({from_email: fromEmail, 
+                                        to_email: nonCurUserEmails[0], 
+                                        referral_id: referralId})
+                                .then(resp => console.log('sendgrid email sent', resp))
+                                .catch(err => console.error(err))
+                        } else if (nonCurUserEmails.length > 1) {
+                            nonCurUserEmails.forEach(to_user_email => {
+                                //TODO
+                            })
+                        }
                     }
                 })
             })
@@ -80,20 +91,15 @@ make list of recipients who are not users
 create invitations for recipients who are users
     then trigger sendgrid requests for recipients who are not users
 */
-
-
-
-
-
-        const invite = new Invitation({
-            "from_user_email": email,
-            "to_user": new objId(to_user_id),
-            to_user_email
-        });
-        invite.save(function(err) {
-            if (err) return handleError(err);
-            res.json({ type: "success", message: "The invitation was saved."});
-        });
+        // const invite = new Invitation({
+        //     "from_user_email": email,
+        //     "to_user": new objId(to_user_id),
+        //     to_user_email
+        // });
+        // invite.save(function(err) {
+        //     if (err) return handleError(err);
+        //     res.json({ type: "success", message: "The invitation was saved."});
+        // });
     }
 );
 
