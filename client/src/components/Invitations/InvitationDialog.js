@@ -125,15 +125,13 @@ export default function InvitationDialog() {
     //TODO
     let jwtToken = '';
     let emailAr = getEmailAr(email);
-    console.log('emailAr', emailAr)
-    console.log('emailsAreValid(emailAr)', emailsAreValid(emailAr))
 
     if (!email.length) {
       const emptyEmailError = 'Please enter an email.';
       setEmailErrorMessage(emptyEmailError);
     } else if (!emailsAreValid(emailAr)) {
       const invalidEmailError = 'Please enter a valid email.';
-        setEmailErrorMessage(invalidEmailError);
+      setEmailErrorMessage(invalidEmailError);
     } else {
       if (email.indexOf(',') === -1) {
         emailAr = [email];
@@ -178,10 +176,6 @@ export default function InvitationDialog() {
       }
     });
   }
-
-  useEffect(() => {
-    console.log('email er', emailErrorMessage)
-  }, [emailErrorMessage])
 
   return (
     <div>
