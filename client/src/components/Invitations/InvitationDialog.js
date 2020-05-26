@@ -112,10 +112,9 @@ export default function InvitationDialog() {
   }
 
   const emailsAreValid = (emailArray) => {
-    emailArray.forEach( (email) => { 
-      if (!isEmailValid(email)) return false;
-    })
-
+    for (let i = 0; i < emailArray.length; i++) {
+      if (!isEmailValid(emailArray[i])) return false;
+    }
     return true;
   }
 
