@@ -7,36 +7,61 @@ const User = require("../models/user");
 //const {sendEmail, sendEmailMultiple} = require("../util/sendgrid_helpers")
 const router = express.Router();
 
-router.post("/user",
+router.post("/",
     //passport.authenticate('jwt', { session: false }),
     function(req, res, next) {
         const {toEmailAr, fromEmail, referralId} = req.body;
-        // let invalidEmails = [];
-        // let validEmails = [];
-        // let curUserEmails = [];
-        // let nonCurUserEmails = [];
+        console.log('type toEmailAr', typeof toEmailAr)
+        let invalidEmails = [];
+        let validEmails = [];
+        let curUserEmails = [];
+        let nonCurUserEmails = [];
+
+        /*
+email validation
+    no empty arr
+    valid email values
+list of valid emails
+list of invalid emails
+*/
+        if (toEmailAr.length === 0) {
+            return res.status(400).json({error: 'No email addresses for invitation recipients were provided.'})
+        }
+        toEmailAr.forEach(email => {
+            if (validator.isEmail(email)) {
+                validEmails.push(email);
+            } else {
+                invalidEmails.push(email);
+            }
+        })
+        if (!validEmails.length) {
+            return res.status(400).json({error: 'Email addresses for invitation recipients were invalid. Please check the spelling.'})
+        } else {
+            console.log('valid emails exist')
+        }
+
 
 //test with one recipient
     //recipient is cur user (trigger invitation creation)
 
         //no validation, one touser existing user
         //if (toEmailAr.length === 1) {
-            User.findOne({email: toEmailAr[0]})
-                .then(user => {
-                    if (user) {
-                        const invite = new Invitation({
-                                        "from_user_email": fromEmail,
-                                        "to_user_email": toEmailAr[0]
-                                    });
-                        invite.save(function(err) {
-                            if (err) return handleError(err);
-                            res.json({ type: "success", message: "The invitation was saved."});
-                        });
-                    } else {
-                        console.log('send email')
-                    }
-                })
-                .catch(err => console.error('find user err', err))
+            // User.findOne({email: toEmailAr[0]})
+            //     .then(user => {
+            //         if (user) {
+            //             const invite = new Invitation({
+            //                             "from_user_email": fromEmail,
+            //                             "to_user_email": toEmailAr[0]
+            //                         });
+            //             invite.save(function(err) {
+            //                 if (err) return handleError(err);
+            //                 res.json({ type: "success", message: "The invitation was saved."});
+            //             });
+            //         } else {
+            //             console.log('send email')
+            //         }
+            //     })
+            //     .catch(err => console.error('find user err', err))
         //}
     }
 );
