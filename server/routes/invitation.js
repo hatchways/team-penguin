@@ -45,6 +45,17 @@ list of invalid emails
                         curUserEmails.push(to_email);
                         if (idx === validEmails.length - 1) {
                             console.log('got to end of user searches')
+                            //1 create invites for existing users
+                            if (curUserEmails.length === 1) {
+                                const invite = new Invitation({
+                                    "from_user_email": fromEmail,
+                                    "to_user_email": to_email
+                                });
+                                invite.save(function(err) {
+                                    if (err) return handleError(err);
+                                    res.json({ type: "success", message: "The invitation was saved."});
+                                });
+                            } //else if (curUserEmails.length > 1) {
 
 
 
