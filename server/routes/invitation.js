@@ -81,7 +81,7 @@ router.post("/",
                                                 inviteRecipients = inviteRecipients.concat(nonCurUserEmails);
                                                 res.json({ type: "success", message: `Invitations were sent to ${inviteRecipients.join(', ')}`});
                                             } else {
-                                                res.json({ type: "error", message: 'Some email invitations could not be send. Please check spelling.'});
+                                                res.json({ type: "error", message: 'Some email invitations could not be sent. Please check spelling.'});
                                             }
                                         })
                                         .catch(err => console.error('sendgrid email err', err))
@@ -121,7 +121,7 @@ router.post("/",
                                             referral_id: referralId})
                                     .then(resp => {
                                         if (resp[0].statusCode === 202) {
-                                            inviteCreatedEmailMessage = `An email invitation were sent to ${nonCurUserEmails[0]}`;
+                                            inviteCreatedEmailMessage = `An email invitation was sent to ${nonCurUserEmails[0]}`;
                                             res.json({ type: "success", message: `${inviteCreatedEmailMessage}`});
                                         }
                                     } )
@@ -143,7 +143,7 @@ router.post("/",
                                             inviteRecipients = inviteRecipients.concat(nonCurUserEmails);
                                             res.json({ type: "success", message: `Invitations were sent to ${inviteRecipients.join(', ')}`});
                                         } else {
-                                            res.json({ type: "error", message: 'Some email invitations could not be send. Please check spelling.'});
+                                            res.json({ type: "error", message: 'Some email invitations could not be sent. Please check spelling.'});
                                         }
                                     })
                                     .catch(err => console.error('sendgrid email err', err))
