@@ -19,4 +19,12 @@ const sendEmail = ({from_email, to_email_ar, referral_id}) => {
   return sgMail.send(messages);
 }
 
-module.exports = {sendEmail};
+const getSuccessCount = (resp) => {
+  let successCount = 0;
+  resp.forEach(res => {
+    if (res[0].statusCode === 202) successCount += 1;
+  });
+  return successCount;
+}
+
+module.exports = {sendEmail, getSuccessCount};
