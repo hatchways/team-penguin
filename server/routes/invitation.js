@@ -7,10 +7,11 @@ const User = require("../models/user");
 const {sendEmail, sendEmailMultiple} = require("../util/sendgrid_helpers")
 const router = express.Router();
 
-router.post("/",
+router.post("/user/:fromEmail",
     //passport.authenticate('jwt', { session: false }),
     function(req, res, next) {
-        const {toEmailAr, fromEmail, referralId} = req.body;
+        const {toEmailAr, referralId} = req.body;
+        const {fromEmail} = req.params;
         let invalidEmails = [];
         let validEmails = [];
         let curUserEmails = [];
