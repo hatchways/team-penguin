@@ -16,6 +16,8 @@ router.post("/",
         let validEmails = [];
         let curUserEmails = [];
         let nonCurUserEmails = [];
+        let inviteCreatedInternalMessage = '';
+        let inviteCreatedEmailMessage = '';
 
         /*
 email validation
@@ -40,30 +42,61 @@ list of invalid emails
             validEmails.forEach((to_email, idx) => {
                 User.find({email: to_email}, function(err, user) {
                     if (err) console.error('unable to find user', err);
-                    if (user) {
+                    if (!user.length) {
+                        nonCurUserEmails.push(to_email);
+                        console.log('nonCurUserEmails', nonCurUserEmails)
+                    }
+                    if (user.length) {
                         console.log('user', user)
                         curUserEmails.push(to_email);
-                        if (idx === validEmails.length - 1) {
-                            console.log('got to end of user searches')
-                            //1 create invites for existing users
-                            if (curUserEmails.length === 1) {
-                                const invite = new Invitation({
-                                    "from_user_email": fromEmail,
-                                    "to_user_email": to_email
-                                });
-                                invite.save(function(err) {
-                                    if (err) return handleError(err);
-                                    res.json({ type: "success", message: "The invitation was saved."});
-                                });
-                            } //else if (curUserEmails.length > 1) {
-
-
-
-
-
-
-
+                        
+                    }
+                    if (idx === validEmails.length - 1) {
+                        //1 create invites for existing users
+                        if (curUserEmails.length === 1) {
+                            const invite = new Invitation({
+                                "from_user_email": fromEmail,
+                                "to_user_email": to_email
+                            });
+                            invite.save(function(err) {
+                                if (err) return handleError(err);
+//should I report issues
+                                inviteCreatedInternalMessage = `An invitation was sent to ${to_email}.`
+                                console.log('inviteCreatedInternalMessage', inviteCreatedInternalMessage)
+                                //res.json({ type: "success", message: `An invitation was sent to ${to_email}.`});
+                            });
+                        } else if (curUserEmails.length > 1) {
+                            let newInvites = [];
+                            curUserEmails.forEach(to_user_email => {
+                                let newInvite = {to_user_email, from_user_email: fromEmail};
+                                newInvites.push(newInvite);
+                            });
+                            console.log('gets to last point')
+//does this prevent sending via sendgrid
+                            Invitation.insertMany(newInvites, function(err) {
+                                if (err) return console.error(err);
+                                inviteCreatedInternalMessage =  `Invitations were sent to ${curUserEmails.join(', ')}.`
+                                console.log('inviteCreatedInternalMessage', inviteCreatedInternalMessage);
+                                //res.json({ type: "success", message: `Invitations were sent to ${curUserEmails.join(', ')}.`});
+                            })
                         }
+                        //2 (slower) sendgrid for non existing users
+                        if (nonCurUserEmails.length === 1) {
+                            console.log('gets to sendgrid request 1')
+                            sendEmail({from_email: fromEmail, 
+                                        to_email: nonCurUserEmails[0], 
+                                        referral_id: referralId})
+                                .then(resp => console.log('sendgrid email sent', resp))
+                                .catch(err => {
+                                    console.error('sendgrid email err', err)
+                                })
+                        } //else if (nonCurUserEmails.length > 1) {
+                        //     sendEmailMultiple({from_email: fromEmail,
+                        //                 to_email_ar: nonCurUserEmails,
+                        //                 referral_id: referralId})
+                        //         .then(resp => console.log('sendgrid email group sent', resp))
+                        //         .catch(err => console.error('sendgrid email err', err))
+                        // }
                     }
                 })
             })
