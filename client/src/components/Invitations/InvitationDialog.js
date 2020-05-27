@@ -278,14 +278,13 @@ export default function InvitationDialog() {
             id="referral-url-btn"
             value={referralUrl}
             onClick={handleClickCopyBtn}
-            className={classes.btnOverlay}
-            disableElevation>
+            className={classes.btnOverlay}>
             Copy Link
           </Button>
         </DialogActions>
         <DialogActions className={classes.dialogActionsRoot}>
           <Button onClick={handleSave} color="primary" variant="contained"
-            size="large" disableElevation className={classes.btnMixedCase}>
+            size="large" className={classes.btnMixedCase}>
             Send Invite
           </Button>
         </DialogActions>
