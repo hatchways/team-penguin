@@ -4,7 +4,7 @@ const passport = require("passport");
 const validator = require("validator");
 const Invitation = require("../models/invitation");
 const User = require("../models/user");
-//const {sendEmail, sendEmailMultiple} = require("../util/sendgrid_helpers")
+const {sendEmail, sendEmailMultiple} = require("../util/sendgrid_helpers")
 const router = express.Router();
 
 router.post("/",
