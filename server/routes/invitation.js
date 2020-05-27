@@ -19,7 +19,6 @@ router.post("/",
         let inviteCreatedInternalMessage = '';
         let inviteCreatedEmailMessage = '';
 
-        /* email validation */
         if (toEmailAr.length === 0) {
             return res.status(400).json({error: 'No email addresses for invitation recipients were provided.'})
         }
@@ -46,7 +45,6 @@ router.post("/",
                         //1 handle case where recipients include registered users and non registered
                         if (curUserEmails.length && nonCurUserEmails.length) {
                             let newInvites = [];
-                            console.log('curUserEmails', curUserEmails)
                             curUserEmails.forEach(to_user_email => {
                                 let newInvite = {to_user_email, from_user_email: fromEmail};
                                 newInvites.push(newInvite);
@@ -80,20 +78,7 @@ router.post("/",
                                         .catch(err => console.error('sendgrid email err', err))
                                 }
                             })
-                        } else if (curUserEmails.length === 1) {
-                        //2 create invites for existing userss
-                            const invite = new Invitation({
-                                "from_user_email": fromEmail,
-                                "to_user_email": to_email
-                            });
-                            invite.save(function(err) {
-                                if (err) return console.error(err);
-                                inviteCreatedInternalMessage = `An internal invitation was sent to ${to_email}.`
-                                if (!nonCurUserEmails.length) {
-                                    res.json({ type: "success", message: `An invitation was sent to ${to_email}.`});
-                                }
-                            });
-                        } else if (curUserEmails.length > 1) {
+                        } else if (curUserEmails.length) {
                             let newInvites = [];
                             curUserEmails.forEach(to_user_email => {
                                 let newInvite = {to_user_email, from_user_email: fromEmail};
