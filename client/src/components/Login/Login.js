@@ -11,6 +11,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import UnauthenticatedSidebar from '../UnauthenticatedSidebar/UnauthenticatedSidebar';
 import useForm from '../../custom-hooks/useForm';
 import validate from './validateLogin';
+import axios from 'axios';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -60,10 +63,27 @@ const useStyles = makeStyles((theme) => ({
 export default function Login() {
   const classes = useStyles();
   const { handleChange, handleSubmit, formValues, formErrors } = useForm(submit, validate);
+  const [errorAlertMsg, setErrorAlertMsg] = useState('');
 
-  function submit() {
-    console.log('login succeeded');
+  async function submit() {
     //will be logged into authenticated page after integration
+    try {
+      const res = await axios.post('http://localhost:3001/user/login', formValues);
+      if(res.data.token) {
+        localStorage.setItem('authToken', res.data.token);
+      }
+    }
+    catch(err) {
+      err.response.data.validationError ? setErrorAlertMsg(err.response.data.validationError) : console.error(err);
+    }
+  }
+
+  function closeAlertHandler() {
+    setErrorAlertMsg('');
+  }
+
+  function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
   }
 
 
@@ -156,6 +176,11 @@ export default function Login() {
                   Login
                 </Button>
               </form>
+              <Snackbar open = {errorAlertMsg.length !== 0} autoHideDuration={5000} onClose = { closeAlertHandler }>
+                          <Alert onClose={closeAlertHandler} severity="error">
+                            {errorAlertMsg}
+                          </Alert>
+                  </Snackbar>
             </div>
           </Container>
         </Grid>
