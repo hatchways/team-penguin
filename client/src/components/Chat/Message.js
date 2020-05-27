@@ -3,8 +3,10 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
 const Message = props => (
-  <Grid item className={props.classes.root}>
-    <div className={props.classes.message}>
+  // className={props.classes.root}
+  <Grid item >
+    {/*className={props.classes.message} */}
+    <div >
       <Typography variant='body1'>{props.message.body}</Typography>
     </div>
   </Grid>

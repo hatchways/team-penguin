@@ -6,7 +6,6 @@ export const theme = createMuiTheme({
     fontSize: 12
   },
   palette: {
-    primary: { main: "#3A8DFF" }
-    
+    primary: { main: "#3A8DFF" }   
   }
 });

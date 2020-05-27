@@ -2,15 +2,12 @@ import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
-
-
-
 const Pending = props => {
   const entries = props.pending.map(curr => (
     <Grid 
       item 
       key={curr.username}
-      className={props.classes.entry}
+      // className={props.classes.entry}
     >
       <Typography variant='body1'>
         <b>{curr.username}</b> has received your friend request
@@ -19,8 +16,7 @@ const Pending = props => {
   ));
 
   return (
-    <Grid 
-      item 
+    <Grid
       container
       direction='column'
     >
