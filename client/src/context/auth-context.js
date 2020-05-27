@@ -7,7 +7,7 @@ const sleep = time => new Promise(resolve => setTimeout(resolve, time))
   //if not exists, update so status is error and user will be kicked back to login
 const getUser = () => sleep(1000).then(() => ({username: 'elmo'}))
 //comment following line to test authenticated
-// .then(() => null)
+.then(() => null)
 
 const AuthContext = React.createContext([{}, () => {}])
 function AuthProvider({children}) {

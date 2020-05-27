@@ -111,73 +111,46 @@ export default function InvitationDialog() {
     setOpen(false);
   }
 
-  //handle submit form
+  const emailsAreValid = (emailArray) => {
+    return emailArray.every(email => isEmailValid(email) === true);
+  }
+
   const handleSave = (ev) => {
     ev.preventDefault();
+
     //TODO
     let jwtToken = '';
-
-    //handle 3 cases
-    //email is empty
-    //email is populated
-      //email is invalid (any email)
-      //email is valid (all)
+    let emailAr = getEmailAr(email);
 
     if (!email.length) {
       const emptyEmailError = 'Please enter an email.';
       setEmailErrorMessage(emptyEmailError);
+    } else if (!emailsAreValid(emailAr)) {
+      const invalidEmailError = 'Please enter a valid email.';
+      setEmailErrorMessage(invalidEmailError);
     } else {
-      let emailAr = getEmailAr(email);
-      let emailsAreValid = true;
-
-      if (emailAr.length === 1) {
-        emailsAreValid = isEmailValid(email);
-      } else {
-        for (let i = 0; i < emailAr.length; i++) {
-          if (!isEmailValid(emailAr[i])) {
-            emailsAreValid = false;
-            break;
-          }
-        }  
+      if (email.indexOf(',') === -1) {
+        emailAr = [email];
       }
 
-      if (!emailsAreValid) {
-        const invalidEmailError = 'Please enter a valid email.';
-        setEmailErrorMessage(invalidEmailError);
-      } else {
-        let emailStr = email;
-        let emailAr = [];
-        //clean up email field string
-        if (emailStr.indexOf(',') > -1) {
-          emailAr = getEmailAr(email);
-        } else {
-          emailAr.push(email);
-        }
-    
-        let body = {emailAr, to_user_id: `${testToUid}`};
-        //make post request
-        fetch(`http://localhost:3001/invitations/user/${testFromUid}/create`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'//,
-            //'Authorization': `Bearer ${jwtToken}`
-          },
-          body: JSON.stringify(body)
+      let body = {emailAr, to_user_id: `${testToUid}`};
+      fetch(`http://localhost:3001/invitations`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'//,
+          //'Authorization': `Bearer ${jwtToken}`
+        },
+        body: JSON.stringify(body)
+      })
+        .then(resp => {
+          setEmail('');
+          setOpen(false);
         })
-          .then(resp => {
-            setEmail('');
-            setOpen(false);
-          })
-          .catch(err => {
-            console.error(err)
-          })
-      }
+        .catch(err => {
+          console.error(err)
+        })
     }
   };
-
-  useEffect(() => {
-    console.log('err', emailErrorMessage)
-  }, [emailErrorMessage])
 
   const getEmailAr = (emailStr) => {
     let emailAr = emailStr.split(',');
@@ -210,8 +183,7 @@ export default function InvitationDialog() {
         aria-labelledby="form-dialog-title"
         fullWidth
         maxWidth='sm'>
-
-        <IconButton aria-label="close" className={classes.closeButton} onClick={handleClose}>
+          <IconButton aria-label="close" className={classes.closeButton} onClick={handleClose}>
           <CloseIcon />
         </IconButton>
         <DialogTitle id="form-dialog-title" onClose={handleClose}>
