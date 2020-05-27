@@ -17,8 +17,8 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 import {isEmailValid} from '../../util/helpers';
 
 //REMOVE
-const testToUid = '5ec815fdfd43011d98648662';
-const testFromUid = '5ec816abfd43011d98648663';
+const fromEmail = 'z@z.com';
+const referralId = 'test-97829';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -104,6 +104,9 @@ export default function InvitationDialog() {
   };
 
   const handleClickOpen = () => {
+    setEmail('');
+    setEmailErrorMessage('');
+    setSubmitError('');
     setOpen(true);
   };
 
@@ -111,17 +114,10 @@ export default function InvitationDialog() {
     setOpen(false);
   }
 
-  //handle submit form
   const handleSave = (ev) => {
     ev.preventDefault();
     //TODO
     let jwtToken = '';
-
-    //handle 3 cases
-    //email is empty
-    //email is populated
-      //email is invalid (any email)
-      //email is valid (all)
 
     if (!email.length) {
       const emptyEmailError = 'Please enter an email.';
@@ -146,17 +142,15 @@ export default function InvitationDialog() {
         setEmailErrorMessage(invalidEmailError);
       } else {
         let emailStr = email;
-        let emailAr = [];
-        //clean up email field string
+        let toEmailAr = [];
         if (emailStr.indexOf(',') > -1) {
-          emailAr = getEmailAr(email);
+          toEmailAr = getEmailAr(email);
         } else {
-          emailAr.push(email);
+          toEmailAr.push(email);
         }
-    
-        let body = {emailAr, to_user_id: `${testToUid}`};
-        //make post request
-        fetch(`http://localhost:3001/invitations/user/${testFromUid}/create`, {
+
+        let body = {toEmailAr, fromEmail, referralId};
+        fetch(`http://localhost:3001/invitations`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'//,
@@ -174,10 +168,6 @@ export default function InvitationDialog() {
       }
     }
   };
-
-  useEffect(() => {
-    console.log('err', emailErrorMessage)
-  }, [emailErrorMessage])
 
   const getEmailAr = (emailStr) => {
     let emailAr = emailStr.split(',');
@@ -199,6 +189,11 @@ export default function InvitationDialog() {
       }
     });
   }
+
+  useEffect(() => {
+    //TODO get referralid (objectId) based on current logged in user email
+    
+  }, [])
 
   return (
     <div>
