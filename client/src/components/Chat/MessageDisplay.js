@@ -17,8 +17,9 @@ const MessageDisplay = props => {
       item
       container
       direction='column'
-      className={props.classes.root}
+      // className={props.classes.root}
     >
+      <br /><br /><br /><br /><br /><br />
       {messages}
     </Grid>
 )};

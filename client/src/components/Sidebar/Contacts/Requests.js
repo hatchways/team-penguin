@@ -13,7 +13,7 @@ const Requests = props => {
       container
       direction='column'
       spacing={1}
-      className={props.classes.entry}
+      // className={props.classes.entry}
       key={curr.username}
     >
       <Grid item>
@@ -27,7 +27,7 @@ const Requests = props => {
           <Button 
             variant='contained' 
             color='primary'
-            onClick={() => {props.updateContact(curr.username, 'accept')}}
+            // onClick={() => {props.updateContact(curr.username, 'accept')}}
           >
             Accept
           </Button>
@@ -36,7 +36,7 @@ const Requests = props => {
           <Button 
             variant='contained' 
             color='secondary'
-            onClick={() => {props.updateContact(curr.username, 'reject')}}
+            // onClick={() => {props.updateContact(curr.username, 'reject')}}
           >
             Decline
           </Button>
@@ -47,7 +47,6 @@ const Requests = props => {
 
   return (
     <Grid 
-      item 
       container
       direction='column'
     >
