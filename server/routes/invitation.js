@@ -11,21 +11,15 @@ router.post("/",
     //passport.authenticate('jwt', { session: false }),
     function(req, res, next) {
         const {toEmailAr, fromEmail, referralId} = req.body;
-        console.log('type toEmailAr', typeof toEmailAr)
         let invalidEmails = [];
         let validEmails = [];
         let curUserEmails = [];
         let nonCurUserEmails = [];
         let inviteCreatedInternalMessage = '';
         let inviteCreatedEmailMessage = '';
+        let nonCurUserEmailsSent = [];
 
-        /*
-email validation
-    no empty arr
-    valid email values
-list of valid emails
-list of invalid emails
-*/
+        /* email validation */
         if (toEmailAr.length === 0) {
             return res.status(400).json({error: 'No email addresses for invitation recipients were provided.'})
         }
@@ -49,7 +43,6 @@ list of invalid emails
                     if (user.length) {
                         console.log('user', user)
                         curUserEmails.push(to_email);
-                        
                     }
                     if (idx === validEmails.length - 1) {
                         //1 create invites for existing users
@@ -71,7 +64,6 @@ list of invalid emails
                                 let newInvite = {to_user_email, from_user_email: fromEmail};
                                 newInvites.push(newInvite);
                             });
-                            console.log('gets to last point')
 //does this prevent sending via sendgrid
                             Invitation.insertMany(newInvites, function(err) {
                                 if (err) return console.error(err);
