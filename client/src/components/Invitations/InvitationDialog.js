@@ -149,8 +149,8 @@ export default function InvitationDialog() {
           toEmailAr.push(email);
         }
 
-        let body = {toEmailAr, fromEmail, referralId};
-        fetch(`http://localhost:3001/invitations`, {
+        let body = {toEmailAr, referralId};
+        fetch(`http://localhost:3001/invitations/user/${fromEmail}`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'//,
