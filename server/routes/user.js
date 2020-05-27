@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const passport = require("passport");
 const User = require('../models/user');
 const registrationValidator = require('../controllers/userRegistrationValidator');
 const loginValidator = require('../controllers/userLoginValidator');
@@ -73,6 +74,22 @@ router.post('/login', (req, res) => {
               });
       });
 });
+
+router.get("/:fromEmail/referralId",
+  //passport.authenticate('jwt', { session: false }),
+  function(req, res, next) {
+    const {fromEmail} = req.params
+    User.findOne({email: fromEmail}, function(err, user) {
+      if (err) return console.error(err);
+      if (!user) {
+        res.status(500).json({type: 'error', message: 'A user with that email could not be found.'})
+      }
+      if (user) {
+        res.json({type: 'success', referralId: user.referral_id.toString()})
+      }
+    });
+  }
+);
 
 module.exports = router;
 
