@@ -17,7 +17,7 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 import {isEmailValid} from '../../util/helpers';
 
 //REMOVE
-const fromEmail = 'z@z.com';
+const fromEmail = 'y@y.com';
 const referralId = 'test-97829';
 
 const useStyles = makeStyles((theme) => ({
@@ -95,7 +95,7 @@ export default function InvitationDialog() {
   const [email, setEmail] = useState('');
   const [emailErrorMessage, setEmailErrorMessage] = useState('');
   const [submitError, setSubmitError] = useState('');
-  const [referralUrl, setReferralUrl] = useState('http://www.messenger.com/join/123456');
+  const [referralUrl, setReferralUrl] = useState('');
   const classes = useStyles();
 
   const handleChange = (event) => {
@@ -104,13 +104,14 @@ export default function InvitationDialog() {
   };
 
   const handleClickOpen = () => {
-    setEmail('');
-    setEmailErrorMessage('');
-    setSubmitError('');
     setOpen(true);
   };
 
   const handleClose = (ev) => {
+    setEmail('');
+    setEmailErrorMessage('');
+    setSubmitError('');
+    setReferralUrl('');
     setOpen(false);
   }
 
@@ -192,7 +193,21 @@ export default function InvitationDialog() {
 
   useEffect(() => {
     //TODO get referralid (objectId) based on current logged in user email
-    
+    fetch(`http://localhost:3001/user/${fromEmail}/referralId`, {
+      method: 'GET',
+      headers: {
+        //'Authorization': `Bearer ${jwtToken}`
+      },
+    })
+      .then(resp => resp.json())
+      .then(json => {
+          if (json.referralId) {
+            setReferralUrl(`http://localhost:3001/join/${json.referralId}`);
+          }
+      })
+      .catch(err => {
+        console.error(err)
+      })
   }, [])
 
   return (
