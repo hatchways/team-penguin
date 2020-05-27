@@ -17,7 +17,6 @@ router.post("/",
         let nonCurUserEmails = [];
         let inviteCreatedInternalMessage = '';
         let inviteCreatedEmailMessage = '';
-        let nonCurUserEmailsSent = [];
 
         /* email validation */
         if (toEmailAr.length === 0) {
@@ -38,10 +37,8 @@ router.post("/",
                     if (err) console.error('unable to find user', err);
                     if (!user.length) {
                         nonCurUserEmails.push(to_email);
-                        console.log('nonCurUserEmails', nonCurUserEmails)
                     }
                     if (user.length) {
-                        console.log('user', user)
                         curUserEmails.push(to_email);
                     }
                     if (idx === validEmails.length - 1) {
@@ -53,10 +50,11 @@ router.post("/",
                             });
                             invite.save(function(err) {
                                 if (err) return handleError(err);
-//should I report issues
+//should I report issues like invitations could not be created or sent/email
                                 inviteCreatedInternalMessage = `An internal invitation was sent to ${to_email}.`
-                                console.log('inviteCreatedInternalMessage', inviteCreatedInternalMessage)
-                                //res.json({ type: "success", message: `An invitation was sent to ${to_email}.`});
+                                if (!nonCurUserEmails.length) {
+                                    res.json({ type: "success", message: `An invitation was sent to ${to_email}.`});
+                                }
                             });
                         } else if (curUserEmails.length > 1) {
                             let newInvites = [];
@@ -68,21 +66,23 @@ router.post("/",
                             Invitation.insertMany(newInvites, function(err) {
                                 if (err) return console.error(err);
                                 inviteCreatedInternalMessage =  `Internal nvitations were sent to ${curUserEmails.join(', ')}.`
-                                console.log('inviteCreatedInternalMessage', inviteCreatedInternalMessage);
-                                //res.json({ type: "success", message: `Invitations were sent to ${curUserEmails.join(', ')}.`});
+                                if (!nonCurUserEmails.length) {
+                                    res.json({ type: "success", message: `Invitations were sent to ${curUserEmails.join(', ')}.`});
+                                }
                             })
                         }
+//not clear if this is the correct place for this? does it need to be nested under invitation creation?
                         //2 (slower) sendgrid for non existing users
                         if (nonCurUserEmails.length === 1) {
-                            console.log('gets to sendgrid request 1')
                             sendEmail({from_email: fromEmail, 
                                         to_email: nonCurUserEmails[0], 
                                         referral_id: referralId})
                                 .then(resp => {
-                                    console.log('sendgrid email sent', resp)
                                     if (resp[0].Response.statusCode === 202) {
                                         inviteCreatedEmailMessage = `An email invitation were sent to ${nonCurUserEmails[0]}`;
-                                        console.log('inviteCreatedEmailMessage', inviteCreatedEmailMessage)
+                                        if (!curUserEmails.length) {
+                                            res.json({ type: "success", message: `${inviteCreatedEmailMessage}`});
+                                        }
                                     }
                                 } )
                                 .catch(err => {
@@ -95,7 +95,9 @@ router.post("/",
                                 .then(resp => {
                                     if (resp.length === nonCurUserEmails.length) {
                                         inviteCreatedEmailMessage = `Email invitations were sent to ${nonCurUserEmails.join(',')}`;
-                                        console.log('inviteCreatedEmailMessage', inviteCreatedEmailMessage)
+                                        if (!curUserEmails.length) {
+                                            res.json({ type: "success", message: `${inviteCreatedEmailMessage}`});
+                                        }
                                     }
                                 })
                                 .catch(err => console.error('sendgrid email err', err))
