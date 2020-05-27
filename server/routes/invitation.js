@@ -54,7 +54,7 @@ router.post("/",
                             invite.save(function(err) {
                                 if (err) return handleError(err);
 //should I report issues
-                                inviteCreatedInternalMessage = `An invitation was sent to ${to_email}.`
+                                inviteCreatedInternalMessage = `An internal invitation was sent to ${to_email}.`
                                 console.log('inviteCreatedInternalMessage', inviteCreatedInternalMessage)
                                 //res.json({ type: "success", message: `An invitation was sent to ${to_email}.`});
                             });
@@ -67,7 +67,7 @@ router.post("/",
 //does this prevent sending via sendgrid
                             Invitation.insertMany(newInvites, function(err) {
                                 if (err) return console.error(err);
-                                inviteCreatedInternalMessage =  `Invitations were sent to ${curUserEmails.join(', ')}.`
+                                inviteCreatedInternalMessage =  `Internal nvitations were sent to ${curUserEmails.join(', ')}.`
                                 console.log('inviteCreatedInternalMessage', inviteCreatedInternalMessage);
                                 //res.json({ type: "success", message: `Invitations were sent to ${curUserEmails.join(', ')}.`});
                             })
@@ -78,17 +78,28 @@ router.post("/",
                             sendEmail({from_email: fromEmail, 
                                         to_email: nonCurUserEmails[0], 
                                         referral_id: referralId})
-                                .then(resp => console.log('sendgrid email sent', resp))
+                                .then(resp => {
+                                    console.log('sendgrid email sent', resp)
+                                    if (resp[0].Response.statusCode === 202) {
+                                        inviteCreatedEmailMessage = `An email invitation were sent to ${nonCurUserEmails[0]}`;
+                                        console.log('inviteCreatedEmailMessage', inviteCreatedEmailMessage)
+                                    }
+                                } )
                                 .catch(err => {
                                     console.error('sendgrid email err', err)
                                 })
-                        } //else if (nonCurUserEmails.length > 1) {
-                        //     sendEmailMultiple({from_email: fromEmail,
-                        //                 to_email_ar: nonCurUserEmails,
-                        //                 referral_id: referralId})
-                        //         .then(resp => console.log('sendgrid email group sent', resp))
-                        //         .catch(err => console.error('sendgrid email err', err))
-                        // }
+                        } else if (nonCurUserEmails.length > 1) {
+                            sendEmailMultiple({from_email: fromEmail,
+                                    to_email_ar: nonCurUserEmails,
+                                    referral_id: referralId})
+                                .then(resp => {
+                                    if (resp.length === nonCurUserEmails.length) {
+                                        inviteCreatedEmailMessage = `Email invitations were sent to ${nonCurUserEmails.join(',')}`;
+                                        console.log('inviteCreatedEmailMessage', inviteCreatedEmailMessage)
+                                    }
+                                })
+                                .catch(err => console.error('sendgrid email err', err))
+                        }
                     }
                 })
             })
