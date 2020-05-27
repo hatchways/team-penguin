@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -9,6 +9,8 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import UnauthenticatedSidebar from '../UnauthenticatedSidebar/UnauthenticatedSidebar';
+import useForm from '../../custom-hooks/useForm';
+import validate from './validateLogin';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -57,33 +59,13 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Login() {
   const classes = useStyles();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const { handleChange, handleSubmit, formValues, formErrors } = useForm(submit, validate);
 
-  const handleLoginSubmitClick = (ev) => {
-    ev.preventDefault();
-    //validate fields
-
-    //clear form
+  function submit() {
+    console.log('login succeeded');
+    //will be logged into authenticated page after integration
   }
 
-  const handleInputChange = (ev) => {
-    let {name, value} = ev.target;
-
-    if (name === 'email') {
-
-    } else if (name === 'password') {
-
-    }
-  }
-
-  const validateEmail = () => {
-
-  }
-
-  const validatePassword = () => {
-
-  }
 
   return (
     <div>
@@ -98,7 +80,7 @@ export default function Login() {
             item xs={8}
             direction='row' >
               
-          <Container  className={classes.mainContainer} component="main" maxWidth="xs">
+          <Container className={classes.mainContainer} component="main" maxWidth="xs">
             <CssBaseline />
             <Grid container justify='flex-end'>
                   <Grid item>
@@ -116,7 +98,7 @@ export default function Login() {
               <Typography className={classes.welcomeHeading} component="h2" variant="h4">
                 Welcome Back!
               </Typography>
-              <form className={classes.form} noValidate>
+              <form onSubmit= { handleSubmit } className={classes.form} noValidate>
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
                     <TextField
@@ -132,6 +114,10 @@ export default function Login() {
                       InputLabelProps = {{ 
                         classes: {root: classes.textFieldSelectLabel} 
                       }}
+                      value={ formValues.email }
+                      onChange = { handleChange }
+                      error = { formErrors.email }
+                      helperText = { formErrors.email || null }
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -154,6 +140,10 @@ export default function Login() {
                       InputLabelProps = {{ 
                         classes: {root: classes.textFieldSelectLabel} 
                       }}
+                      value={formValues.password}
+                      onChange= { handleChange }
+                      error = { formErrors.password }
+                      helperText= { formErrors.password || null}
                     />
                   </Grid>
                 </Grid>

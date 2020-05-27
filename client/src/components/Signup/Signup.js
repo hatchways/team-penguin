@@ -16,7 +16,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import UnauthenticatedSidebar from '../UnauthenticatedSidebar/UnauthenticatedSidebar';
 import useForm from '../../custom-hooks/useForm';
-import validate from '../Signup/validateSignup';
+import validate from './validateSignup';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -79,7 +79,6 @@ export default function SignUp() {
 
   function submit() {
     setSuccessAlertMsg(true);
-    console.log('submitted');
   }
 
   function closeAlertHandler() {
