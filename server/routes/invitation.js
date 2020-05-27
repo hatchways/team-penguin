@@ -44,22 +44,18 @@ router.post("/",
                     if (idx === validEmails.length - 1) {
                         //1 handle case where recipients include registered users and non registered
                         if (curUserEmails.length && nonCurUserEmails.length) {
-                            let newInvites = [];
-                            curUserEmails.forEach(to_user_email => {
-                                let newInvite = {to_user_email, from_user_email: fromEmail};
-                                newInvites.push(newInvite);
-                            });
+                          let newInvites = curUserEmails.map(to_user_emails => {return {to_user_email, from_user_email: fromEmail}});
                             Invitation.insertMany(newInvites, function(err) {
                                 if (err) return console.error(err);
                                 inviteRecipients = inviteRecipients.concat(curUserEmails);
                                 if (nonCurUserEmails.length) {
                                     sendEmail({from_email: fromEmail, 
-                                                to_email: nonCurUserEmails, 
+                                                to_email_ar: nonCurUserEmails, 
                                                 referral_id: referralId})
                                         .then(resp => {
-                                            if (resp[0].Response.statusCode === 202) {
+                                            if (resp[0].statusCode === 202) {
                                                 inviteRecipients.push(nonCurUserEmails[0]);
-                                                res.json({ type: "success", message: `Invitations were sent to ${inviteRecipients.join(', ')}`});
+                                                res.json({ type: "success", message: `Invitations were sent to ${nonCurUserEmails.join(', ')}`});
                                             }
                                         } )
                                         .catch(err => {
@@ -68,11 +64,7 @@ router.post("/",
                                 } 
                             })
                         } else if (curUserEmails.length) {
-                            let newInvites = [];
-                            curUserEmails.forEach(to_user_email => {
-                                let newInvite = {to_user_email, from_user_email: fromEmail};
-                                newInvites.push(newInvite);
-                            });
+                            let newInvites = curUserEmails.map(to_user_emails => {return {to_user_email, from_user_email: fromEmail}});
                             Invitation.insertMany(newInvites, function(err) {
                                 if (err) return console.error(err);
                                 inviteCreatedInternalMessage =  `Internal nvitations were sent to ${curUserEmails.join(', ')}.`
@@ -82,11 +74,11 @@ router.post("/",
                             })
                         } else if (nonCurUserEmails.length) {
                             sendEmail({from_email: fromEmail, 
-                                        to_email: nonCurUserEmails, 
+                                        to_email_ar: nonCurUserEmails, 
                                         referral_id: referralId})
                                 .then(resp => {
-                                    if (resp[0].Response.statusCode === 202) {
-                                        inviteCreatedEmailMessage = `An email invitation were sent to ${nonCurUserEmails[0]}`;
+                                    if (resp[0].statusCode === 202) {
+                                        inviteCreatedEmailMessage = `Email invitations were sent to ${nonCurUserEmails.join(', ')}`;
                                         if (!curUserEmails.length) {
                                             res.json({ type: "success", message: `${inviteCreatedEmailMessage}`});
                                         }
