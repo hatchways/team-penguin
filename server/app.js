@@ -1,12 +1,12 @@
 require('dotenv').config();
 const createError = require("http-errors");
 const express = require("express");
+const cors = require('cors')
 const { join } = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const mongoose = require('mongoose');
 const passport = require("passport");
-const cors = require("cors");
 
 const indexRouter = require("./routes/index");
 const pingRouter = require("./routes/ping");
@@ -26,8 +26,8 @@ const dbUrl= `mongodb+srv://${dbUsername}:${dbPwd}@world-messenger-cluster-lmsnn
 var app = express();
 
 app.use(logger("dev"));
-app.use(json());
 app.use(cors());
+app.use(json());
 app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(join(__dirname, "public")));
