@@ -46,7 +46,6 @@ router.post("/",
                         //1 handle case where recipients include registered users and non registered
                         if (curUserEmails.length && nonCurUserEmails.length) {
                             let newInvites = [];
-                            console.log('curUserEmails', curUserEmails)
                             curUserEmails.forEach(to_user_email => {
                                 let newInvite = {to_user_email, from_user_email: fromEmail};
                                 newInvites.push(newInvite);
@@ -59,7 +58,7 @@ router.post("/",
                                                 to_email: nonCurUserEmails[0], 
                                                 referral_id: referralId})
                                         .then(resp => {
-                                            if (resp[0].Response.statusCode === 202) {
+                                            if (resp[0].statusCode === 202) {
                                                 inviteRecipients.push(nonCurUserEmails[0]);
                                                 res.json({ type: "success", message: `Invitations were sent to ${inviteRecipients.join(', ')}`});
                                             }
@@ -72,9 +71,17 @@ router.post("/",
                                             to_email_ar: nonCurUserEmails,
                                             referral_id: referralId})
                                         .then(resp => {
-                                            if (resp.length === nonCurUserEmails.length) {
+                                            let sendSuccessCount = 0;
+                                            resp.forEach(sendResp => {
+                                                if (sendResp[0].statusCode === 202) {
+                                                    sendSuccessCount += 1;
+                                                }
+                                            })
+                                            if (sendSuccessCount === nonCurUserEmails.length) {
                                                 inviteRecipients = inviteRecipients.concat(nonCurUserEmails);
                                                 res.json({ type: "success", message: `Invitations were sent to ${inviteRecipients.join(', ')}`});
+                                            } else {
+                                                res.json({ type: "error", message: 'Some email invitations could not be send. Please check spelling.'});
                                             }
                                         })
                                         .catch(err => console.error('sendgrid email err', err))
@@ -113,11 +120,9 @@ router.post("/",
                                             to_email: nonCurUserEmails[0], 
                                             referral_id: referralId})
                                     .then(resp => {
-                                        if (resp[0].Response.statusCode === 202) {
+                                        if (resp[0].statusCode === 202) {
                                             inviteCreatedEmailMessage = `An email invitation were sent to ${nonCurUserEmails[0]}`;
-                                            if (!curUserEmails.length) {
-                                                res.json({ type: "success", message: `${inviteCreatedEmailMessage}`});
-                                            }
+                                            res.json({ type: "success", message: `${inviteCreatedEmailMessage}`});
                                         }
                                     } )
                                     .catch(err => {
@@ -128,11 +133,17 @@ router.post("/",
                                         to_email_ar: nonCurUserEmails,
                                         referral_id: referralId})
                                     .then(resp => {
-                                        if (resp.length === nonCurUserEmails.length) {
-                                            inviteCreatedEmailMessage = `Email invitations were sent to ${nonCurUserEmails.join(',')}`;
-                                            if (!curUserEmails.length) {
-                                                res.json({ type: "success", message: `${inviteCreatedEmailMessage}`});
+                                        let sendSuccessCount = 0;
+                                        resp.forEach(sendResp => {
+                                            if (sendResp[0].statusCode === 202) {
+                                                sendSuccessCount += 1;
                                             }
+                                        })
+                                        if (sendSuccessCount === nonCurUserEmails.length) {
+                                            inviteRecipients = inviteRecipients.concat(nonCurUserEmails);
+                                            res.json({ type: "success", message: `Invitations were sent to ${inviteRecipients.join(', ')}`});
+                                        } else {
+                                            res.json({ type: "error", message: 'Some email invitations could not be send. Please check spelling.'});
                                         }
                                     })
                                     .catch(err => console.error('sendgrid email err', err))
