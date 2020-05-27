@@ -4,7 +4,7 @@ const passport = require("passport");
 const validator = require("validator");
 const Invitation = require("../models/invitation");
 const User = require("../models/user");
-const {sendEmail} = require("../util/sendgrid_helpers")
+const {sendEmail, getSuccessCount} = require("../util/sendgrid_helpers")
 const router = express.Router();
 
 router.post("/",
@@ -42,9 +42,15 @@ router.post("/",
                         curUserEmails.push(to_email);
                     }
                     if (idx === validEmails.length - 1) {
-                        //1 handle case where recipients include registered users and non registered
+
+
+                      console.log('nonCurUserEmails', nonCurUserEmails)
+                      console.log('curUserEmails', curUserEmails)
+  
+
+                      //1 handle case where recipients include registered users and non registered
                         if (curUserEmails.length && nonCurUserEmails.length) {
-                          let newInvites = curUserEmails.map(to_user_emails => {return {to_user_email, from_user_email: fromEmail}});
+                          let newInvites = curUserEmails.map(to_user_email => {return {to_user_email, from_user_email: fromEmail}});
                             Invitation.insertMany(newInvites, function(err) {
                                 if (err) return console.error(err);
                                 inviteRecipients = inviteRecipients.concat(curUserEmails);
@@ -53,21 +59,22 @@ router.post("/",
                                                 to_email_ar: nonCurUserEmails, 
                                                 referral_id: referralId})
                                         .then(resp => {
-                                            if (resp[0].statusCode === 202) {
-                                                inviteRecipients.push(nonCurUserEmails[0]);
-                                                res.json({ type: "success", message: `Invitations were sent to ${nonCurUserEmails.join(', ')}`});
-                                            }
-                                        } )
+                                          if (getSuccessCount(resp) === nonCurUserEmails.length) {
+                                            inviteRecipients = inviteRecipients.concat(nonCurUserEmails);
+                                            inviteCreatedEmailMessage = `Invitations were sent to ${inviteRecipients.join(', ')}`;
+                                            res.json({ type: "success", message: `${inviteCreatedEmailMessage}`});
+                                          }
+                                        })
                                         .catch(err => {
                                             console.error('sendgrid email err', err)
                                         })
                                 } 
                             })
                         } else if (curUserEmails.length) {
-                            let newInvites = curUserEmails.map(to_user_emails => {return {to_user_email, from_user_email: fromEmail}});
+                            let newInvites = curUserEmails.map(to_user_email => {return {to_user_email, from_user_email: fromEmail}});
                             Invitation.insertMany(newInvites, function(err) {
                                 if (err) return console.error(err);
-                                inviteCreatedInternalMessage =  `Internal nvitations were sent to ${curUserEmails.join(', ')}.`
+                                inviteCreatedInternalMessage =  `Internal invitations were sent to ${curUserEmails.join(', ')}.`
                                 if (!nonCurUserEmails.length) {
                                     res.json({ type: "success", message: `Invitations were sent to ${curUserEmails.join(', ')}.`});
                                 }
@@ -77,11 +84,9 @@ router.post("/",
                                         to_email_ar: nonCurUserEmails, 
                                         referral_id: referralId})
                                 .then(resp => {
-                                    if (resp[0].statusCode === 202) {
-                                        inviteCreatedEmailMessage = `Email invitations were sent to ${nonCurUserEmails.join(', ')}`;
-                                        if (!curUserEmails.length) {
-                                            res.json({ type: "success", message: `${inviteCreatedEmailMessage}`});
-                                        }
+                                    if (getSuccessCount(resp) === nonCurUserEmails.length) {
+                                      inviteCreatedEmailMessage = `Email invitations were sent to ${nonCurUserEmails.join(', ')}`;
+                                      res.json({ type: "success", message: `${inviteCreatedEmailMessage}`});
                                     }
                                 } )
                                 .catch(err => {
