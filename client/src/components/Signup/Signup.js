@@ -14,6 +14,8 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
+import axios from 'axios';
+import {Redirect} from 'react-router-dom'; 
 import UnauthenticatedSidebar from '../UnauthenticatedSidebar/UnauthenticatedSidebar';
 import useForm from '../../custom-hooks/useForm';
 import validate from './validateSignup';
@@ -76,13 +78,23 @@ export default function SignUp() {
   const classes = useStyles();
   const { handleChange, handleSubmit, formValues, formErrors  } = useForm(submit, validate);
   const [successAlertMsg, setSuccessAlertMsg] = useState(false);
+  const [errorAlertMsg, setErrorAlertMsg] = useState(false);
+  const [redirect, setRedirect] = useState(null);
 
-  function submit() {
-    setSuccessAlertMsg(true);
+  async function submit() {
+    try{
+      const resp = await axios.post('http://localhost:3001/user/register', formValues);
+      setSuccessAlertMsg(true);
+      setRedirect('/login');
+    }
+    catch(err){
+      err.response.data.email ? setErrorAlertMsg(true) : console.error(err.response);
+    }
   }
 
   function closeAlertHandler() {
     setSuccessAlertMsg(false);
+    setErrorAlertMsg(false);
   }
 
   function Alert(props) {
@@ -90,6 +102,10 @@ export default function SignUp() {
   }
 
   return (
+    redirect
+    ?
+    <Redirect to={redirect} />
+    :
     <div>
         <Grid container>
             <Grid
@@ -218,9 +234,15 @@ export default function SignUp() {
                       Create
                     </Button>
                   </form>
-                  <Snackbar open = {successAlertMsg} autoHideDuration={5000} onClose = { closeAlertHandler }>
-                          <Alert>
-                            Sign Up Successful!
+                  <Snackbar open = {successAlertMsg} autoHideDuration={3000} onClose = { closeAlertHandler }>
+                          <Alert onClose={closeAlertHandler} severity="success">
+                            Sign Up Successful! Redirecting to Login Page
+                          </Alert>
+                  </Snackbar>
+
+                  <Snackbar open = {errorAlertMsg} autoHideDuration={5000} onClose = { closeAlertHandler }>
+                          <Alert onClose={closeAlertHandler} severity="error">
+                            Email already exists!
                           </Alert>
                   </Snackbar>
                 </div>
