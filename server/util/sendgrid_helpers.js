@@ -22,7 +22,7 @@ const sendEmailMultiple = ({from_email, to_email_ar, referral_id}) => {
   
     return msg;
   })
-  return Promises.all(messages.map(msg => sgMail.send(msg)));
+  return Promise.all(messages.map(msg => sgMail.send(msg)));
 }
 
 module.exports = {sendEmail, sendEmailMultiple};
