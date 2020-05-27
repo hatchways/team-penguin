@@ -117,59 +117,44 @@ export default function InvitationDialog() {
     setOpen(false);
   }
 
+  const emailsAreValid = (emailArray) => {
+    return emailArray.every(email => isEmailValid(email) === true);
+  }
+
   const handleSave = (ev) => {
     ev.preventDefault();
+
     //TODO
     let jwtToken = '';
+    let emailAr = getEmailAr(email);
 
     if (!email.length) {
       const emptyEmailError = 'Please enter an email.';
       setEmailErrorMessage(emptyEmailError);
+    } else if (!emailsAreValid(emailAr)) {
+      const invalidEmailError = 'Please enter a valid email.';
+      setEmailErrorMessage(invalidEmailError);
     } else {
-      let emailAr = getEmailAr(email);
-      let emailsAreValid = true;
-
-      if (emailAr.length === 1) {
-        emailsAreValid = isEmailValid(email);
-      } else {
-        for (let i = 0; i < emailAr.length; i++) {
-          if (!isEmailValid(emailAr[i])) {
-            emailsAreValid = false;
-            break;
-          }
-        }  
+      if (email.indexOf(',') === -1) {
+        emailAr = [email];
       }
 
-      if (!emailsAreValid) {
-        const invalidEmailError = 'Please enter a valid email.';
-        setEmailErrorMessage(invalidEmailError);
-      } else {
-        setEmailErrorMessage('Required');
-        let emailStr = email;
-        let toEmailAr = [];
-        if (emailStr.indexOf(',') > -1) {
-          toEmailAr = getEmailAr(email);
-        } else {
-          toEmailAr.push(email);
-        }
-
-        let body = {toEmailAr, referralId};
-        fetch(`http://localhost:3001/invitations/user/${fromEmail}`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'//,
-            //'Authorization': `Bearer ${jwtToken}`
-          },
-          body: JSON.stringify(body)
+      let body = {emailAr, to_user_id: `${testToUid}`};
+      fetch(`http://localhost:3001/invitations`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'//,
+          //'Authorization': `Bearer ${jwtToken}`
+        },
+        body: JSON.stringify(body)
+      })
+        .then(resp => {
+          setEmail('');
+          setOpen(false);
         })
-          .then(resp => {
-            setEmail('');
-            setOpen(false);
-          })
-          .catch(err => {
-            console.error(err)
-          })
-      }
+        .catch(err => {
+          console.error(err)
+        })
     }
   };
 
