@@ -6,7 +6,7 @@ const sendEmail = ({from_email, to_email, referral_id}) => {
     to: `${to_email}`,
     from: 'hatchways.tester99@gmail.com',
     subject: 'World messenger invitation',
-    text: `${from_email} has invited you to connect on World messenger! Here’s the link to it! localhost:3000/join/${referral_id}`,
+    text: `${from_email} has invited you to connect on World messenger! Here’s the link to it! http://localhost:3000/join/${referral_id}`,
   };
   return sgMail.send(msg);
 }
@@ -17,7 +17,7 @@ const sendEmailMultiple = ({from_email, to_email_ar, referral_id}) => {
       to: `${to_email}`,
       from: 'hatchways.tester99@gmail.com',
       subject: 'World messenger invitation',
-      text: `${from_email} has invited you to connect on World messenger! Here’s the link to it! localhost:3000/join/${referral_id}`,
+      text: `${from_email} has invited you to connect on World messenger! Here’s the link to it! http://localhost:3000/join/${referral_id}`,
     };
   
     return msg;
