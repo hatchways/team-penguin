@@ -91,5 +91,48 @@ router.get("/:fromEmail/referralId",
   }
 );
 
-module.exports = router;
+router.post('/register/referral', (req, res) => {
+  const {validationErrors, isRegistrationValid} = registrationValidator(req.body);
+  const {referralId} = req.body;
 
+  if(!isRegistrationValid) {
+    return res.status(400).json(validationErrors);
+  }
+
+  User.findOne({ email: req.body.email })
+      .then(user => {
+        if(user) {
+          return res.status(400).json({email: "Email you entered already exists"});
+        }
+        else {
+          const newUser = new User({
+            email: req.body.email,
+            password: req.body.password,
+            language: req.body.language
+          });
+          bcrypt.genSalt(12, (err, salt) => {
+            bcrypt.hash(newUser.password, salt, (err, hash) => {
+              if(err) throw err;
+              newUser.password = hash;
+              newUser.save()
+                .then(user => {
+                  User.findOne({referralId})
+                    .then(user => {
+                      let from_user_email = user.email;
+                      let invite = {from_user_email, to_user_email: email};
+                      Invitation.save(invite)
+                        .then(invitation => {
+                          res.status(201).json({type: 'success', message: `${user.email} was  registered. An invitation from ${from_user_email} was created.`})
+                        })
+                        .catch(err => console.error('New invitation could not be created.', err));
+                    })
+                    .catch(err => console.error('Invitation sender could not be found', err))
+                })
+                .catch(err => console.error(err));
+            });
+          });
+        }
+      });
+});
+
+module.exports = router;
