@@ -93,7 +93,8 @@ const DialogTitle = withStyles(dialogTitleStyles)((props) => {
 export default function InvitationDialog() {
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState('');
-  const [emailErrorMessage, setEmailErrorMessage] = useState('');
+  const [emailErrorMessage, setEmailErrorMessage] = useState('Required');
+  const [copyBtnErrorMessage, setCopyBtnErrorMessage] = useState('');
   const [submitError, setSubmitError] = useState('');
   const [referralUrl, setReferralUrl] = useState('');
   const classes = useStyles();
@@ -112,6 +113,7 @@ export default function InvitationDialog() {
     setEmailErrorMessage('');
     setSubmitError('');
     setReferralUrl('');
+    setCopyBtnErrorMessage('');
     setOpen(false);
   }
 
@@ -142,6 +144,7 @@ export default function InvitationDialog() {
         const invalidEmailError = 'Please enter a valid email.';
         setEmailErrorMessage(invalidEmailError);
       } else {
+        setEmailErrorMessage('Required');
         let emailStr = email;
         let toEmailAr = [];
         if (emailStr.indexOf(',') > -1) {
@@ -184,7 +187,7 @@ export default function InvitationDialog() {
           let url = referralUrl
           navigator.clipboard.writeText(url).then(function() {
           }, function() {
-            console.log('Cannot copy url to the clipboard. Please copy it manually.')
+            setCopyBtnErrorMessage('Cannot copy url to the clipboard. Please copy it manually.');
           });  
         }
       }
@@ -229,7 +232,7 @@ export default function InvitationDialog() {
         </DialogTitle>
         <DialogContent>
           <DialogContentText className={classes.dialogContentTextRoot}>
-            Send your friends an invite email.
+            Send your friends an invite email (comma-separated)
           </DialogContentText>
           <TextField
             autoFocus
@@ -239,7 +242,7 @@ export default function InvitationDialog() {
             variant="outlined"
             value={email}
             onChange={handleChange}
-            helperText="Separate multiple emails with a comma."
+            helperText={emailErrorMessage}
             InputLabelProps={{style: {fontSize: 18, color: '#000'}}}
             fullWidth
           />
@@ -258,6 +261,7 @@ export default function InvitationDialog() {
             }}
             variant="filled"
             fullWidth
+            helperText={copyBtnErrorMessage}
             InputLabelProps={{
               classes: {
                 root: classes.labelRoot,
