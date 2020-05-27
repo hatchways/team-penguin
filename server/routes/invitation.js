@@ -94,7 +94,7 @@ router.post("/",
                                 }
                             });
                         } else if (curUserEmails.length > 1) {
-                            let newInvites = [];
+let newInvites = curUserEmails.map(to_user_emails => {return {to_user_email, from_user_email: fromEmail}};
                             curUserEmails.forEach(to_user_email => {
                                 let newInvite = {to_user_email, from_user_email: fromEmail};
                                 newInvites.push(newInvite);
