@@ -74,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function SignUp() {
+export default function SignUp(props) {
   const classes = useStyles();
   const { handleChange, handleSubmit, formValues, formErrors  } = useForm(submit, validate);
   const [successAlertMsg, setSuccessAlertMsg] = useState(false);
@@ -82,13 +82,26 @@ export default function SignUp() {
   const [redirect, setRedirect] = useState(null);
 
   async function submit() {
-    try{
-      const resp = await axios.post('http://localhost:3001/user/register', formValues);
-      setSuccessAlertMsg(true);
-      setRedirect('/login');
+    if (!props.match.params.referralId) {
+      try{
+        const resp = await axios.post('http://localhost:3001/user/register', formValues);
+        setSuccessAlertMsg(true);
+        setRedirect('/login');
+      }
+      catch(err){
+        err.response.data.email ? setErrorAlertMsg(true) : console.error(err.response);
+      }  
     }
-    catch(err){
-      err.response.data.email ? setErrorAlertMsg(true) : console.error(err.response);
+    if (props.match.params.referralId) {
+      const {referralId} = props.match.params;
+      try{
+        const resp = await axios.post('http://localhost:3001/user/register/referral', {...formValues, referralId});
+        setSuccessAlertMsg(true);
+        setRedirect('/login');
+      }
+      catch(err){
+        err.response.data.email ? setErrorAlertMsg(true) : console.error(err.response);
+      }
     }
   }
 
