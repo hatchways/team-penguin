@@ -97,7 +97,7 @@ router.post("/user/:fromEmail",
 
 // Returns pending invitations that were sent to the given user
 router.get("/user/:id",
-    passport.authenticate('jwt', { session: false }),
+    //passport.authenticate('jwt', { session: false }),
     function(req, res, next) {
         const {id} = req.params;
         var objId = mongoose.Types.ObjectId;
@@ -119,30 +119,22 @@ router.get("/user/:id",
 );
 
 // Returns contacts that the current user accepted invitations from
-router.get("/user/:id/contacts",
-    passport.authenticate('jwt', { session: false }),
+router.get("/user/:to_email/contacts",
+    //passport.authenticate('jwt', { session: false }),
     function(req, res, next) {
-        const {id} = req.params;
-        var objId = mongoose.Types.ObjectId;
+        const {to_email} = req.params;
 
-        Invitation.aggregate([
-            { $match: {"to_user": new objId(id), "approved": true } },
-            { $lookup: {
-                from: "users",
-                localField: "from_user",
-                foreignField: "_id",
-                as: "user_data"
-                } 
-        }])
-            .exec(function (err, invitations) {
-                if (err) {
-                    return handleError(err);
-                } 
-                if (invitations && invitations.length) {
-                    let contacts = invitations.map(invite => { return invite.user_data[0]})
-                    res.json({ type: "success", contacts})
-                }
-            })
+        Invitation.find({"to_user_email": to_email, "approved": true },
+          function(err, invitations) {
+            if (err) return console.error('Contacts could not be retrieved.', err);
+            if (invitations && invitations.length) {
+              let contacts = invitations.map(invite => invite.from_user_email);
+              res.status(201).json({type: 'success', contacts});
+            } else {
+              res.status(201).json({type: 'success', message: 'No contacts were found.', contacts: []})
+            }
+          }
+        )
     }
 );
 

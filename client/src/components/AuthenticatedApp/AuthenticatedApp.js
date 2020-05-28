@@ -10,6 +10,7 @@ import {theme} from "../../themes/theme";
 import Sidebar from '../Sidebar/Sidebar';
 import Chat from '../Chat/Chat.js';
 import { useAuth } from '../../context/auth-context';
+import "../../index.css";
 
 const messages = [
     {id: '0', body: 'test msg 1'},
@@ -19,20 +20,26 @@ const messages = [
 //selectedContact should probably be an array to handle group convos too
 const selectedContact = {username: 'test selected contact'};
 
+const divStyle = {
+  backgroundColor: 'rgba(0, 0, 0, 0.04)',
+  height: '100vh',
+}
+
 const AuthenticatedApp = () => {
     let {logout, user} = useAuth();
 
     return (
-        <div>
+        <div className="app-authenticated">
             <MuiThemeProvider theme={theme}>
                 <Grid container 
-                    spacing={3} direction='row'>
-                    <Grid item xs={4}>
+                    spacing={3} direction='row' 
+                    >
+                    <Grid item xs={4} style={divStyle}>
                         <Sidebar/>
                     </Grid>
 
                     <Grid item xs={8}>
-                        <Chat messages={messages} user={user} selectedContact={selectedContact} />
+                        {/* <Chat messages={messages} user={user} selectedContact={selectedContact} /> */}
                     </Grid>
                 </Grid>
             </MuiThemeProvider>
