@@ -9,7 +9,7 @@ const sleep = time => new Promise(resolve => setTimeout(resolve, time))
   //if not exists, update so status is error and user will be kicked back to login
 const getUser = () => sleep(1000).then(() => ({email: 'elmo'}))
 //comment following line to test authenticated
-//.then(() => null)
+.then(() => null)
 
 const AuthContext = React.createContext([{}, () => {}])
 function AuthProvider({children}) {
@@ -45,15 +45,15 @@ function AuthProvider({children}) {
   React.useEffect(() => {
     //if token exists set user email to '' 
     
-    const authToken = localStorage.getItem('authToken');
-    if(authToken){
-      setState({status: 'success', error: null, user: ''})
-      //(???) let the first api request from authenticated app handle the jwt validation
-    }
-    // getUser().then(
-    //   user => updateState({status: 'success', error: null, user: authToken ? '' : user}),
-    //   error => updateState({status: 'error', error: 'err', user: null}),
-    // )
+    // const authToken = localStorage.getItem('authToken');
+    // if(authToken){
+    //   setState({status: 'success', error: null, user: ''})
+    //   //(???) let the first api request from authenticated app handle the jwt validation
+    // }
+    getUser().then( //authToken ? '' : user}),
+      user => setState({status: 'success', error: null, user}),
+      error => setState({status: 'error', error: 'err', user: null}),
+    )
   }, [])
   let authState = {...state, logout, login}
   return (
