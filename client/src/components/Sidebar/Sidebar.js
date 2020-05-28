@@ -1,12 +1,11 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
-
 import Contacts from './Contacts/Contacts';
 
-const contacts = [];
-const selectedContact = {username: 'test selected contact'};
-
 const Sidebar = props => {
+  const contacts = [];
+  const selectedContact = {username: 'test selected contact'};
+
   return (
     <div>
       <h1>user avatar</h1>
