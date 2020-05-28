@@ -208,8 +208,7 @@ export default function InvitationDialog() {
         aria-labelledby="form-dialog-title"
         fullWidth
         maxWidth='sm'>
-
-        <IconButton aria-label="close" className={classes.closeButton} onClick={handleClose}>
+          <IconButton aria-label="close" className={classes.closeButton} onClick={handleClose}>
           <CloseIcon />
         </IconButton>
         <DialogTitle id="form-dialog-title" onClose={handleClose}>
