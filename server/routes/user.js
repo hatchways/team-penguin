@@ -122,6 +122,7 @@ router.post('/register/referral',
               newUser.save(function(err) {
                 if (err) return console.error('Invitation recipient could not be registered', err);
                 User.findOne({referral_id: mongoose.Types.ObjectId(referralId)},
+                  function(err, user) {
                     if (err) return console.error('Invitation sender could not be found', err)
                     if (user._id) {
                       let from_user_email = user.email;
