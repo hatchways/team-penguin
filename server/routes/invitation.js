@@ -97,7 +97,7 @@ router.post("/user/:fromEmail",
 
 // Returns pending invitations that were sent to the given user
 router.get("/user/:id",
-    passport.authenticate('jwt', { session: false }),
+    //passport.authenticate('jwt', { session: false }),
     function(req, res, next) {
         const {id} = req.params;
         var objId = mongoose.Types.ObjectId;
@@ -119,19 +119,19 @@ router.get("/user/:id",
 );
 
 // Returns contacts that the current user accepted invitations from
-router.get("/user/:id/contacts",
-    passport.authenticate('jwt', { session: false }),
+router.get("/user/:to_email/contacts",
+    //passport.authenticate('jwt', { session: false }),
     function(req, res, next) {
         const {id} = req.params;
         var objId = mongoose.Types.ObjectId;
 
         Invitation.aggregate([
-            { $match: {"to_user": new objId(id), "approved": true } },
+            { $match: {"to_user_email": to_email, "approved": true } },
             { $lookup: {
                 from: "users",
-                localField: "from_user",
-                foreignField: "_id",
-                as: "user_data"
+                localField: "from_user_email",
+                foreignField: "email",
+                as: "contacts_data"
                 } 
         }])
             .exec(function (err, invitations) {
@@ -139,7 +139,7 @@ router.get("/user/:id/contacts",
                     return handleError(err);
                 } 
                 if (invitations && invitations.length) {
-                    let contacts = invitations.map(invite => { return invite.user_data[0]})
+                    let contacts = invitations.map(invite => { return invite.contacts_data[0]})
                     res.json({ type: "success", contacts})
                 }
             })
