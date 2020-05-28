@@ -1,7 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert from '@material-ui/lab/Alert';
+
 
 const sleep = time => new Promise(resolve => setTimeout(resolve, time))
 
@@ -14,38 +13,30 @@ const getUser = () => sleep(1000).then(() => ({email: 'elmo'}))
 
 const AuthContext = React.createContext([{}, () => {}])
 function AuthProvider({children}) {
-  const [state, updateState] = React.useState({
+  const [state, setState] = React.useState({
     status: 'pending',
     error: null,
     user: null
   });
-  const [errorAlertMsg, setErrorAlertMsg] = React.useState('');
 
-  const closeAlertHandler = () => {
-    setErrorAlertMsg('');
-  }
-
-  const Alert = (props) => {
-    return <MuiAlert elevation={6} variant="filled" {...props} />;
-  }
 
   const logout = () => {
     localStorage.removeItem('authToken');
-    updateState({status: 'logged out', error: null, user: null})
+    setState({status: 'logged out', error: null, user: null})
   }
 
   const login = async(formValues) => {
     try {
       const res = await axios.post('http://localhost:3001/user/login', formValues);
       if(res.data.token) {
-        updateState({status:'success', error:null, user: formValues.email});
+        setState({status:'success', error:null, user: formValues.email});
         localStorage.setItem('authToken', res.data.token);
       }
     }
     catch(err) {
       err.response.data.validationError 
       ? 
-      updateState({status: 'error', error: err.response.data.validationError, user: null}) 
+      setState({status: 'error', error: err.response.data.validationError, user: null}) 
       : 
       console.error(err);
     }
@@ -53,12 +44,16 @@ function AuthProvider({children}) {
 
   React.useEffect(() => {
     //if token exists set user email to '' 
-    //(???) let the first api request from authenticated app handle the jwt validation
+    
     const authToken = localStorage.getItem('authToken');
-    getUser().then(
-      user => updateState({status: 'success', error: null, user: authToken ? '' : user}),
-      error => updateState({status: 'error', error: 'err', user: null}),
-    )
+    if(authToken){
+      setState({status: 'success', error: null, user: ''})
+      //(???) let the first api request from authenticated app handle the jwt validation
+    }
+    // getUser().then(
+    //   user => updateState({status: 'success', error: null, user: authToken ? '' : user}),
+    //   error => updateState({status: 'error', error: 'err', user: null}),
+    // )
   }, [])
   let authState = {...state, logout, login}
   return (
@@ -66,17 +61,12 @@ function AuthProvider({children}) {
       {state.status === 'pending' ? (
         'Loading...'
       ) : state.status === 'error' ? (
-        // <div>
-        //   Oh no
-        //   <div>
-        //     <pre>{state.error}</pre>
-        //   </div>
-        // </div>
-        <Snackbar open = {state.error.length !== 0} autoHideDuration={5000} onClose = { closeAlertHandler }>
-          <Alert onClose={closeAlertHandler} severity="error">
-            {state.error}
-          </Alert>
-        </Snackbar>
+        <div>
+          Oh no
+          <div>
+            <pre>{state.error}</pre>
+          </div>
+        </div>
       ) : state.status === 'logged out' ? (
         children
       ) : (
