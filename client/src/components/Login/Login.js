@@ -66,10 +66,12 @@ export default function Login() {
   const { handleChange, handleSubmit, formValues, formErrors } = useForm(submit, validate);
   const [errorAlertMsg, setErrorAlertMsg] = useState('');
   const {login, status, error, user} = useAuth();
-  console.log(useAuth());
+  //console.log(useAuth());
+  console.log('status', status)
+  console.log('error', error)
   function submit() {
     login(formValues);
-    console.log(login());
+    //console.log(login());
   }
 
   function closeAlertHandler() {
