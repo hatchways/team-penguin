@@ -14,6 +14,7 @@ import validate from './validateLogin';
 import axios from 'axios';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
+import { useAuth } from '../../context/auth-context';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -64,18 +65,9 @@ export default function Login() {
   const classes = useStyles();
   const { handleChange, handleSubmit, formValues, formErrors } = useForm(submit, validate);
   const [errorAlertMsg, setErrorAlertMsg] = useState('');
-
-  async function submit() {
-    //will be logged into authenticated page after integration
-    try {
-      const res = await axios.post('http://localhost:3001/user/login', formValues);
-      if(res.data.token) {
-        localStorage.setItem('authToken', res.data.token);
-      }
-    }
-    catch(err) {
-      err.response.data.validationError ? setErrorAlertMsg(err.response.data.validationError) : console.error(err);
-    }
+  const {login} = useAuth();
+  function submit() {
+    login(formValues);
   }
 
   function closeAlertHandler() {
