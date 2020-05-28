@@ -78,7 +78,7 @@ export default function SignUp(props) {
   const classes = useStyles();
   const { handleChange, handleSubmit, formValues, formErrors  } = useForm(submit, validate);
   const [successAlertMsg, setSuccessAlertMsg] = useState(false);
-  const [errorAlertMsg, setErrorAlertMsg] = useState(false);
+  const [errorAlertMsg, setErrorAlertMsg] = useState('');
   const [redirect, setRedirect] = useState(null);
 
   async function submit() {
@@ -107,7 +107,7 @@ export default function SignUp(props) {
 
   function closeAlertHandler() {
     setSuccessAlertMsg(false);
-    setErrorAlertMsg(false);
+    setErrorAlertMsg('');
   }
 
   function Alert(props) {
@@ -253,9 +253,9 @@ export default function SignUp(props) {
                           </Alert>
                   </Snackbar>
 
-                  <Snackbar open = {errorAlertMsg} autoHideDuration={5000} onClose = { closeAlertHandler }>
+                  <Snackbar open = {errorAlertMsg.length !== 0} autoHideDuration={5000} onClose = { closeAlertHandler }>
                           <Alert onClose={closeAlertHandler} severity="error">
-                            Email already exists!
+                            {errorAlertMsg}
                           </Alert>
                   </Snackbar>
                 </div>
