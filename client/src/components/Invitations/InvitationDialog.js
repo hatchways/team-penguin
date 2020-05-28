@@ -18,7 +18,7 @@ import {isEmailValid} from '../../util/helpers';
 
 //REMOVE
 const fromEmail = 'y@y.com';
-const referralId = 'test-97829';
+const referralId = '5ecf0a6c76a17d41288e2aa6';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -139,8 +139,8 @@ export default function InvitationDialog() {
         emailAr = [email];
       }
 
-      let body = {emailAr, to_user_id: `${testToUid}`};
-      fetch(`http://localhost:3001/invitations`, {
+      let body = {toEmailAr, referralId};
+      fetch(`http://localhost:3001/invitations/user/${from_email}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'//,
