@@ -17,7 +17,7 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 import {isEmailValid} from '../../util/helpers';
 
 //REMOVE
-const fromEmail = 'y@y.com';
+const from_email = '2@2.com';
 const referralId = '5ecf0a6c76a17d41288e2aa6';
 
 const useStyles = makeStyles((theme) => ({
@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
       zIndex: '2000',
       position: 'absolute',
       right: theme.spacing(4),
-      top: theme.spacing(32),
+      top: theme.spacing(32.5),
     }
   }));
 
@@ -126,17 +126,17 @@ export default function InvitationDialog() {
 
     //TODO
     let jwtToken = '';
-    let emailAr = getEmailAr(email);
+    let toEmailAr = getEmailAr(email);
 
     if (!email.length) {
       const emptyEmailError = 'Please enter an email.';
       setEmailErrorMessage(emptyEmailError);
-    } else if (!emailsAreValid(emailAr)) {
+    } else if (!emailsAreValid(toEmailAr)) {
       const invalidEmailError = 'Please enter a valid email.';
       setEmailErrorMessage(invalidEmailError);
     } else {
       if (email.indexOf(',') === -1) {
-        emailAr = [email];
+        toEmailAr = [email];
       }
 
       let body = {toEmailAr, referralId};
@@ -181,7 +181,7 @@ export default function InvitationDialog() {
 
   useEffect(() => {
     //TODO get referralid (objectId) based on current logged in user email
-    fetch(`http://localhost:3001/user/${fromEmail}/referralId`, {
+    fetch(`http://localhost:3001/user/${from_email}/referralId`, {
       method: 'GET',
       headers: {
         //'Authorization': `Bearer ${jwtToken}`
