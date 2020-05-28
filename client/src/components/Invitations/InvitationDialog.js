@@ -17,8 +17,8 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 import {isEmailValid} from '../../util/helpers';
 
 //REMOVE
-const from_email = '2@2.com';
-const referralId = '5ecf0a6c76a17d41288e2aa6';
+const from_email = 'sender@test.com';
+//const referralId = '5ecf0a6c76a17d41288e2aa6';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -96,6 +96,7 @@ export default function InvitationDialog() {
   const [emailErrorMessage, setEmailErrorMessage] = useState('Required');
   const [copyBtnErrorMessage, setCopyBtnErrorMessage] = useState('');
   const [submitError, setSubmitError] = useState('');
+  const [referralId, setReferralId] = useState('');
   const [referralUrl, setReferralUrl] = useState('');
   const classes = useStyles();
 
@@ -117,8 +118,19 @@ export default function InvitationDialog() {
     setOpen(false);
   }
 
-  const emailsAreValid = (emailArray) => {
-    return emailArray.every(email => isEmailValid(email) === true);
+  const handleClickCopyBtn = (ev) => {
+    ev.preventDefault();
+    navigator.permissions.query({name: "clipboard-write"}).then(result => {
+      if (result.state == "granted" || result.state == "prompt") {
+        if (navigator.clipboard) {
+          let url = referralUrl
+          navigator.clipboard.writeText(url).then(function() {
+          }, function() {
+            setCopyBtnErrorMessage('Cannot copy url to the clipboard. Please copy it manually.');
+          });  
+        }
+      }
+    });
   }
 
   const handleSave = (ev) => {
@@ -158,25 +170,18 @@ export default function InvitationDialog() {
     }
   };
 
+  const emailsAreValid = (emailArray) => {
+    return emailArray.every(email => isEmailValid(email) === true);
+  }
+
   const getEmailAr = (emailStr) => {
     let emailAr = emailStr.split(',');
     emailAr = emailAr.map(email => email.trim());
     return emailAr;
   }
 
-  const handleClickCopyBtn = (ev) => {
-    ev.preventDefault();
-    navigator.permissions.query({name: "clipboard-write"}).then(result => {
-      if (result.state == "granted" || result.state == "prompt") {
-        if (navigator.clipboard) {
-          let url = referralUrl
-          navigator.clipboard.writeText(url).then(function() {
-          }, function() {
-            setCopyBtnErrorMessage('Cannot copy url to the clipboard. Please copy it manually.');
-          });  
-        }
-      }
-    });
+  const getReferralUrl = () => {
+    return `http://localhost:3001/join/${referralId}`
   }
 
   useEffect(() => {
@@ -190,7 +195,8 @@ export default function InvitationDialog() {
       .then(resp => resp.json())
       .then(json => {
           if (json.referralId) {
-            setReferralUrl(`http://localhost:3001/join/${json.referralId}`);
+            setReferralId(json.referralId);
+            //setReferralUrl(`http://localhost:3001/join/${json.referralId}`);
           }
       })
       .catch(err => {
@@ -239,7 +245,7 @@ export default function InvitationDialog() {
           <TextField
             margin="dense"
             id="referral-url"
-            value={referralUrl}
+            value={getReferralUrl()}
             InputProps={{
               readOnly: true,
             }}
