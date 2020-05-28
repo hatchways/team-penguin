@@ -7,10 +7,11 @@ const User = require("../models/user");
 const {sendEmail, getSuccessCount} = require("../util/sendgrid_helpers")
 const router = express.Router();
 
-router.post("/",
+router.post("/user/:fromEmail",
     //passport.authenticate('jwt', { session: false }),
     function(req, res, next) {
-        const {toEmailAr, fromEmail, referralId} = req.body;
+        const {toEmailAr, referralId} = req.body;
+        const {fromEmail} = req.params;
         let invalidEmails = [];
         let validEmails = [];
         let curUserEmails = [];
@@ -42,12 +43,6 @@ router.post("/",
                         curUserEmails.push(to_email);
                     }
                     if (idx === validEmails.length - 1) {
-
-
-                      console.log('nonCurUserEmails', nonCurUserEmails)
-                      console.log('curUserEmails', curUserEmails)
-  
-
                       //1 handle case where recipients include registered users and non registered
                         if (curUserEmails.length && nonCurUserEmails.length) {
                           let newInvites = curUserEmails.map(to_user_email => {return {to_user_email, from_user_email: fromEmail}});
@@ -108,17 +103,17 @@ router.get("/user/:id",
         var objId = mongoose.Types.ObjectId;
 
         Invitation.find({"to_user": new objId(id), "approved": false, "rejected": {$ne: true}})
-            .sort({createdOn: 1})
-            .exec(function (err, invitations) {
-                if (err) {
-                    return handleError(err);
-                }
-                if (invitations && invitations.length) {
-                    res.json({ type: "success", invitations})
-                } else {
-                    res.json({ type: "success", message: "There are no pending invitations"})
-                }
+          .sort({createdOn: 1})
+          .exec(function (err, invitations) {
+            if (err) {
+                return handleError(err);
             }
+            if (invitations && invitations.length) {
+                res.json({ type: "success", invitations})
+            } else {
+                res.json({ type: "success", message: "There are no pending invitations"})
+            }
+          }
         )
     }
 );

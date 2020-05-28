@@ -19,6 +19,7 @@ const UnauthenticatedApp = () => {
           <Route exact path="/" component={Signup} />
           <Route exact path="/signup" component={Signup} />
           <Route exact path="/login" component={Login} />
+          <Route path="/join/:referralId" component={Signup} />
         </Switch>
       </Router>
     </MuiThemeProvider>
