@@ -16,12 +16,17 @@ const Contacts = props => {
  const email = localStorage.getItem('email'); 
  const loadFriends = async() => {
    const res = await axios.get(`http://localhost:3001/invitations/user/${email}/contacts`);
-   setFriends([...res.data.contacts])
+   if(res.data.contacts.length !== 0){
+    setFriends([...res.data.contacts])
+   }
+   else {
+     setFriends([]);
+   }
  }
 
  useEffect(() => {
    loadFriends()
- }, []);
+ }, [friends]);
 
 
   const requests = [
