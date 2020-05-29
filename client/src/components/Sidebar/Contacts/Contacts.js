@@ -2,7 +2,7 @@ import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-
+import axios from 'axios';
 import Friends from './Friends';
 import Requests from './Requests';
 import Pending from './Pending';
@@ -12,12 +12,14 @@ const Contacts = props => {
   const toggleDisplay = (event, setting) => {
     setDisplay(setting);
   }
+ const [friends, setFriends] = React.useState([]);
 
-  const friends = [
-    {username: 'test friend1'},
-    {username: 'test friend2'},
-    {username: 'test friend3'}
-  ];
+ const loadFriends = async() => {
+   const res = await axios.get(`http://localhost:3001/invitations/user/rjtbansal@gmail.com/contacts`);
+   console.log(res.data.contacts);
+   setFriends([...res.data.contacts])
+ }
+ loadFriends();
   const requests = [
     {username: 'test request1'},
     {username: 'test request2'},
@@ -28,7 +30,7 @@ const Contacts = props => {
     {username: 'test pending2'},
     {username: 'test pending3'}
   ];
-
+  
   //const friends = props.contacts.filter(curr => curr.status === 3);
   //const requests = props.contacts.filter(curr => curr.status === 2);
   //const pending = props.contacts.filter(curr => curr.status === 1);
