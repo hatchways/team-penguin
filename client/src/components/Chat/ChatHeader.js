@@ -4,6 +4,7 @@ import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import Switch from '@material-ui/core/Switch';
+import Icon from '@material-ui/core/Icon';
 import { deepOrange, deepPurple } from '@material-ui/core/colors';
 
 const useStyles = makeStyles((theme) => ({
@@ -105,6 +106,9 @@ const ChatHeader = props => {
                 </Grid>
               </Grid>
             </Typography>
+          </Grid>
+          <Grid item>
+            <Icon>more_horiz</Icon>
           </Grid>
         </React.Fragment>
       )}
