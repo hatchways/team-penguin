@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -16,10 +16,14 @@ const Contacts = props => {
  const email = localStorage.getItem('email'); 
  const loadFriends = async() => {
    const res = await axios.get(`http://localhost:3001/invitations/user/${email}/contacts`);
-   console.log(res.data.contacts);
    setFriends([...res.data.contacts])
  }
- loadFriends();
+
+ useEffect(() => {
+   loadFriends()
+ }, []);
+
+
   const requests = [
     {username: 'test request1'},
     {username: 'test request2'},

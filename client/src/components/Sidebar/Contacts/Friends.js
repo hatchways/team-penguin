@@ -41,7 +41,7 @@ const Friends = props => {
   //       )}
   //     </Grid>*/}
       <Grid item>
-        <Typography variant='h5'>{curr}</Typography>
+        <Typography variant='h5'>{curr.split('@')[0]}</Typography>
       </Grid>
     </Grid>
   ));
