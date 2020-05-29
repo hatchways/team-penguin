@@ -33,11 +33,26 @@ server.on("error", onError);
 server.on("listening", onListening);
 
 io.on('connection', (socket) => {
-  socket.emit('news', { hello: 'world' });
+  console.log('connected on default namespace')
+  //socket.emit('news', { hello: 'world' });
+  //socket.on('my other event', (data) => {
+  //  console.log(data);
+  //});
+});
+
+// the following two will emit to all the sockets connected to `/`
+io.sockets.emit('hi', 'everyone');
+io.emit('hi', 'everyone'); // short form
+
+const nsp = io.of('/chat');
+nsp.on('connection', function(socket){
+  console.log('chat: someone connected');
+  socket.emit('chat', { hello: 'world chat' });
   socket.on('my other event', (data) => {
     console.log(data);
   });
 });
+nsp.emit('hi', 'everyone!');
 
 /**
  * Normalize a port into a number, string, or false.
