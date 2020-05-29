@@ -13,9 +13,9 @@ const Contacts = props => {
     setDisplay(setting);
   }
  const [friends, setFriends] = React.useState([]);
-
+ const email = localStorage.getItem('email'); 
  const loadFriends = async() => {
-   const res = await axios.get(`http://localhost:3001/invitations/user/rjtbansal@gmail.com/contacts`);
+   const res = await axios.get(`http://localhost:3001/invitations/user/${email}/contacts`);
    console.log(res.data.contacts);
    setFriends([...res.data.contacts])
  }
