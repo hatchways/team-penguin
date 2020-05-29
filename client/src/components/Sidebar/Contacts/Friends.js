@@ -20,7 +20,7 @@ const Friends = props => {
   //     //   ? props.classes.friend + ' ' + props.classes.selected 
   //     //   : props.classes.friend
   //     // }
-      key={curr.username}
+      key={curr}
       onClick={() => {select(curr.index)}}
     >
   {/* 
@@ -41,7 +41,7 @@ const Friends = props => {
   //       )}
   //     </Grid>*/}
       <Grid item>
-        <Typography variant='h5'>{curr.username}</Typography>
+        <Typography variant='h5'>{curr}</Typography>
       </Grid>
     </Grid>
   ));
