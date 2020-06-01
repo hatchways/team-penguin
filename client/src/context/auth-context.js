@@ -11,6 +11,10 @@ import axios from 'axios';
 // //comment following line to test authenticated
 // .then(() => null)
 
+/**
+ * createContext creates an object with 2 components: a Provider and Consumer
+ *  to pass props within a Context, you must use both the Provider and the Consumer component.
+ */
 const AuthContext = React.createContext([{}, () => {}]);
 function AuthProvider({children}) {
   const [state, setState] = React.useState({
@@ -26,6 +30,10 @@ function AuthProvider({children}) {
       const userEmail = localStorage.getItem('email');
       setState({status: 'logged in', error: null, user: userEmail})
     }
+    else {
+      setState({status: 'logged out', error: null, user: null})
+    }
+    console.log(state);
   }
 
   const logout = () => {
@@ -52,18 +60,23 @@ function AuthProvider({children}) {
     }
   }
 
-  //not sure what this useEffect will be doing here
-  //getUser() logic is now checking for tokens and updating state accordingly
+  //complains about dependency missing but would lead to infinite: Should tokens and email be tracked via states and add them here?
   React.useEffect(() => {
-    getUser().then(
-      user => setState({status: 'success', error: null, user}),
-      error => setState({status: 'error', error, user: null}),
-    )
+    // getUser().then(
+    //   user => setState({status: 'success', error: null, user}),
+    //   error => setState({status: 'error', error, user: null}),
+    // )
+    getUser();
   }, []);
   
   let authState = {...state, logout, login}
   //what exactly is the provider doing here?
   //can we just return above authState to login to identify errors, status and user and act accordingly?
+
+  /**
+   * Provider component is the place where you'd pass a prop called value to, 
+   * which you can subsequently consume within the Consumer component
+   */
   return (
     <AuthContext.Provider value={authState}>
       {state.status === 'pending' ? (
