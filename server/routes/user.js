@@ -66,7 +66,8 @@ router.post('/login', (req, res) => {
                   (err, token) => {
                     res.json({
                       success: `${user.email} is logged in successfully`,
-                      token: `Bearer ${token}`
+                      token: `Bearer ${token}`,
+                      email: user.email
                     });
                   }
                 );

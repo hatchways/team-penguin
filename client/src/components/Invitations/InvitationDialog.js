@@ -17,7 +17,7 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 import {isEmailValid} from '../../util/helpers';
 
 //REMOVE
-const from_email = 'sender@test.com';
+const from_email = 'test1@t.com';
 //const referralId = '5ecf0a6c76a17d41288e2aa6';
 
 const useStyles = makeStyles((theme) => ({

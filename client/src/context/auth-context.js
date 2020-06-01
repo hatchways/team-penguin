@@ -30,6 +30,7 @@ function AuthProvider({children}) {
       if(res.data.token) {
         setState({status:'success', error:null, user: formValues.email});
         localStorage.setItem('authToken', res.data.token);
+        localStorage.setItem('email', res.data.email);
       }
     }
     catch(err) {

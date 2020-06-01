@@ -89,7 +89,7 @@ export default function SignUp(props) {
         setRedirect('/login');
       }
       catch(err){
-        err.response.data.email ? setErrorAlertMsg(true) : console.error(err.response);
+        err.response.data.email ? setErrorAlertMsg(err.response.data.email) : console.error(err.response);
       }  
     }
     if (props.match.params.referralId) {
@@ -100,7 +100,7 @@ export default function SignUp(props) {
         setRedirect('/login');
       }
       catch(err){
-        err.response.data.email ? setErrorAlertMsg(true) : console.error(err.response);
+        err.response.data.email ? setErrorAlertMsg(err.response.data.email) : console.error(err.response);
       }
     }
   }
