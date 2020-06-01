@@ -21,6 +21,7 @@ router.post("/user/:fromEmail",
         let inviteRecipients = [];
         let inviteCreatedInternalMessage = '';
         let inviteCreatedEmailMessage = '';
+        let inviteNotCreatedEmailMessage = '';
 
         if (toEmailAr.length === 0) {
             return res.status(400).json({error: 'No email addresses for invitation recipients were provided.'})
@@ -47,31 +48,57 @@ router.post("/user/:fromEmail",
                     if (idx === validEmails.length - 1) {
                       //1 handle case where recipients include registered users and non registered
                         if (curUserEmails.length && nonCurUserEmails.length) {
-//TODO add query to verify requested email does not exist
-
-
-
-
-                          let newInvites = curUserEmails.map(to_user_email => {return {to_user_email, from_user_email: fromEmail}});
-                            Invitation.insertMany(newInvites, function(err) {
-                                if (err) return console.error(err);
-                                inviteRecipients = inviteRecipients.concat(curUserEmails);
-                                if (nonCurUserEmails.length) {
+                          //verify requested invite does not exist
+                          Invitation.find({from_user_email: fromEmail}, 'to_user_email', function(err, invitations) {
+                            if (err) console.error('Could not find invitations during duplicate invites check', err);
+                            if (invitations && invitations.length) {
+                              invitations.forEach(invite => {
+                                if (dupeInviteRecipients.indexOf(invite.to_user_email) === -1) {
+                                  dupeInviteRecipients.push(invite.to_user_email);
+                                }
+                              });
+                              nonDupeInviteRecipients = curUserEmails.filter(email =>   dupeInviteRecipients.indexOf(email) === -1);
+                              if (nonDupeInviteRecipients.length) {
+                                let newInvites = nonDupeInviteRecipients.map(to_user_email => {return {to_user_email, from_user_email: fromEmail}});
+                                Invitation.insertMany(newInvites, function(err) {
+                                  if (err) return console.error(err);
+                                  inviteRecipients = inviteRecipients.concat(curUserEmails);
+                                  if (nonCurUserEmails.length) {
                                     sendEmail({from_email: fromEmail, 
                                                 to_email_ar: nonCurUserEmails, 
                                                 referral_id: referralId})
-                                        .then(resp => {
-                                          if (getSuccessCount(resp) === nonCurUserEmails.length) {
-                                            inviteRecipients = inviteRecipients.concat(nonCurUserEmails);
-                                            inviteCreatedEmailMessage = `Invitations were sent to ${inviteRecipients.join(', ')}`;
-                                            res.json({ type: "success", message: `${inviteCreatedEmailMessage}`});
-                                          }
-                                        })
-                                        .catch(err => {
-                                            console.error('sendgrid email err', err)
-                                        })
-                                } 
-                            })
+                                      .then(resp => {
+                                        if (getSuccessCount(resp) === nonCurUserEmails.length) {
+                                          inviteRecipients = inviteRecipients.concat(nonCurUserEmails);
+                                          inviteCreatedEmailMessage = `Invitations were sent to ${inviteRecipients.join(', ')}`;
+                                          res.json({ type: "success", message: `${inviteCreatedEmailMessage}`});
+                                        }
+                                      })
+                                      .catch(err => {
+                                          console.error('sendgrid email err', err)
+                                      })
+                                  }
+                                })
+                              } else {
+                                //all registered invite recipients already received invites earlier
+                                if (nonCurUserEmails.length) {
+                                  sendEmail({from_email: fromEmail, 
+                                              to_email_ar: nonCurUserEmails, 
+                                              referral_id: referralId})
+                                    .then(resp => {
+                                      if (getSuccessCount(resp) === nonCurUserEmails.length) {
+                                        inviteRecipients = inviteRecipients.concat(nonCurUserEmails);
+                                        inviteNotCreatedEmailMessage = `Invitations were not sent to ${dupeInviteRecipients.join(', ')} because the invitation was already sent, pending, or rejected.`;
+                                        inviteCreatedEmailMessage = `Invitations were sent to ${inviteRecipients.join(', ')}`;
+                                        res.json({ type: "success", message: `${inviteCreatedEmailMessage}. ${inviteNotCreatedEmailMessage}`});
+                                      }
+                                    })
+                                    .catch(err => {
+                                        console.error('sendgrid email err', err)
+                                    })
+                                }
+                              }
+                            
                         } else if (curUserEmails.length) {
 //TODO verify that requested email does not exist
                           Invitation.find({from_user_email: fromEmail}, 'to_user_email', function(err, invitations) {
@@ -96,18 +123,18 @@ router.post("/user/:fromEmail",
                             }
                           })
                         } else if (nonCurUserEmails.length) {
-                            sendEmail({from_email: fromEmail, 
-                                        to_email_ar: nonCurUserEmails, 
-                                        referral_id: referralId})
-                                .then(resp => {
-                                    if (getSuccessCount(resp) === nonCurUserEmails.length) {
-                                      inviteCreatedEmailMessage = `Email invitations were sent to ${nonCurUserEmails.join(', ')}`;
-                                      res.json({ type: "success", message: `${inviteCreatedEmailMessage}`});
-                                    }
-                                } )
-                                .catch(err => {
-                                    console.error('sendgrid email err', err)
-                                })
+                          sendEmail({from_email: fromEmail,
+                                    to_email_ar: nonCurUserEmails, 
+                                    referral_id: referralId})
+                            .then(resp => {
+                              if (getSuccessCount(resp) === nonCurUserEmails.length) {
+                                inviteCreatedEmailMessage = `Email invitations were sent to ${nonCurUserEmails.join(', ')}`;
+                                res.json({ type: "success", message: `${inviteCreatedEmailMessage}`});
+                              }
+                            })
+                            .catch(err => {
+                              console.error('sendgrid email err', err)
+                            })
                         }
                     }
                 })
