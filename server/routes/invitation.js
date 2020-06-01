@@ -173,22 +173,28 @@ router.get("/user/:id",
 
 // Returns contacts that the current user accepted invitations from
 router.get("/user/:to_email/contacts",
-    //passport.authenticate('jwt', { session: false }),
-    function(req, res, next) {
-        const {to_email} = req.params;
+  //passport.authenticate('jwt', { session: false }),
+  function(req, res, next) {
+    const {to_email} = req.params;
 
-        Invitation.find({"to_user_email": to_email, "approved": true },
-          function(err, invitations) {
-            if (err) return console.error('Contacts could not be retrieved.', err);
-            if (invitations && invitations.length) {
-              let contacts = invitations.map(invite => invite.from_user_email);
-              res.status(201).json({type: 'success', contacts});
-            } else {
-              res.status(201).json({type: 'success', message: 'No contacts were found.', contacts: []})
-            }
-          }
-        )
-    }
+    Invitation.find({
+      $or: [
+        {"to_user_email": to_email, "approved": true },
+        {"from_user_email": to_email, "approved": true },
+      ]
+    }, function(err, invitations) {
+      if (err) return console.error('Contacts could not be retrieved.', err);
+      if (invitations && invitations.length) {
+        console.log('invitations', invitations)
+        let contacts = invitations.map(invite => {
+          return invite.to_user_email === to_email ? invite.from_user_email: invite.to_user_email;
+        });
+        res.status(201).json({type: 'success', contacts});
+      } else {
+        res.status(201).json({type: 'success', message: 'No contacts were found.', contacts: []})
+      }
+    });
+  }
 );
 
 module.exports = router;
