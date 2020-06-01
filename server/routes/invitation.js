@@ -54,7 +54,7 @@ router.post("/user/:fromEmail",
                             //line 54 missing closing brace
                             if (invitations && invitations.length) {
                               invitations.forEach(invite => {
-                                if (dupeInviteRecipients.indexOf(invite.to_user_email) === -1) {
+                                if (dupeInviteRecipients.indexOf(invite.to_user_email) === -1 && curUserEmails.indexOf(invite.to_user_email) > -1) {
                                   dupeInviteRecipients.push(invite.to_user_email);
                                 }
                               });
@@ -63,7 +63,7 @@ router.post("/user/:fromEmail",
                                 let newInvites = nonDupeInviteRecipients.map(to_user_email => {return {to_user_email, from_user_email: fromEmail}});
                                 Invitation.insertMany(newInvites, function(err) {
                                   if (err) return console.error(err);
-                                  inviteRecipients = inviteRecipients.concat(curUserEmails);
+                                  inviteRecipients = inviteRecipients.concat(nonDupeInviteRecipients);
                                   if (nonCurUserEmails.length) {
                                     sendEmail({from_email: fromEmail, 
                                                 to_email_ar: nonCurUserEmails, 
@@ -71,8 +71,9 @@ router.post("/user/:fromEmail",
                                       .then(resp => {
                                         if (getSuccessCount(resp) === nonCurUserEmails.length) {
                                           inviteRecipients = inviteRecipients.concat(nonCurUserEmails);
+                                          inviteNotCreatedEmailMessage = dupeInviteRecipients.length ? `. Invitations were not sent to ${dupeInviteRecipients.join(', ')} because the invitation was already sent, pending, or rejected.`: '';
                                           inviteCreatedEmailMessage = `Invitations were sent to ${inviteRecipients.join(', ')}`;
-                                          res.json({ type: "success", message: `${inviteCreatedEmailMessage}`});
+                                          res.json({ type: "success", message: `${inviteCreatedEmailMessage}${inviteNotCreatedEmailMessage}`});
                                         }
                                       })
                                       .catch(err => {
@@ -102,12 +103,12 @@ router.post("/user/:fromEmail",
                             }
                           })
                         } else if (curUserEmails.length) {
-//TODO verify that requested email does not exist
+                          //verify that requested email does not exist
                           Invitation.find({from_user_email: fromEmail}, 'to_user_email', function(err, invitations) {
                             if (err) console.error('Could not find invitations during duplicate invites check', err);
                             if (invitations && invitations.length) {
                               invitations.forEach(invite => {
-                                if (dupeInviteRecipients.indexOf(invite.to_user_email) === -1) {
+                                if (dupeInviteRecipients.indexOf(invite.to_user_email) === -1 && curUserEmails.indexOf(invite.to_user_email) > -1) {
                                   dupeInviteRecipients.push(invite.to_user_email);
                                 }
                               });
