@@ -48,11 +48,6 @@ router.post("/user/:fromEmail",
                       //1 handle case where recipients include registered users and non registered
                         if (curUserEmails.length && nonCurUserEmails.length) {
 //TODO add query to verify requested email does not exist
-                          Invitation.find({from_user_email: fromEmail}, 'to_user_email', function(err, invitations) {
-                            if (err) console.error('Could not find invitations during duplicate invites check', err);
-                            if (invitations) console.log('duplicate invitations', invitations)
-                          })
-
 
 
 
@@ -91,12 +86,12 @@ router.post("/user/:fromEmail",
                               if (nonDupeInviteRecipients.length) {
                                 let newInvites = nonDupeInviteRecipients.map(to_user_email => {return {to_user_email, from_user_email: fromEmail}});
                                 Invitation.insertMany(newInvites, function(err) {
-                                    if (err) return console.error(err);
-                                    inviteCreatedInternalMessage =  `Internal invitations were sent to ${nonDupeInviteRecipients.join(', ')}.`
-                                    if (!nonCurUserEmails.length) {
-                                        res.json({ type: "success", message: `${inviteCreatedInternalMessage}`});
-                                    }
+                                  if (err) return console.error(err);
+                                  inviteCreatedInternalMessage =  `Internal invitations were sent to ${nonDupeInviteRecipients.join(', ')}.`
+                                  res.json({ type: "success", message: `${inviteCreatedInternalMessage}`});
                                 })
+                              } else {
+                                res.status(200).json({ type: "error", message: 'The invitations requested to create were duplicates, pending, or rejected.'})
                               }
                             }
                           })
