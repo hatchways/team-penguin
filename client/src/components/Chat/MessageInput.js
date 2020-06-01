@@ -34,7 +34,7 @@ const MessageInput = (props) => {
   //className={this.props.classes.root}
     return (
       <form className={classes.root} style={{backgroundColor: '#fff', padding: '18px 18px 30px 18px',
-        height: '50px', position: 'fixed', bottom: '12px', width: '66%'}}>
+        height: '50px', position: 'fixed', bottom: '0', width: '66%'}}>
         <TextField name='msg'
           value={msg}
           onChange={onChange}
