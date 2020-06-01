@@ -23,6 +23,7 @@ const selectedContact = {username: 'test selected contact'};
 const divStyle = {
   backgroundColor: 'rgba(0, 0, 0, 0.04)',
   height: '100vh',
+  padding: '18px',
 }
 
 const AuthenticatedApp = () => {
