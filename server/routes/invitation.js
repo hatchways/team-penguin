@@ -125,6 +125,14 @@ router.post("/user/:fromEmail",
                                 inviteNotCreatedEmailMessage = `Invitations were not sent to ${dupeInviteRecipients.join(', ')} because the invitation was already sent, pending, or rejected.`;
                                 res.status(200).json({ type: "error", message: inviteNotCreatedEmailMessage})
                               }
+                            } else if (invitations.length === 0) {
+                              let newInvites = curUserEmails.map(to_user_email => {
+                                return {to_user_email, from_user_email: fromEmail}});
+                              Invitation.insertMany(newInvites, function(err) {
+                                if (err) return console.error(err);
+                                inviteCreatedInternalMessage =  `Internal invitations were sent to ${curUserEmails.join(', ')}.`
+                                res.json({ type: "success", message: `${inviteCreatedInternalMessage}`});
+                              })
                             }
                           })
                         } else if (nonCurUserEmails.length) {
@@ -185,7 +193,6 @@ router.get("/user/:to_email/contacts",
     }, function(err, invitations) {
       if (err) return console.error('Contacts could not be retrieved.', err);
       if (invitations && invitations.length) {
-        console.log('invitations', invitations)
         let contacts = invitations.map(invite => {
           return invite.to_user_email === to_email ? invite.from_user_email: invite.to_user_email;
         });
