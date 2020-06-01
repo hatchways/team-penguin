@@ -26,7 +26,7 @@ const Contacts = props => {
 
  useEffect(() => {
    loadFriends()
- }, [friends]);
+ }, []);
 
 
   const requests = [
