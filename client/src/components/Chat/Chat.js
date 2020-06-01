@@ -9,7 +9,7 @@ import MessageInput from './MessageInput';
 const Chat = props => {
   const {user, messages, selectedContacts} = props;
   return (
-    <React.Fragment>
+    <div style={{display: 'flex', flexFlow: 'column nowrap', }}>
       <ChatHeader 
         selectedContacts={selectedContacts}
       />
@@ -21,7 +21,7 @@ const Chat = props => {
         username={user.username}
         sendMessage={props.sendMessage}
       />
-    </React.Fragment>
+    </div>
   );
 }
 

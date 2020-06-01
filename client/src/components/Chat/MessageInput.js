@@ -1,42 +1,52 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import Grid from "@material-ui/core/Grid";
 import InputBase from '@material-ui/core/InputBase';
+import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
 
-class MessageInput extends Component {
-  state = { 
-    msg: ''
-  }
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  textField: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    width: '25ch',
+  },
+}));
 
-  onChange = e => {
-    this.setState({
-      [e.target.name]: e.target.value
-    });
+const MessageInput = (props) => {
+  const classes = useStyles();
+  const [msg, setMsg] = useState('Type something');
+
+  const onChange = e => {
+    setMsg(e.target.value)
   };
 
-  send = e => {
-    if (e.key === 'Enter') {
-      this.props.sendMessage(this.state.msg);
-      this.setState({
-        msg: ''
-      });
-    }
+  const send = e => {
+    // if (e.key === 'Enter') {
+    //   this.props.sendMessage(this.state.msg);
+    //   setMsg('');
+    // }
   }
 
   //className={this.props.classes.root}
-  render() {
     return (
-      <InputBase 
-        name='msg'
-        value={this.state.msg}
-        onChange={this.onChange}
-        onKeyPress={this.send}
-        //className={this.props.classes.input}
-        style={{backgroundColor: '#fff', padding: '18px', height: '75px'}}
-        placeholder='Type something...'
-        fullWidth
-      />
+      <form className={classes.root} style={{backgroundColor: '#fff', padding: '18px 18px 30px 18px',
+        height: '50px', position: 'fixed', bottom: '12px', width: '66%'}}>
+        <TextField name='msg'
+          value={msg}
+          onChange={onChange}
+          onKeyPress={send}
+          margin="normal"
+          variant="filled"
+          className={classes.textField}
+          style={{width: '93%'}}
+          //fullWidth 
+        />
+      </form>
     );
-  }
 }
 
 export default MessageInput;
