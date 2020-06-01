@@ -14,8 +14,8 @@ const MessageDisplay = props => {
 
   return (
     <div
-      style={{backgroundColor: '#fff', padding: '18px', minHeight: 'calc(100vh - 170px)',
-        overflow: 'scroll'}}
+      style={{backgroundColor: '#fff', padding: '18px', 
+        overflow: 'scroll', flexGrow: '1'}}
     >
       {messages}
     </div>

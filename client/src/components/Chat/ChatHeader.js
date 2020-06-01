@@ -23,7 +23,8 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: deepPurple[500],
   },
   sectionHeader: {
-    height: '70px',
+    flexBasis: '70px',
+    flexShrink: '0',
     backgroundColor: '#fff',
     marginBottom: '5px',
     padding: '18px',

@@ -12,7 +12,6 @@ const useStyles = makeStyles((theme) => ({
   textField: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
-    width: '25ch',
   },
 }));
 
@@ -31,19 +30,17 @@ const MessageInput = (props) => {
     // }
   }
 
-  //className={this.props.classes.root}
     return (
-      <form className={classes.root} style={{backgroundColor: '#fff', padding: '18px 18px 30px 18px',
-        height: '50px', position: 'fixed', bottom: '0', width: '66%'}}>
+      <form className={classes.root} style={{backgroundColor: '#fff', padding: '18px',
+        flexBasis: '50px', flexShrink: '0' }}>
         <TextField name='msg'
           value={msg}
           onChange={onChange}
           onKeyPress={send}
+          fullWidth 
           margin="normal"
           variant="filled"
           className={classes.textField}
-          style={{width: '93%'}}
-          //fullWidth 
         />
       </form>
     );
