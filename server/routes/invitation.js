@@ -24,7 +24,7 @@ router.post("/user/:fromEmail",
         let inviteNotCreatedEmailMessage = '';
 
         if (toEmailAr.length === 0) {
-            return res.status(400).json({error: 'No email addresses for invitation recipients were provided.'})
+          return res.status(400).json({error: 'No email addresses for invitation recipients were provided.'})
         }
         toEmailAr.forEach(email => {
             if (validator.isEmail(email)) {
@@ -32,7 +32,7 @@ router.post("/user/:fromEmail",
             } else {
                 invalidEmails.push(email);
             }
-        })
+        });
         if (!validEmails.length) {
             return res.status(400).json({error: 'Email addresses for invitation recipients were invalid. Please check the spelling.'})
         } else {
@@ -51,6 +51,7 @@ router.post("/user/:fromEmail",
                           //verify requested invite does not exist
                           Invitation.find({from_user_email: fromEmail}, 'to_user_email', function(err, invitations) {
                             if (err) console.error('Could not find invitations during duplicate invites check', err);
+                            //line 54 missing closing brace
                             if (invitations && invitations.length) {
                               invitations.forEach(invite => {
                                 if (dupeInviteRecipients.indexOf(invite.to_user_email) === -1) {
@@ -75,7 +76,7 @@ router.post("/user/:fromEmail",
                                         }
                                       })
                                       .catch(err => {
-                                          console.error('sendgrid email err', err)
+                                          console.error('sendgrid email err', err);
                                       })
                                   }
                                 })
@@ -98,7 +99,8 @@ router.post("/user/:fromEmail",
                                     })
                                 }
                               }
-                            
+                            }
+                          })
                         } else if (curUserEmails.length) {
 //TODO verify that requested email does not exist
                           Invitation.find({from_user_email: fromEmail}, 'to_user_email', function(err, invitations) {
@@ -111,7 +113,8 @@ router.post("/user/:fromEmail",
                               });
                               nonDupeInviteRecipients = curUserEmails.filter(email =>   dupeInviteRecipients.indexOf(email) === -1);
                               if (nonDupeInviteRecipients.length) {
-                                let newInvites = nonDupeInviteRecipients.map(to_user_email => {return {to_user_email, from_user_email: fromEmail}});
+                                let newInvites = nonDupeInviteRecipients.map(to_user_email => {
+                                  return {to_user_email, from_user_email: fromEmail}});
                                 Invitation.insertMany(newInvites, function(err) {
                                   if (err) return console.error(err);
                                   inviteCreatedInternalMessage =  `Internal invitations were sent to ${nonDupeInviteRecipients.join(', ')}.`
