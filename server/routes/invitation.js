@@ -122,7 +122,8 @@ router.post("/user/:fromEmail",
                                   res.json({ type: "success", message: `${inviteCreatedInternalMessage}`});
                                 })
                               } else {
-                                res.status(200).json({ type: "error", message: 'The invitations requested to create were duplicates, pending, or rejected.'})
+                                inviteNotCreatedEmailMessage = `Invitations were not sent to ${dupeInviteRecipients.join(', ')} because the invitation was already sent, pending, or rejected.`;
+                                res.status(200).json({ type: "error", message: inviteNotCreatedEmailMessage})
                               }
                             }
                           })
