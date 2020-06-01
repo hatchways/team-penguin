@@ -15,6 +15,8 @@ router.post("/user/:fromEmail",
         let invalidEmails = [];
         let validEmails = [];
         let curUserEmails = [];
+        let dupeInviteRecipients = [];
+        let nonDupeInviteRecipients = [];
         let nonCurUserEmails = [];
         let inviteRecipients = [];
         let inviteCreatedInternalMessage = '';
@@ -45,6 +47,16 @@ router.post("/user/:fromEmail",
                     if (idx === validEmails.length - 1) {
                       //1 handle case where recipients include registered users and non registered
                         if (curUserEmails.length && nonCurUserEmails.length) {
+//TODO add query to verify requested email does not exist
+                          Invitation.find({from_user_email: fromEmail}, 'to_user_email', function(err, invitations) {
+                            if (err) console.error('Could not find invitations during duplicate invites check', err);
+                            if (invitations) console.log('duplicate invitations', invitations)
+                          })
+
+
+
+
+
                           let newInvites = curUserEmails.map(to_user_email => {return {to_user_email, from_user_email: fromEmail}});
                             Invitation.insertMany(newInvites, function(err) {
                                 if (err) return console.error(err);
@@ -66,14 +78,28 @@ router.post("/user/:fromEmail",
                                 } 
                             })
                         } else if (curUserEmails.length) {
-                            let newInvites = curUserEmails.map(to_user_email => {return {to_user_email, from_user_email: fromEmail}});
-                            Invitation.insertMany(newInvites, function(err) {
-                                if (err) return console.error(err);
-                                inviteCreatedInternalMessage =  `Internal invitations were sent to ${curUserEmails.join(', ')}.`
-                                if (!nonCurUserEmails.length) {
-                                    res.json({ type: "success", message: `Invitations were sent to ${curUserEmails.join(', ')}.`});
+//TODO verify that requested email does not exist
+                          Invitation.find({from_user_email: fromEmail}, 'to_user_email', function(err, invitations) {
+                            if (err) console.error('Could not find invitations during duplicate invites check', err);
+                            if (invitations && invitations.length) {
+                              invitations.forEach(invite => {
+                                if (dupeInviteRecipients.indexOf(invite.to_user_email) === -1) {
+                                  dupeInviteRecipients.push(invite.to_user_email);
                                 }
-                            })
+                              });
+                              nonDupeInviteRecipients = curUserEmails.filter(email =>   dupeInviteRecipients.indexOf(email) === -1);
+                              if (nonDupeInviteRecipients.length) {
+                                let newInvites = nonDupeInviteRecipients.map(to_user_email => {return {to_user_email, from_user_email: fromEmail}});
+                                Invitation.insertMany(newInvites, function(err) {
+                                    if (err) return console.error(err);
+                                    inviteCreatedInternalMessage =  `Internal invitations were sent to ${nonDupeInviteRecipients.join(', ')}.`
+                                    if (!nonCurUserEmails.length) {
+                                        res.json({ type: "success", message: `${inviteCreatedInternalMessage}`});
+                                    }
+                                })
+                              }
+                            }
+                          })
                         } else if (nonCurUserEmails.length) {
                             sendEmail({from_email: fromEmail, 
                                         to_email_ar: nonCurUserEmails, 
