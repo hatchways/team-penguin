@@ -49,7 +49,8 @@ const AuthenticatedApp = () => {
                   <Sidebar/>
               </Grid>
 
-              <Grid item xs={12} sm={8} style={{padding: '18px'}}>
+              <Grid item xs={12} sm={8}
+                style={{backgroundColor: 'rgba(0, 0, 0, 0.04)'}}>
                   <Chat messages={messages} user={user} selectedContacts={selectedContacts} />
               </Grid>
           </Grid>

@@ -23,8 +23,10 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: deepPurple[500],
   },
   sectionHeader: {
-    height: '100px',
-    backgroundColor: '#ccc',
+    height: '70px',
+    backgroundColor: '#fff',
+    marginBottom: '5px',
+    padding: '18px',
   },
 }));
 
@@ -83,11 +85,10 @@ const ChatHeader = props => {
     <Grid
       item
       container
-      spacing={3}
+      spacing={0}
       direction="row"
       alignItems='center'
-      //className={props.classes.root}
-      className='sectionHeader'
+      className={classes.sectionHeader}
     >
       {selectedContacts.length === 1 && (
         <React.Fragment>
@@ -96,6 +97,9 @@ const ChatHeader = props => {
           </Grid>
           <Grid item>
             <Typography variant='h5'>{email}</Typography>
+          </Grid>
+          <Grid item>
+            <Typography variant='h5'>online status todo</Typography>
           </Grid>
           <Grid item>
             <Typography component="div">

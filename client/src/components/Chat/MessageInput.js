@@ -25,17 +25,16 @@ class MessageInput extends Component {
   //className={this.props.classes.root}
   render() {
     return (
-      <Grid item >
-        <InputBase 
-          name='msg'
-          value={this.state.msg}
-          onChange={this.onChange}
-          onKeyPress={this.send}
-          //className={this.props.classes.input}
-          placeholder='Type something...'
-          fullWidth
-        />
-      </Grid>
+      <InputBase 
+        name='msg'
+        value={this.state.msg}
+        onChange={this.onChange}
+        onKeyPress={this.send}
+        //className={this.props.classes.input}
+        style={{backgroundColor: '#fff', padding: '18px', height: '75px'}}
+        placeholder='Type something...'
+        fullWidth
+      />
     );
   }
 }

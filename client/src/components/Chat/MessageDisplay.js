@@ -13,15 +13,12 @@ const MessageDisplay = props => {
   ))
 
   return (
-    <Grid
-      item
-      container
-      direction='column'
+    <div
+      style={{backgroundColor: '#fff', padding: '18px', height: 'calc(100vh - 180px'}}
       // className={props.classes.root}
     >
-      <br /><br /><br /><br /><br /><br />
       {messages}
-    </Grid>
+    </div>
 )};
 
 export default MessageDisplay;
