@@ -2,6 +2,7 @@ import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
+import classNames from 'classnames';
 
 import './style.css';
 
@@ -18,17 +19,35 @@ import './style.css';
 // }
 
 
-
 const Message = props => {
-  return (
-    <div style={{display: 'flex', flexFlow: 'row nowrap', justifyItems: 'left', alignItems: 'flex-start', margin: '18px 0'}}>
-      <Avatar>S</Avatar>
-      <div style={{display: 'flex', flexFlow: 'column nowrap', marginLeft: '8px'}}>
-        <Typography variant='body1'>12:05</Typography>
-        <div style={messageBubbleStyle}>test message body</div>
+
+  var msgClass = classNames({
+    messageBubble: true,
+    'messageBubbleFriend': !props.isAuthorUser,
+    'messageBubbleUser': props.isAuthorUser
+  });
+
+  if (!props.isAuthorUser) {
+    return (
+      <div style={{display: 'flex', flexFlow: 'row nowrap', justifyContent: 'flex-start', alignItems: 'flex-start', margin: '18px 0'}}>
+        <Avatar>S</Avatar>
+        <div style={{display: 'flex', flexFlow: 'column nowrap', marginLeft: '8px'}}>
+          <Typography variant='body1'>12:05</Typography>
+          <div className={msgClass}>{props.message.original_message}</div>
+        </div>
       </div>
-    </div>
-  )
+    )  
+  } else {
+    return (
+      <div style={{display: 'flex', flexFlow: 'row nowrap', justifyContent: 'flex-end', alignItems: 'flex-end', margin: '18px 0'}}>
+        <div style={{display: 'flex', flexFlow: 'column nowrap', marginLeft: '8px', alignItems: 'flex-end'}}>
+          <Typography variant='body1'>12:05</Typography>
+          <div className={msgClass}>{props.message.original_message}</div>
+        </div>
+      </div>
+    )  
+  }
+
 };
 
 export default Message;
