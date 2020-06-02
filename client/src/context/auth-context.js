@@ -1,29 +1,22 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-
-/**
- * createContext creates an object with 2 components: a Provider and Consumer
- *  to pass props within a Context, you must use both the Provider and the Consumer component.
- */
 const AuthContext = React.createContext([{}, () => {}]);
 function AuthProvider({children}) {
   const [state, setState] = React.useState({
-    status: 'pending',
+    status: 'logged out',
     error: null,
     user: null
   });
 
   const [token, setToken] = useState(localStorage.getItem('authToken') ? localStorage.getItem('authToken') : null);
-  const [email, setEmail] = useState(localStorage.getItem('email') ? localStorage.getItem('email'): null)
+  const [email, setEmail] = useState(localStorage.getItem('email') ? localStorage.getItem('email'): null);
+
 
   //checking for token and email and then accordingly updating the state
   const getUser = () => {
     if(token) {
-      setState({status: 'logged in', error: null, user: email})
-    }
-    else {
-      setState({status: 'logged out', error: null, user: null})
+      setState({status: 'success', error: null, user: email})
     }
   }
 
@@ -66,18 +59,10 @@ function AuthProvider({children}) {
    * Provider component is the place where you'd pass a prop called value to, 
    * which you can subsequently consume within the Consumer component
    */
-  console.log(authState);
   return (
     <AuthContext.Provider value={authState}>
       {state.status === 'pending' ? (
         'Loading...'
-      ) : state.status === 'error' ? (
-        <div>
-          Oh no
-          <div>
-            <pre>{state.error}</pre>
-          </div>
-        </div>
       ) : state.status === 'logged out' ? (
         children
       ) : (
