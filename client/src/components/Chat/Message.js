@@ -20,7 +20,7 @@ import './style.css';
 
 
 const Message = props => {
-
+  const {message, userEmail} = props;
   var msgClass = classNames({
     messageBubble: true,
     'messageBubbleFriend': !props.isAuthorUser,
@@ -32,8 +32,8 @@ const Message = props => {
       <div style={{display: 'flex', flexFlow: 'row nowrap', justifyContent: 'flex-start', alignItems: 'flex-start', margin: '18px 0'}}>
         <Avatar>S</Avatar>
         <div style={{display: 'flex', flexFlow: 'column nowrap', marginLeft: '8px'}}>
-          <Typography variant='body1'>12:05</Typography>
-          <div className={msgClass}>{props.message.original_message}</div>
+          <Typography variant='body1'>{userEmail} 12:05</Typography>
+          <div className={msgClass}>{props.message}</div>
         </div>
       </div>
     )  
@@ -42,7 +42,7 @@ const Message = props => {
       <div style={{display: 'flex', flexFlow: 'row nowrap', justifyContent: 'flex-end', alignItems: 'flex-end', margin: '18px 0'}}>
         <div style={{display: 'flex', flexFlow: 'column nowrap', marginLeft: '8px', alignItems: 'flex-end'}}>
           <Typography variant='body1'>12:05</Typography>
-          <div className={msgClass}>{props.message.original_message}</div>
+          <div className={msgClass}>{props.message}</div>
         </div>
       </div>
     )  
