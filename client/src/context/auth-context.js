@@ -11,12 +11,12 @@ function AuthProvider({children}) {
 
   const [token, setToken] = useState(localStorage.getItem('authToken') ? localStorage.getItem('authToken') : null);
   const [email, setEmail] = useState(localStorage.getItem('email') ? localStorage.getItem('email'): null);
-
+  const [user, setUser] = useState(localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null);
 
   //checking for token and email and then accordingly updating the state
   const getUser = () => {
     if(token) {
-      setState({status: 'success', error: null, user: {email}})
+      setState({status: 'success', error: null, user})
     }
   }
 
@@ -25,6 +25,8 @@ function AuthProvider({children}) {
     setToken(null);
     localStorage.removeItem('email');
     setEmail(null);
+    localStorage.removeItem('user');
+    setUser(null);
     setState({status: 'logged out', error: null, user: null})
   }
 
@@ -38,6 +40,9 @@ function AuthProvider({children}) {
 
         localStorage.setItem('email', res.data.email);
         setEmail(res.data.email);
+
+        localStorage.setItem('user', JSON.stringify(res.data.user));
+        setUser(res.data.user);
       }
     }
     catch(err) {
