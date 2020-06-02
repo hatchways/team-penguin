@@ -14,11 +14,11 @@ const Chat = props => {
         selectedContacts={selectedContacts}
       />
       <MessageDisplay
-        username={user} 
+        userEmail={user} 
         messages={messages}
       />
       <MessageInput
-        username={user}
+        userEmail={user}
         sendMessage={props.sendMessage}
       />
     </div>
