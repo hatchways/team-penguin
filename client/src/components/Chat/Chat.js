@@ -9,7 +9,7 @@ import MessageInput from './MessageInput';
 const Chat = props => {
   const {user, messages, selectedContacts} = props;
   return (
-    <div style={{display: 'flex', flexFlow: 'column nowrap', justifyContent: 'space-between'}}>
+    <div style={{display: 'flex', flexFlow: 'column nowrap', justifyContent: 'space-between', height: '100vh'}}>
       <ChatHeader 
         selectedContacts={selectedContacts}
       />
