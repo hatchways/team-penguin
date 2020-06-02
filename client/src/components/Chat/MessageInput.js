@@ -17,26 +17,15 @@ const useStyles = makeStyles((theme) => ({
 
 const MessageInput = (props) => {
   const classes = useStyles();
-  const [msg, setMsg] = useState('Type something');
-
-  const onChange = e => {
-    setMsg(e.target.value)
-  };
-
-  const send = e => {
-    // if (e.key === 'Enter') {
-    //   this.props.sendMessage(this.state.msg);
-    //   setMsg('');
-    // }
-  }
+  const {messageInputOnChangeHandler, messageInputSubmitHandler, curMessage} = props;
 
     return (
       <form className={classes.root} style={{backgroundColor: '#fff', padding: '18px',
         flexBasis: '50px', flexShrink: '0' }}>
         <TextField name='msg'
-          value={msg}
-          onChange={onChange}
-          onKeyPress={send}
+          value={curMessage}
+          onChange={messageInputOnChangeHandler}
+          onKeyPress={messageInputSubmitHandler}
           fullWidth 
           margin="normal"
           variant="filled"
