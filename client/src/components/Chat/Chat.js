@@ -1,17 +1,29 @@
 import React, {useEffect, useState} from 'react';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import { useParams } from "react-router-dom";
-
+import { useParams, Link } from "react-router-dom";
 
 import ChatHeader from './ChatHeader';
 import MessageDisplay from './MessageDisplay';
 import MessageInput from './MessageInput';
+import {useAuth} from '../../context/auth-context';
+import {sendChatMessage} from './util/socketClientHelpers';
 
 const Chat = props => {
-  const {user, messages, selectedContacts} = props;
+  const {messages, selectedContacts} = props;
   let { conversationId } = useParams();
+  const {user} = useAuth();
+
+
+
   console.log('conversationId', conversationId)
+  console.log('user email', user)
+  sendChatMessage(socket, user, `${user} testing 060220`)
+
+
+
+
+
   const [curMessage, setCurMessage] = useState('');
 
   const messageInputOnChangeHandler = e => {
@@ -30,6 +42,7 @@ const Chat = props => {
 
   return (
     <div style={{display: 'flex', flexFlow: 'column nowrap', justifyContent: 'space-between', height: '100vh'}}>
+      <Link to="/conversations/5ed67f6a7e0334fa48d92549">Test Chat Link</Link>
       <ChatHeader 
         selectedContacts={selectedContacts}
       />
