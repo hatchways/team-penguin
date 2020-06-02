@@ -7,26 +7,21 @@ import MessageDisplay from './MessageDisplay';
 import MessageInput from './MessageInput';
 
 const Chat = props => {
-  const {user, messages, selectedContact} = props;
+  const {user, messages, selectedContacts} = props;
   return (
-    <Grid
-     item
-     container
-     sm={9}
-     direction='row'
-    >
+    <div style={{display: 'flex', flexFlow: 'column nowrap', justifyContent: 'space-between'}}>
       <ChatHeader 
-        selectedContact={selectedContact}
+        selectedContacts={selectedContacts}
       />
       <MessageDisplay
-        username={user.username} 
+        username={user} 
         messages={messages}
       />
       <MessageInput
-        username={user.username}
+        username={user}
         sendMessage={props.sendMessage}
       />
-    </Grid>  
+    </div>
   );
 }
 
