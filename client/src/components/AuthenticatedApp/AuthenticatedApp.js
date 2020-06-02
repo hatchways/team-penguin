@@ -13,6 +13,7 @@ import {theme} from "../../themes/theme";
 import Sidebar from '../Sidebar/Sidebar';
 import Chat from '../Chat/Chat';
 import { useAuth } from '../../context/auth-context';
+import {SocketProvider} from '../../context/socket-context';
 
 const messages = [
     {id: '0', original_message: 'test msg 1', author_email: 'test101@t.com'},
@@ -45,29 +46,30 @@ const AuthenticatedApp = () => {
 
   return (
     <MuiThemeProvider theme={theme}>
-      <Grid container 
-        spacing={0} direction='row' 
-        className={classes.root}>
-        <Grid item xs={12} sm={4} style={appStyle}>
-          <Sidebar/>
+      <SocketProvider>
+        <Grid container 
+          spacing={0} direction='row' 
+          className={classes.root}>
+          <Grid item xs={12} sm={4} style={appStyle}>
+            <Sidebar/>
+          </Grid>
+          <Grid item xs={12} sm={8} style={appStyle}>
+            <Router>
+              <Switch>
+                <Route exact path="/">
+                  <Chat messages={messages} user={user} selectedContacts={selectedContacts} />
+                </Route>
+                <Route exact path="/conversations/:conversationId">
+                  <Chat messages={messages} user={user} selectedContacts={selectedContacts} />
+                </Route>
+                <Route exact path="/login">
+                  <Redirect to="/" />
+                </Route>
+              </Switch>
+            </Router>
+          </Grid>
         </Grid>
-        <Grid item xs={12} sm={8} style={appStyle}>
-          <Router>
-          <Switch>
-            <Route exact path="/">
-              <Chat messages={messages} user={user} selectedContacts={selectedContacts} />
-            </Route>
-            <Route exact path="/conversations/:conversationId">
-              <Chat messages={messages} user={user} selectedContacts={selectedContacts} />
-            </Route>
-            <Route exact path="/login">
-              <Redirect to="/" />
-            </Route>
-          </Switch>
-        </Router>
-          
-        </Grid>
-      </Grid>
+      </SocketProvider>
     </MuiThemeProvider>
   )
 }
