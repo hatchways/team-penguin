@@ -26,6 +26,7 @@ const MessageInput = (props) => {
           value={curMessage}
           onChange={messageInputOnChangeHandler}
           onKeyPress={messageInputSubmitHandler}
+          placeholder="Type something"
           fullWidth 
           margin="normal"
           variant="filled"
