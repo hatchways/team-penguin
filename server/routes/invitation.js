@@ -179,6 +179,29 @@ router.get("/user/:from_email",
     }
 );
 
+//Returns invitation requests for the user
+router.get("/user/requests/:to_email",
+    function(req, res, next) {
+        const {to_email} = req.params;
+
+        Invitation.find({"to_user_email": to_email, "approved": false, "rejected": {$ne: true}})
+          .sort({createdOn: 1})
+          .exec(function (err, invitations) {
+            if (err) {
+                return handleError(err);
+            }
+            if (invitations && invitations.length) {
+                res.json({ type: "success", invitations})
+            } else {
+                res.json({ type: "success", message: "There are no pending invitation requests"})
+            }
+          }
+        )
+    }
+);
+
+
+
 //Returns contacts that the current user accepted invitations from
 router.get("/user/:to_email/contacts",
   //passport.authenticate('jwt', { session: false }),
@@ -203,6 +226,8 @@ router.get("/user/:to_email/contacts",
     });
   }
 );
+
+
 
 
 module.exports = router;
