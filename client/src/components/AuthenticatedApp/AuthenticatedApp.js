@@ -23,16 +23,14 @@ const selectedContacts = [{email: 'friend'}];
 //[{email: 'friend1'}, {email: 'friend2'}, {email: 'friend2'}]
 
 const appStyle = {
-  backgroundColor: 'rgba(0, 0, 0, 0.04)',
-  height: '100vh',
-  padding: '18px',
+  backgroundColor: 'rgba(0, 0, 0, 0.04)'
 };
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     '& > *': {
-      margin: '0', //theme.spacing(1),
+      margin: '0',
     },
   },
 }));
@@ -47,12 +45,11 @@ const AuthenticatedApp = () => {
     <MuiThemeProvider theme={theme}>
       <Grid container 
         spacing={0} direction='row' 
-        className={classes.root}
-        style={appStyle}>
-        <Grid item xs={12} sm={4}>
+        className={classes.root}>
+        <Grid item xs={12} sm={4} style={appStyle}>
           <Sidebar/>
         </Grid>
-        <Grid item xs={12} sm={8}>
+        <Grid item xs={12} sm={8} style={appStyle}>
           <Chat messages={messages} user={user} selectedContacts={selectedContacts} />
         </Grid>
       </Grid>
