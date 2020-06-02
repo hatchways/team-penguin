@@ -6,46 +6,58 @@ import {
   Switch,
   Route
 } from "react-router-dom";
+import { makeStyles } from '@material-ui/core/styles';
 import {theme} from "../../themes/theme";
 import Sidebar from '../Sidebar/Sidebar';
-import Chat from '../Chat/Chat.js';
+import Chat from '../Chat/Chat';
 import { useAuth } from '../../context/auth-context';
-import "../../index.css";
 
 const messages = [
     {id: '0', body: 'test msg 1'},
     {id: '1', body: 'test msg 2'},
     {id: '2', body: 'test msg 3'}
 ];
-//selectedContact should probably be an array to handle group convos too
-const selectedContact = {username: 'test selected contact'};
 
-const divStyle = {
+//selectedContact should probably be an array to handle group convos too
+const selectedContacts = [{email: 'friend'}];
+//[{email: 'friend1'}, {email: 'friend2'}, {email: 'friend2'}]
+
+const appStyle = {
   backgroundColor: 'rgba(0, 0, 0, 0.04)',
   height: '100vh',
   padding: '18px',
-}
+};
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+    '& > *': {
+      margin: '0', //theme.spacing(1),
+    },
+  },
+}));
 
 const AuthenticatedApp = () => {
-    let {logout, user} = useAuth();
+  //let {logout, user} = useAuth();
+  //REPLACE
+  let user = 'test100@t.com';
+  const classes = useStyles();
 
-    return (
-        <div className="app-authenticated">
-            <MuiThemeProvider theme={theme}>
-                <Grid container 
-                    spacing={3} direction='row' 
-                    >
-                    <Grid item xs={4} style={divStyle}>
-                        <Sidebar/>
-                    </Grid>
-
-                    <Grid item xs={8}>
-                        {/* <Chat messages={messages} user={user} selectedContact={selectedContact} /> */}
-                    </Grid>
-                </Grid>
-            </MuiThemeProvider>
-        </div>
-    )
+  return (
+    <MuiThemeProvider theme={theme}>
+      <Grid container 
+        spacing={0} direction='row' 
+        className={classes.root}
+        style={appStyle}>
+        <Grid item xs={12} sm={4}>
+          <Sidebar/>
+        </Grid>
+        <Grid item xs={12} sm={8}>
+          <Chat messages={messages} user={user} selectedContacts={selectedContacts} />
+        </Grid>
+      </Grid>
+    </MuiThemeProvider>
+  )
 }
 
 export default AuthenticatedApp;
