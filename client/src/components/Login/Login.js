@@ -69,9 +69,9 @@ export default function Login() {
   function submit() {
     authState.login(formValues);
     if(authState.error){
+      //shows up only after 2nd submit click for some reason
       setErrorAlertMsg(authState.error);
     }
-    console.log(authState);
   }
 
   function closeAlertHandler() {

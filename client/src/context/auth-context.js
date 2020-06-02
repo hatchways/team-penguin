@@ -41,11 +41,17 @@ function AuthProvider({children}) {
       }
     }
     catch(err) {
-      err.response.data.validationError 
-      ? 
-      setState({status: 'error', error: err.response.data.validationError, user: null}) 
-      : 
-      console.error(err);
+      const validationError = err.response.data.validationError || null;
+      const missingDataError = err.response.data.missingData || null;
+      if(validationError){
+        setState({status: 'error', error: validationError, user: null}) 
+      }
+      else if(missingDataError) {
+        setState({status: 'error', error: missingDataError, user: null})
+      }
+      else {
+        console.error(err);
+      }
     }
   }
 
