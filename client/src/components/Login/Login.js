@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -68,11 +68,13 @@ export default function Login() {
   
   function submit() {
     authState.login(formValues);
+  }
+
+  useEffect(() => {
     if(authState.error){
-      //shows up only after 2nd submit click for some reason
       setErrorAlertMsg(authState.error);
     }
-  }
+  },[authState]);
 
   function closeAlertHandler() {
     setErrorAlertMsg('');
