@@ -39,7 +39,12 @@ const AuthenticatedApp = () => {
                     </Grid>
 
                     <Grid item xs={8}>
-                        {/* <Chat messages={messages} user={user} selectedContact={selectedContact} /> */}
+                    <Router>
+                      <Switch>
+                        <Route exact path="/" component={Chat} />
+                        <Route exact path="/conversations" component={Chat} />
+                      </Switch>
+                    </Router>
                     </Grid>
                 </Grid>
             </MuiThemeProvider>
@@ -65,3 +70,4 @@ shared state, user and/or contacts
       </Router>
     </MuiThemeProvider>
 */
+//                        {/* <Chat messages={messages} user={user} selectedContact={selectedContact} /> */}
