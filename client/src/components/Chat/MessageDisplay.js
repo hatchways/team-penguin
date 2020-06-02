@@ -4,10 +4,12 @@ import Grid from '@material-ui/core/Grid';
 import Message from './Message';
 
 const MessageDisplay = props => {
+  //REMOVE
+  const user = 'test100@t.com';
   const messages = props.messages.map(curr => (
     <Message 
       message={curr} 
-      username={props.username}
+      userEmail={props.userEmail}
       key={curr.id}
     />
   ))
