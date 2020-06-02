@@ -7,22 +7,24 @@ import ChatHeader from './ChatHeader';
 import MessageDisplay from './MessageDisplay';
 import MessageInput from './MessageInput';
 import {useAuth} from '../../context/auth-context';
-import {sendChatMessage} from './util/socketClientHelpers';
+import {useSocket} from '../../context/socket-context';
+//import {sendChatMessage} from '../../util/socketClientHelpers';
 
 const Chat = props => {
   const {messages, selectedContacts} = props;
   let { conversationId } = useParams();
   const {user} = useAuth();
+  const {socket, sendChatMessage} = useSocket();
+
+
 
 
 
   console.log('conversationId', conversationId)
   console.log('user email', user)
-  sendChatMessage(socket, user, `${user} testing 060220`)
-
-
-
-
+  if (conversationId && sendChatMessage) {
+    sendChatMessage(user, `${user} testing 060220`)
+  }
 
   const [curMessage, setCurMessage] = useState('');
 
