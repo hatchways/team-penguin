@@ -1,10 +1,14 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import io from 'socket.io-client';
 
 const SocketContext = React.createContext([{}, () => {}])
 const socket = io.connect('http://localhost:3001/chat');
 
 function SocketProvider({children}) {
+
+  socket.on('server broadcast', (data) => {
+    console.log('data from server', data)
+  })
 
   const sendChatMessage = (from_email, message) => {
     socket.on('chat', (data) => {
