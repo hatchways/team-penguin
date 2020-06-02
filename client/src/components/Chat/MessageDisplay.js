@@ -2,25 +2,24 @@ import React from 'react';
 import Grid from '@material-ui/core/Grid';
 
 import Message from './Message';
+import {useAuth} from '../../context/auth-context';
 
 const MessageDisplay = props => {
-  //REMOVE
-  const user = 'test100@t.com';
+  const {user} = useAuth();
 
-  const messages = props.messages.map(curr => (
-    <Message 
-      message={curr} 
-      userEmail={props.userEmail}
-      key={curr.id}
-      isAuthorUser={curr.author_email === user}
+  const messages = props.messages.map((msg, idx) => (
+    <Message
+      message={msg.original_message} 
+      userEmail={msg.author_email}
+      key={`${idx}-${msg}`}
+      isAuthorUser={msg.author_email === user.email}
     />
   ))
 
   return (
     <div
       style={{backgroundColor: '#fff', padding: '18px', 
-        overflow: 'scroll', flexGrow: '1'}}
-    >
+      overflow: 'scroll', flexGrow: '1'}}>
       {messages}
     </div>
 )};
