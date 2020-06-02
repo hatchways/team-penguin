@@ -14,18 +14,28 @@ const Chat = props => {
   const {messages, selectedContacts} = props;
   let { conversationId } = useParams();
   const {user} = useAuth();
+  console.log('user', user);
   const {socket, sendChatMessage} = useSocket();
 
   const [curMessage, setCurMessage] = useState('');
+  const [postedMessages, setPostedMessages] = useState([]);
   const messageInputOnChangeHandler = e => {
     setCurMessage(e.target.value)
   };
 
   const messageInputSubmitHandler = e => {
     if (e.key === 'Enter') {
+      let message = {
+        author_id: user.id,
+        author_email: user.email,
+        original_message: curMessage,
+        language: user.language,
+        translations: {}
+      };
       e.preventDefault();
       sendChatMessage(user, `${user}: ${curMessage}`);
-      //   setCurMessage('');
+      setPostedMessages(postedMessages.concat([message]));
+      //setCurMessage('');
     }
   }
 
@@ -36,8 +46,8 @@ const Chat = props => {
         selectedContacts={selectedContacts}
       />
       <MessageDisplay
-        userEmail={user} 
-        messages={messages}
+        userEmail={user.email} 
+        messages={postedMessages}
       />
       <MessageInput
         userEmail={user}
