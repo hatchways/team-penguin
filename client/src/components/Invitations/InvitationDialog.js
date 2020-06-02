@@ -15,10 +15,7 @@ import Container from '@material-ui/core/Container';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 
 import {isEmailValid} from '../../util/helpers';
-
-//REMOVE
-const from_email = 'test1@t.com';
-//const referralId = '5ecf0a6c76a17d41288e2aa6';
+import { useAuth } from '../../context/auth-context';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -95,10 +92,12 @@ export default function InvitationDialog() {
   const [email, setEmail] = useState('');
   const [emailErrorMessage, setEmailErrorMessage] = useState('Required');
   const [copyBtnErrorMessage, setCopyBtnErrorMessage] = useState('');
+  const [sendRequestErrorMessage, setSendRequestErrorMessage] = useState('');
   const [submitError, setSubmitError] = useState('');
   const [referralId, setReferralId] = useState('');
   const [referralUrl, setReferralUrl] = useState('');
   const classes = useStyles();
+  const {user} = useAuth();
 
   const handleChange = (event) => {
     const {value} = event.target
@@ -136,8 +135,7 @@ export default function InvitationDialog() {
   const handleSave = (ev) => {
     ev.preventDefault();
 
-    //TODO
-    let jwtToken = '';
+    let jwtToken = localStorage.getItem('authToken');
     let toEmailAr = getEmailAr(email);
 
     if (!email.length) {
@@ -151,22 +149,26 @@ export default function InvitationDialog() {
         toEmailAr = [email];
       }
 
-      let body = {toEmailAr, referralId};
-      fetch(`http://localhost:3001/invitations/user/${from_email}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'//,
-          //'Authorization': `Bearer ${jwtToken}`
-        },
-        body: JSON.stringify(body)
-      })
-        .then(resp => {
-          setEmail('');
-          setOpen(false);
+      if (user.length && jwtToken.length) {
+        let body = {toEmailAr, referralId};
+        fetch(`http://localhost:3001/invitations/user/${user}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `${jwtToken}`
+          },
+          body: JSON.stringify(body)
         })
-        .catch(err => {
-          console.error(err)
-        })
+          .then(resp => {
+            setEmail('');
+            setOpen(false);
+          })
+          .catch(err => {
+            console.error(err)
+          })  
+      } else {
+        setSendRequestErrorMessage('The request could not be sent because your login seems invalid. Please log out and try again.')
+      }
     }
   };
 
@@ -185,18 +187,17 @@ export default function InvitationDialog() {
   }
 
   useEffect(() => {
-    //TODO get referralid (objectId) based on current logged in user email
-    fetch(`http://localhost:3001/user/${from_email}/referralId`, {
+    let jwtToken = localStorage.getItem('authToken');
+    fetch(`http://localhost:3001/user/${user}/referralId`, {
       method: 'GET',
       headers: {
-        //'Authorization': `Bearer ${jwtToken}`
+        'Authorization': `${jwtToken}`
       },
     })
       .then(resp => resp.json())
       .then(json => {
           if (json.referralId) {
             setReferralId(json.referralId);
-            //setReferralUrl(`http://localhost:3001/join/${json.referralId}`);
           }
       })
       .catch(err => {

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -11,7 +11,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import UnauthenticatedSidebar from '../UnauthenticatedSidebar/UnauthenticatedSidebar';
 import useForm from '../../custom-hooks/useForm';
 import validate from './validateLogin';
-import axios from 'axios';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import { useAuth } from '../../context/auth-context';
@@ -65,12 +64,17 @@ export default function Login() {
   const classes = useStyles();
   const { handleChange, handleSubmit, formValues, formErrors } = useForm(submit, validate);
   const [errorAlertMsg, setErrorAlertMsg] = useState('');
-  const {login, status, error} = useAuth();
+  const authState = useAuth();
+  
   function submit() {
-    login(formValues);
-    console.log('status', status);
-    console.log('error', error);
+    authState.login(formValues);
   }
+
+  useEffect(() => {
+    if(authState.error){
+      setErrorAlertMsg(authState.error);
+    }
+  },[authState]);
 
   function closeAlertHandler() {
     setErrorAlertMsg('');
@@ -174,7 +178,7 @@ export default function Login() {
                           <Alert onClose={closeAlertHandler} severity="error">
                             {errorAlertMsg}
                           </Alert>
-                  </Snackbar>
+              </Snackbar>
             </div>
           </Container>
         </Grid>

@@ -92,3 +92,4 @@ shared state, user and/or contacts
       </Router>
     </MuiThemeProvider>
 */
+//                        {/* <Chat messages={messages} user={user} selectedContact={selectedContact} /> */}

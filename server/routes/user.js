@@ -80,7 +80,7 @@ router.post('/login', (req, res) => {
 });
 
 router.get("/:fromEmail/referralId",
-  //passport.authenticate('jwt', { session: false }),
+  passport.authenticate('jwt', { session: false }),
   function(req, res, next) {
     const {fromEmail} = req.params
     User.findOne({email: fromEmail}, function(err, user) {
