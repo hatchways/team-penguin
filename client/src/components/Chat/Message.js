@@ -5,17 +5,19 @@ import Avatar from '@material-ui/core/Avatar';
 
 import './style.css';
 
-const messageBubbleStyle = {
-  height: '28px',
-  border: '1px solid #fff',
-  backgroundColor: '#00f',
-  borderTopRightRadius: '8px',
-  borderBottomRightRadius: '8px',
-  borderBottomLeftRadius: '8px',
-  color: '#fff',
-  padding: '8px 16px 0 16px',
-  background: 'linear-gradient(0.4turn,#2962ff, #82b1ff)'
-}
+// const messageBubbleStyle = {
+//   height: '28px',
+//   border: '1px solid #fff',
+//   backgroundColor: '#00f',
+//   borderTopRightRadius: '8px',
+//   borderBottomRightRadius: '8px',
+//   borderBottomLeftRadius: '8px',
+//   color: '#fff',
+//   padding: '8px 16px 0 16px',
+//   background: 'linear-gradient(0.4turn,#2962ff, #82b1ff)'
+// }
+
+
 
 const Message = props => {
   return (
