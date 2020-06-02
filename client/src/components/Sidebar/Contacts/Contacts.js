@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -8,25 +8,41 @@ import Requests from './Requests';
 import Pending from './Pending';
 
 const Contacts = props => {
-  const [display, setDisplay] = React.useState('friends');
+  const [display, setDisplay] = useState('friends');
   const toggleDisplay = (event, setting) => {
     setDisplay(setting);
   }
- const [friends, setFriends] = React.useState([]);
+ const [friends, setFriends] = useState([]);
+ const [pendingInvites, setPendingInvites] = useState([]);
+
  const email = localStorage.getItem('email'); 
  const loadFriends = async() => {
    const res = await axios.get(`http://localhost:3001/invitations/user/${email}/contacts`);
    if(res.data.contacts.length !== 0){
-    setFriends([...res.data.contacts])
+    setFriends([...res.data.contacts]);
    }
    else {
-     setFriends([]);
+     setFriends(['You dont have any contacts. Send invites to initiate a conversation']);
    }
  }
 
+ const loadPendingInvites = async() => {
+  const res = await axios.get(`http://localhost:3001/invitations/user/${email}`);
+  if(res.data.invitations.length !== 0){
+   setPendingInvites([...res.data.invitations]);
+  }
+  else {
+    setPendingInvites(['No pending invitations']);
+  }
+}
+
  useEffect(() => {
    loadFriends()
- }, []);
+ }, [friends.length]);
+
+ useEffect(() => {
+   loadPendingInvites();
+ }, [pendingInvites.length]);
 
 
   const requests = [
@@ -104,7 +120,7 @@ const Contacts = props => {
           updateContact={props.updateContact}
         />
       }
-      {display === 'pending' && <Pending pending={pending} />}
+      {display === 'pending' && <Pending pending={pendingInvites} />}
     </Grid>
   );
 }
