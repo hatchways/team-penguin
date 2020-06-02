@@ -4,7 +4,8 @@ import { MuiThemeProvider } from "@material-ui/core";
 import {
   BrowserRouter as Router,
   Switch,
-  Route
+  Route,
+  useParams
 } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import {theme} from "../../themes/theme";
@@ -50,7 +51,17 @@ const AuthenticatedApp = () => {
           <Sidebar/>
         </Grid>
         <Grid item xs={12} sm={8} style={appStyle}>
-          <Chat messages={messages} user={user} selectedContacts={selectedContacts} />
+          <Router>
+          <Switch>
+            <Route exact path="/">
+              <Chat messages={messages} user={user} selectedContacts={selectedContacts} />
+            </Route>
+            <Route exact path="/conversations/:conversationId">
+              <Chat messages={messages} user={user} selectedContacts={selectedContacts} />
+            </Route>
+          </Switch>
+        </Router>
+          
         </Grid>
       </Grid>
     </MuiThemeProvider>
