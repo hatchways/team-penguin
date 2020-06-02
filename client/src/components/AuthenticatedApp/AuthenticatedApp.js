@@ -13,9 +13,9 @@ import Chat from '../Chat/Chat';
 import { useAuth } from '../../context/auth-context';
 
 const messages = [
-    {id: '0', body: 'test msg 1'},
-    {id: '1', body: 'test msg 2'},
-    {id: '2', body: 'test msg 3'}
+    {id: '0', original_message: 'test msg 1', author_email: 'test101@t.com'},
+    {id: '1', original_message: 'test msg 2', author_email: 'test100@t.com'},
+    {id: '2', original_message: 'test msg 3', author_email: 'test101@t.com'}
 ];
 
 //selectedContact should probably be an array to handle group convos too
