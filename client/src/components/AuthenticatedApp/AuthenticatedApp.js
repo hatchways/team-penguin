@@ -5,7 +5,8 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  useParams
+  useParams,
+  Redirect
 } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import {theme} from "../../themes/theme";
@@ -58,6 +59,9 @@ const AuthenticatedApp = () => {
             </Route>
             <Route exact path="/conversations/:conversationId">
               <Chat messages={messages} user={user} selectedContacts={selectedContacts} />
+            </Route>
+            <Route exact path="/login">
+              <Redirect to="/" />
             </Route>
           </Switch>
         </Router>
