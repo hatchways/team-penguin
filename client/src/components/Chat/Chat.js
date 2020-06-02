@@ -16,12 +16,7 @@ const Chat = props => {
   const {user} = useAuth();
   const {socket, sendChatMessage} = useSocket();
 
-  // if (conversationId && sendChatMessage) {
-  //   sendChatMessage(user, `${user} testing 060220`)
-  // }
-
   const [curMessage, setCurMessage] = useState('');
-
   const messageInputOnChangeHandler = e => {
     setCurMessage(e.target.value)
   };
