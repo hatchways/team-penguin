@@ -7,7 +7,7 @@ import MessageDisplay from './MessageDisplay';
 import MessageInput from './MessageInput';
 
 const Chat = props => {
-  const {user, messages, selectedContact} = props;
+  //const {user, messages, selectedContact} = props;
   return (
     <Grid
      item
@@ -15,7 +15,8 @@ const Chat = props => {
      sm={9}
      direction='row'
     >
-      <ChatHeader 
+      <h1>placeholder chat</h1>
+      {/* <ChatHeader 
         selectedContact={selectedContact}
       />
       <MessageDisplay
@@ -25,7 +26,7 @@ const Chat = props => {
       <MessageInput
         username={user.username}
         sendMessage={props.sendMessage}
-      />
+      /> */}
     </Grid>  
   );
 }
