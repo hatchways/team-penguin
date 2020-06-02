@@ -5,11 +5,15 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import io from 'socket.io-client';
 
+import {sendChatMessage} from './util/socketClientHelpers';
+
 const socket = io.connect('http://localhost:3001/chat');
-socket.on('chat', (data) => {
-  console.log(data);
-  socket.emit('my other event', { my: 'chat' });
-});
+sendChatMessage(socket, 'test90@t.com', 'testing 060220')
+
+// socket.on('chat', (data) => {
+//   console.log(data);
+//   socket.emit('my other event', { my: 'chat' });
+// });
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
