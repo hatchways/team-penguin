@@ -7,6 +7,8 @@ import Switch from '@material-ui/core/Switch';
 import Icon from '@material-ui/core/Icon';
 import { deepOrange, deepPurple } from '@material-ui/core/colors';
 
+import {useAuth} from '../../context/auth-context';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -71,6 +73,7 @@ const ChatHeader = props => {
   const [state, setState] = React.useState({
     checkedC: true,
   });
+  const {user, logout} = useAuth();
   let initial;
   let email;
   if (selectedContacts.length === 1) {
@@ -81,6 +84,10 @@ const ChatHeader = props => {
   const handleChange = (event) => {
     setState({ ...state, [event.target.name]: event.target.checked });
   };
+
+  const handleLogout = (evt) => {
+    logout();
+  }
 
   return (
     <Grid
@@ -113,7 +120,7 @@ const ChatHeader = props => {
             </Typography>
           </Grid>
           <Grid item>
-            <Icon>more_horiz</Icon>
+            <Icon onClick={handleLogout}>more_horiz</Icon>
           </Grid>
         </React.Fragment>
       )}
