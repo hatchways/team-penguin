@@ -11,6 +11,7 @@ function SocketProvider({children}) {
       console.log(data);
       socket.emit(from_email, { my: message });
     });
+    socket.send({from_email, message});
   }
 
   const socketShare = {socket, sendChatMessage};
