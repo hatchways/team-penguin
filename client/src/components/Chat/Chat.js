@@ -16,15 +16,9 @@ const Chat = props => {
   const {user} = useAuth();
   const {socket, sendChatMessage} = useSocket();
 
-
-
-
-
-  console.log('conversationId', conversationId)
-  console.log('user email', user)
-  if (conversationId && sendChatMessage) {
-    sendChatMessage(user, `${user} testing 060220`)
-  }
+  // if (conversationId && sendChatMessage) {
+  //   sendChatMessage(user, `${user} testing 060220`)
+  // }
 
   const [curMessage, setCurMessage] = useState('');
 
@@ -35,10 +29,8 @@ const Chat = props => {
   const messageInputSubmitHandler = e => {
     if (e.key === 'Enter') {
       e.preventDefault();
-      console.log('TODO')
-
-      //   this.props.sendMessage(curMessage);
-    //   setCurMessage('');
+      sendChatMessage(user, `${user}: ${curMessage}`);
+      //   setCurMessage('');
     }
   }
 
