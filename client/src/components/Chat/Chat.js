@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
+import { useParams } from "react-router-dom";
+
 
 import ChatHeader from './ChatHeader';
 import MessageDisplay from './MessageDisplay';
@@ -8,6 +10,8 @@ import MessageInput from './MessageInput';
 
 const Chat = props => {
   const {user, messages, selectedContacts} = props;
+  let { conversationId } = useParams();
+  console.log('conversationId', conversationId)
   const [curMessage, setCurMessage] = useState('');
 
   const messageInputOnChangeHandler = e => {
