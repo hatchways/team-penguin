@@ -151,7 +151,7 @@ export default function InvitationDialog() {
 
       if (user.length && jwtToken.length) {
         let body = {toEmailAr, referralId};
-        fetch(`http://localhost:3001/invitations/user/${user}`, {
+        fetch(`http://localhost:3001/invitations/user/${user.email}`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -188,7 +188,7 @@ export default function InvitationDialog() {
 
   useEffect(() => {
     let jwtToken = localStorage.getItem('authToken');
-    fetch(`http://localhost:3001/user/${user}/referralId`, {
+    fetch(`http://localhost:3001/user/${user.email}/referralId`, {
       method: 'GET',
       headers: {
         'Authorization': `${jwtToken}`

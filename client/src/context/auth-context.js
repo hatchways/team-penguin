@@ -16,7 +16,7 @@ function AuthProvider({children}) {
   //checking for token and email and then accordingly updating the state
   const getUser = () => {
     if(token) {
-      setState({status: 'success', error: null, user: email})
+      setState({status: 'success', error: null, user: {email}})
     }
   }
 
@@ -32,7 +32,7 @@ function AuthProvider({children}) {
     try {
       const res = await axios.post('http://localhost:3001/user/login', formValues);
       if(res.data.token) {
-        setState({status:'success', error:null, user: formValues.email});
+        setState({status:'success', error:null, user: res.data.user});
         localStorage.setItem('authToken', res.data.token);
         setToken(res.data.token);
 
