@@ -1,0 +1,23 @@
+/* Message style */
+
+.messageBubble {
+  height: 28px;
+  padding: 8px 16px 0 16px;
+}
+
+.messageBubbleFriend {
+  color: #fff;
+  border: 1px solid #fff;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  border-bottom-left-radius: 8px;
+  background-color: #00f;
+  background: linear-gradient(0.4turn,#2962ff, #82b1ff);
+}
+
+/* .messageBubbleUser {
+  color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.04);
+} */
