@@ -6,11 +6,13 @@ import Message from './Message';
 const MessageDisplay = props => {
   //REMOVE
   const user = 'test100@t.com';
+
   const messages = props.messages.map(curr => (
     <Message 
       message={curr} 
       userEmail={props.userEmail}
       key={curr.id}
+      isAuthorUser={curr.author_email === user}
     />
   ))
 
