@@ -7,13 +7,29 @@ import Button from '@material-ui/core/Button';
 import Modal from '@material-ui/core/Modal';
 
 import InvitationDialog from '../../Invitations/InvitationDialog';
-
+import {useAuth} from '../../../context/auth-context';
 
 const Friends = props => {
+  const {user} = useAuth();
 
   const contactClickHandler = (contactEmail) => {
-    console.log('contactEmail', contactEmail)
-    //call API to either create a conversation (or find existing) and get back conversation id
+    let jwtToken = localStorage.getItem('authToken');
+    let emailsAr = [contactEmail, user.email];
+    let body = {emailsAr};
+
+    if (jwtToken.length && emailsAr.length) {
+      //call API to either create a conversation (or find existing) and get back conversation id
+      fetch('http://localhost:3001/conversations', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `${jwtToken}`
+        },
+        body: JSON.stringify(body)
+      })
+        .then(resp => console.log('resp', resp))
+        .catch(err => console.error(err));
+    }
   }
 
   const entries = (selected, select) => props.friends.map(curr => (
