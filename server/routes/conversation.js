@@ -5,6 +5,18 @@ const Conversation = require("../models/conversation");
 const User = require("../models/user");
 const router = express.Router();
 
+//TODO post new conversation (given list of users) returning id
+router.post("/user/:email",
+  passport.authenticate('jwt', {session: false}),
+  function(req, res, next) {
+    const {email} = req.params;
+    const {contacts} = req.body; //make this as array
+    //verify conversation between group does not exist already, if it does, return that _id
+    //Conversation.find({})
+    //else create converation, returning _id
+  }
+);
+
 /* on successful return, json includes this object, dictUidToObj
     {uid_as_string: {email, language}}
     as well as the conversations
