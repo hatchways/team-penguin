@@ -6,6 +6,16 @@ const User = require("../models/user");
 const router = express.Router();
 const {areArraysEqual} = require("../util");
 
+const createConversation = ({user_emails, res}) => {
+  let newChat = new Conversation({user_emails});
+  newChat.save(function(err, conversation) {
+    if (err) console.error('Conversation could not be created', err);
+    if (conversation) {
+      res.status(201).json({type: 'success', message: 'A new conversation was created', conversationId: conversation._id.toString()});
+    }
+  })
+}
+
 //TODO post new conversation (given list of users) returning id
 router.post("/user/:email",
   passport.authenticate('jwt', {session: false}),
@@ -24,14 +34,21 @@ router.post("/user/:email",
     }, function(err, conversations) {
       if (err) console.error(err);
       if (conversations && conversations.length) {
-        //do a deep equals match
-        for (let i = 0; i < conversations.length; 
+        let matchingConversationExists = false;
+        for (let i = 0; i < conversations.length; i++){
+          if (areArraysEqual(conversations[i].users, conversationUsers)) {
+            res.status(200).json({type: "success", conversationId: conversation._id.toString(), message: "An existing conversation was found."});
+            matchingConversationExists = true;
+          }
+        }
+        if (!matchingConversationExists) {
+          createConversation({user_emails: conversationUsers, res})
         }
       } else {
-
+      //else create converation, returning _id
+        createConversation({user_emails: conversationUsers, res})
       }
     })
-    //else create converation, returning _id
   }
 );
 
