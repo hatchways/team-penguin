@@ -6,16 +6,14 @@ var Schema = mongoose.Schema;
     sort order can be latest to oldest
 */
 var conversationSchema = new Schema({
-    users: {
-      type: [mongoose.Types.ObjectId],
-      ref: 'users',
+    user_emails: {
+      type: [String],
       required: true
     },
     messages: [{
       author_id: {
         type: mongoose.Types.ObjectId,
-        ref: 'users',
-        required: true
+        ref: 'users'
       },
       author_email: String,
       original_message: String,
