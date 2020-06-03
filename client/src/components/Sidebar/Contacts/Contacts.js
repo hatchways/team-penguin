@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -59,17 +59,7 @@ const loadPendingRequests = async() => {
   loadPendingRequests();
 }, [pendingRequests.length]);
 
-
-  const requests = [
-    {username: 'test request1'},
-    {username: 'test request2'},
-    {username: 'test request3'}
-  ];
   
-  //const friends = props.contacts.filter(curr => curr.status === 3);
-  //const requests = props.contacts.filter(curr => curr.status === 2);
-  //const pending = props.contacts.filter(curr => curr.status === 1);
-
   return (
     <Grid
       container
@@ -96,17 +86,8 @@ const loadPendingRequests = async() => {
             // }}
           />
           <Tab 
-            value='requests' 
-            label='Requests'
-            disableRipple 
-            // className={props.classes.tab}
-            // classes={{
-            //   selected: props.classes.selectedTab
-            // }}
-          />
-          <Tab 
-            value='pending' 
-            label='Pending'
+            value='invitations' 
+            label='Invitations'
             disableRipple 
             // className={props.classes.tab}
             // classes={{
@@ -124,13 +105,15 @@ const loadPendingRequests = async() => {
           selectContact={props.selectContact}
         />
       }
-      {display === 'requests' && 
+      {display === 'invitations' && 
+        <Fragment>
         <Requests 
           requests={pendingRequests} 
           updateContact={props.updateContact}
         />
+        <Pending pending={pendingInvites} />
+        </Fragment>
       }
-      {display === 'pending' && <Pending pending={pendingInvites} />}
     </Grid>
   );
 }

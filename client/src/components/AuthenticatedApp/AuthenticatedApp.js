@@ -34,11 +34,11 @@ const AuthenticatedApp = () => {
                 <Grid container 
                     spacing={3} direction='row' 
                     >
-                    <Grid item xs={4} style={divStyle}>
+                    <Grid item xs={3} style={divStyle}>
                         <Sidebar/>
                     </Grid>
 
-                    <Grid item xs={8}>
+                    <Grid item xs={9}>
                     <Router>
                       <Switch>
                         <Route exact path="/" component={Chat} />
