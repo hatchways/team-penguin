@@ -239,4 +239,19 @@ router.put("/user/:to_email/approve", (req, res) => {
      res.status(200).json({"approved": invitation.approved, "from_user_email": invitation.from_user_email});
    });
 });
+
+//reject the request
+router.put("/user/:to_email/reject", (req, res) => {
+  const {to_email} = req.params;
+  const {from_email} = req.body;
+  Invitation.findOne({
+     "from_user_email": from_email,
+     "to_user_email": to_email
+  }, (err, invitation) => {
+    if(err) return console.error(err);
+    invitation.rejected = true;
+    invitation.save();
+    res.status(200).json({"rejected": invitation.rejected});
+  });
+});
 module.exports = router;
