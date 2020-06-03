@@ -37,7 +37,7 @@ const Contacts = props => {
 
  const loadPendingInvites = async() => {
   const res = await axios.get(`http://localhost:3001/invitations/user/${email}`);
-  if(res.data.invitations.length !== 0){
+  if(res.data.invitations && res.data.invitations.length !== 0){
    setPendingInvites([...res.data.invitations]);
   }
   else {
@@ -47,7 +47,7 @@ const Contacts = props => {
 
 const loadPendingRequests = async() => {
   const res = await axios.get(`http://localhost:3001/invitations/user/requests/${email}`);
-  if(res.data.invitations.length !== 0){
+  if(res.data.invitations && res.data.invitations.length !== 0){
    setPendingRequests([...res.data.invitations]);
   }
   else {

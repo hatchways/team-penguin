@@ -8,6 +8,8 @@ import Button from '@material-ui/core/Button';
 
 const Requests = props => {
   const entries = props.requests.map(curr => (
+    curr.from_user_email 
+    ?
     <Grid
       item
       container
@@ -43,6 +45,9 @@ const Requests = props => {
         </Grid>
       </Grid>
     </Grid>
+
+    :
+    <p>No invitations received </p>
   ));
 
   return (
