@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Redirect} from 'react-router-dom';
+import {Redirect, useHistory} from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
 import Icon from '@material-ui/core/Icon';
@@ -9,10 +9,13 @@ import Modal from '@material-ui/core/Modal';
 
 import InvitationDialog from '../../Invitations/InvitationDialog';
 import {useAuth} from '../../../context/auth-context';
+import {useSocket} from '../../../context/socket-context';
 
 const Friends = props => {
-  const [conversationId, setConversationId] = useState(null);
   const {user} = useAuth();
+  const {updateCurChatId} = useSocket();
+  const [conversationId, setConversationId] = useState(null)
+  let history = useHistory();
 
   const contactClickHandler = (contactEmail) => {
     let jwtToken = localStorage.getItem('authToken');
@@ -29,9 +32,12 @@ const Friends = props => {
         },
         body: JSON.stringify(body)
       })
-        .then(resp => {
-          if (resp.conversationId) {
-            setConversationId(conversationId);
+        .then(resp => resp.json())
+        .then(json => {
+          if (json.conversationId) {
+            //updateCurChatId(json.conversationId);
+            //history.push(`/conversations/${json.conversationId}`);
+            setConversationId(json.conversationId);
           }
         })
         .catch(err => console.error(err));
@@ -74,10 +80,6 @@ const Friends = props => {
       </Grid>
     </Grid>
   ));
-
-  useEffect(() => {
-
-  }, [conversationId])
 
   if (conversationId) {
     return (<Redirect to={`/conversations/${conversationId}`} />)
