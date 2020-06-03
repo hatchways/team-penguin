@@ -8,17 +8,16 @@ import MessageDisplay from './MessageDisplay';
 import MessageInput from './MessageInput';
 import {useAuth} from '../../context/auth-context';
 import {useSocket} from '../../context/socket-context';
-//import {sendChatMessage} from '../../util/socketClientHelpers';
 
 const Chat = props => {
   const {messages, selectedContacts} = props;
   let { conversationId } = useParams();
   const {user} = useAuth();
-  console.log('user', user);
-  const {socket, sendChatMessage} = useSocket();
+  const {socket, sendChatMessage, getMessage} = useSocket();
 
   const [curMessage, setCurMessage] = useState('');
   const [postedMessages, setPostedMessages] = useState([]);
+
   const messageInputOnChangeHandler = e => {
     setCurMessage(e.target.value)
   };
@@ -33,11 +32,20 @@ const Chat = props => {
         translations: {}
       };
       e.preventDefault();
-      sendChatMessage(user, `${user}: ${curMessage}`);
+      sendChatMessage(user, message);
       setPostedMessages(postedMessages.concat([message]));
       //setCurMessage('');
     }
   }
+
+  useEffect(() => {
+    if (socket) {
+      socket.on('server broadcast', (data) => {
+        setPostedMessages(postedMessages.concat([data]));
+        console.log('data from server', data);
+      })
+    }  
+  }, []);
 
   return (
     <div style={{display: 'flex', flexFlow: 'column nowrap', justifyContent: 'space-between', height: '100vh'}}>

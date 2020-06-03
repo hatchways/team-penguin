@@ -5,17 +5,12 @@ const SocketContext = React.createContext([{}, () => {}])
 const socket = io.connect('http://localhost:3001/chat');
 
 function SocketProvider({children}) {
-
-  socket.on('server broadcast', (data) => {
-    console.log('data from server', data)
-  })
-
   const sendChatMessage = (from_email, message) => {
-    socket.on('chat', (data) => {
-      console.log(data);
-      socket.emit(from_email, { my: message });
-    });
-    socket.send({from_email, message});
+    // socket.on('chat', (data) => {
+    //   console.log(data);
+    //   //socket.emit(message);
+    // });
+    socket.send(message);
   }
 
   const socketShare = {socket, sendChatMessage};
