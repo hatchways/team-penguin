@@ -14,11 +14,11 @@ const Requests = props => {
       direction='column'
       spacing={1}
       // className={props.classes.entry}
-      key={curr.username}
+      key={curr.from_user_email}
     >
       <Grid item>
         <Typography variant='body1' align='center'>
-          <b>{curr.username}</b> would like to add you as a friend
+          <b>{curr.from_user_email}</b> would like to add you as a friend
         </Typography>
       </Grid>
 
