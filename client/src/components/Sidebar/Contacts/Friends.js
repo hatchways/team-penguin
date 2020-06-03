@@ -8,10 +8,6 @@ import Modal from '@material-ui/core/Modal';
 import userPlaceholderImg from '../../../assets/user-placeholder.png';
 import InvitationDialog from '../../Invitations/InvitationDialog';
 
-// const useStyles = makeStyles({
-  
-// });
-
 const Friends = props => {
   const entries = (selected, select) => props.friends.map(curr => (
     <Grid
