@@ -8,12 +8,16 @@ import Modal from '@material-ui/core/Modal';
 import userPlaceholderImg from '../../../assets/user-placeholder.png';
 import InvitationDialog from '../../Invitations/InvitationDialog';
 
+// const useStyles = makeStyles({
+  
+// });
 
 const Friends = props => {
   const entries = (selected, select) => props.friends.map(curr => (
     <Grid
+      item
       container
-      spacing={3}
+      spacing={2}
       key={curr}
       onClick={() => {select(curr.index)}}
     >
@@ -30,6 +34,8 @@ const Friends = props => {
     <Grid 
       container
       direction='column'
+      justify='center'
+      spacing={2}
     >
       <Grid item >
         <InvitationDialog />

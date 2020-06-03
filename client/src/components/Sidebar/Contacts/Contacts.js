@@ -10,7 +10,7 @@ import Pending from './Pending';
 
 const useStyles = makeStyles(theme => ({
   invitationHeadings: {
-    marginBottom: theme.spacing(0)
+    marginBottom: 0
   }
 }));
 
