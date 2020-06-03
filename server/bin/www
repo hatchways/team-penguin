@@ -52,9 +52,11 @@ nsp.on('connection', function(socket){
   //   console.log(data);
   // });
   socket.on('message', (data) => {
+    //REMOVE
+    const testId = '5ed67f6a7e0334fa48d92549';
     console.log(data)
     socket.broadcast.emit('server broadcast', data);
-    saveMessageToConversation({message: data, conversationId: ''})
+    saveMessageToConversation({message: data, conversationId: testId})
   });
 
   // disconnect is fired when a client leaves the server
