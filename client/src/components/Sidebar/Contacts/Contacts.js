@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -7,7 +8,14 @@ import Friends from './Friends';
 import Requests from './Requests';
 import Pending from './Pending';
 
+const useStyles = makeStyles(theme => ({
+  invitationHeadings: {
+    marginBottom: theme.spacing(0)
+  }
+}));
+
 const Contacts = props => {
+  const classes = useStyles();
   const [display, setDisplay] = useState('friends');
   const toggleDisplay = (event, setting) => {
     setDisplay(setting);
@@ -110,8 +118,9 @@ const loadPendingRequests = async() => {
         <Requests 
           requests={pendingRequests} 
           updateContact={props.updateContact}
+          classes={classes}
         />
-        <Pending pending={pendingInvites} />
+        <Pending pending={pendingInvites} classes={classes}/>
         </Fragment>
       }
     </Grid>

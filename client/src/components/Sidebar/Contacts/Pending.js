@@ -19,7 +19,9 @@ const Pending = props => {
     <Grid
       container
       direction='column'
+      spacing={2}
     >
+      <h4 className={props.classes.invitationHeadings}>Invitations Pending</h4>
       {entries}
     </Grid>
   );

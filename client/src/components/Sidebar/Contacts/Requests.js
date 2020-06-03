@@ -16,13 +16,13 @@ const Requests = props => {
       // className={props.classes.entry}
       key={curr.from_user_email}
     >
-      <Grid item>
-        <Typography variant='body1' align='center'>
+      <Grid item container>
+        <Typography variant='body1'>
           <b>{curr.from_user_email}</b> would like to add you as a friend
         </Typography>
       </Grid>
 
-      <Grid item container justify='center' spacing={2}>
+      <Grid item container spacing={2}>
         <Grid item>
           <Button 
             variant='contained' 
@@ -49,7 +49,9 @@ const Requests = props => {
     <Grid 
       container
       direction='column'
+      spacing = {2}
     >
+      <h4 className={props.classes.invitationHeadings}>Invitations Received </h4>
       {entries}
     </Grid>
   );
