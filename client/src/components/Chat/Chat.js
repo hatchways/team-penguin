@@ -34,7 +34,7 @@ const Chat = props => {
       e.preventDefault();
       sendChatMessage(user, message);
       setPostedMessages(postedMessages.concat([message]));
-      //setCurMessage('');
+      setCurMessage('');
     }
   }
 
