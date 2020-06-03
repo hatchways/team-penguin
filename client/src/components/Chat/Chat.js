@@ -42,10 +42,8 @@ const Chat = props => {
     if (socket) {
       socket.on('server broadcast', (data) => {
         setPostedMessages(postedMessages.concat([data]));
-        console.log('data from server', data);
       })
     }
-
   }, [postedMessages]);
 
   return (
@@ -60,7 +58,6 @@ const Chat = props => {
       />
       <MessageInput
         userEmail={user}
-        //sendMessage={props.sendMessage}
         messageInputOnChangeHandler={messageInputOnChangeHandler}
         messageInputSubmitHandler={messageInputSubmitHandler}
         curMessage={curMessage}
