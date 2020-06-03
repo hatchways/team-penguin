@@ -4,15 +4,33 @@ const passport = require("passport");
 const Conversation = require("../models/conversation");
 const User = require("../models/user");
 const router = express.Router();
+const {areArraysEqual} = require("../util");
 
 //TODO post new conversation (given list of users) returning id
 router.post("/user/:email",
   passport.authenticate('jwt', {session: false}),
   function(req, res, next) {
     const {email} = req.params;
-    const {contacts} = req.body; //make this as array
+    const {contactsAr} = req.body; //make this as array
+    let conversationUsers = [email];
+    conversationUsers = conversationUsers.concat(contactsAr);
     //verify conversation between group does not exist already, if it does, return that _id
-    //Conversation.find({})
+    Conversation.find({ 
+      $and: [{
+        user_emails: { $all: conversationUsers }
+      }, {
+        user_emails: { $size: conversationUsers.length}
+      }]
+    }, function(err, conversations) {
+      if (err) console.error(err);
+      if (conversations && conversations.length) {
+        //do a deep equals match
+        for (let i = 0; i < conversations.length; 
+        }
+      } else {
+
+      }
+    })
     //else create converation, returning _id
   }
 );
