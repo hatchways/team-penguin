@@ -47,49 +47,34 @@ const AuthenticatedApp = () => {
   return (
     <MuiThemeProvider theme={theme}>
       <SocketProvider>
-        <Grid container 
-          spacing={0} direction='row' 
-          className={classes.root}>
-          <Grid item xs={12} sm={4} style={appStyle}>
-            <Sidebar/>
+        <Router>
+          <Grid container 
+            spacing={0} direction='row' 
+            className={classes.root}>
+            <Grid item xs={12} sm={4} style={appStyle}>
+              <Sidebar/>
+            </Grid>
+
+            <Switch>
+              <Route exact path="/">
+                  <Grid item xs={12} sm={8} style={appStyle}>
+                    <Chat messages={messages} user={user} selectedContacts={selectedContacts} />
+                  </Grid>
+              </Route>
+              <Route exact path="/conversations/:conversationId">
+                  <Grid item xs={12} sm={8} style={appStyle}>
+                    <Chat messages={messages} user={user} selectedContacts={selectedContacts} />
+                  </Grid>
+              </Route>
+              <Route exact path="/login">
+                <Redirect to="/" />
+              </Route>
+            </Switch>
           </Grid>
-          <Grid item xs={12} sm={8} style={appStyle}>
-            <Router>
-              <Switch>
-                <Route exact path="/">
-                  <Chat messages={messages} user={user} selectedContacts={selectedContacts} />
-                </Route>
-                <Route exact path="/conversations/:conversationId">
-                  <Chat messages={messages} user={user} selectedContacts={selectedContacts} />
-                </Route>
-                <Route exact path="/login">
-                  <Redirect to="/" />
-                </Route>
-              </Switch>
-            </Router>
-          </Grid>
-        </Grid>
+        </Router>
       </SocketProvider>
     </MuiThemeProvider>
   )
 }
 
 export default AuthenticatedApp;
-
-/*
-    <h1>Username: {user.username}</h1>
-    <button onClick={logout}>test logout
-    </button> 
-*/
-/*
-shared state, user and/or contacts
-    <MuiThemeProvider theme={theme}>
-      <Router>
-        <Switch>
-          <Route exact path="/" component={Chat} />
-          <Route exact path="/conversations" component={Chat} />
-        </Switch>
-      </Router>
-    </MuiThemeProvider>
-*/
-//                        {/* <Chat messages={messages} user={user} selectedContact={selectedContact} /> */}
