@@ -4,49 +4,33 @@ const passport = require("passport");
 const Conversation = require("../models/conversation");
 const User = require("../models/user");
 const router = express.Router();
-const {areArraysEqual} = require("../util");
 
-const createConversation = ({user_emails, res}) => {
-  let newChat = new Conversation({user_emails});
-  newChat.save(function(err, conversation) {
-    if (err) console.error('Conversation could not be created', err);
-    if (conversation) {
-      res.status(201).json({type: 'success', message: 'A new conversation was created', conversationId: conversation._id.toString()});
-    }
-  })
-}
-
-//TODO post new conversation (given list of users) returning id
-router.post("/user/:email",
+//post new conversation (given list of users) returning id
+router.post("/",
   passport.authenticate('jwt', {session: false}),
   function(req, res, next) {
-    const {email} = req.params;
-    const {contactsAr} = req.body; //make this as array
-    let conversationUsers = [email];
-    conversationUsers = conversationUsers.concat(contactsAr);
-    //verify conversation between group does not exist already, if it does, return that _id
+    const {emailsAr} = req.body;
     Conversation.find({ 
       $and: [{
-        user_emails: { $all: conversationUsers }
+        user_emails: { $all: emailsAr }
       }, {
-        user_emails: { $size: conversationUsers.length}
+        user_emails: { $size: emailsAr.length}
       }]
     }, function(err, conversations) {
       if (err) console.error(err);
       if (conversations && conversations.length) {
-        let matchingConversationExists = false;
-        for (let i = 0; i < conversations.length; i++){
-          if (areArraysEqual(conversations[i].users, conversationUsers)) {
-            res.status(200).json({type: "success", conversationId: conversation._id.toString(), message: "An existing conversation was found."});
-            matchingConversationExists = true;
-          }
-        }
-        if (!matchingConversationExists) {
-          createConversation({user_emails: conversationUsers, res})
-        }
+        res.status(200).json({type: "success", conversationId: conversations[0]._id.toString(), message: "An existing conversation was found."});
       } else {
       //else create converation, returning _id
-        createConversation({user_emails: conversationUsers, res})
+        let newChat = new Conversation({user_emails});
+        newChat.save(function(err, conversation) {
+          if (err) console.error('Conversation could not be created', err);
+          if (conversation) {
+            res.status(201).json({type: 'success', message: 'A new conversation was created', conversationId: conversation._id.toString()});
+          } else {
+            res.json({type: 'error', message: 'The conversation could not be created. Please try again.'})
+          }
+        })
       }
     })
   }
