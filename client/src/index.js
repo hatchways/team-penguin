@@ -4,11 +4,6 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-// socket.on('chat', (data) => {
-//   console.log(data);
-//   socket.emit('my other event', { my: 'chat' });
-// });
-
 ReactDOM.render(<App />, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
