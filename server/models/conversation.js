@@ -17,6 +17,7 @@ var conversationSchema = new Schema({
         ref: 'users',
         required: true
       },
+      author_email: String,
       original_message: String,
       language: String,
       translations: {
