@@ -10,7 +10,7 @@ const Pending = props => {
       // className={props.classes.entry}
     >
       <Typography variant='body1'>
-        <b>{curr.to_user_email}</b> has received your friend request
+        <b>{curr.to_user_email.split('@')[0]}</b> has received your friend request
       </Typography>
     </Grid>
   ));

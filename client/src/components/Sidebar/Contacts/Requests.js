@@ -18,7 +18,7 @@ const Requests = props => {
     >
       <Grid item container>
         <Typography variant='body1'>
-          <b>{curr.from_user_email}</b> would like to add you as a friend
+          <b>{curr.from_user_email.split('@')[0]}</b> would like to add you as a friend
         </Typography>
       </Grid>
 
