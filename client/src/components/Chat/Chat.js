@@ -44,8 +44,9 @@ const Chat = props => {
         setPostedMessages(postedMessages.concat([data]));
         console.log('data from server', data);
       })
-    }  
-  }, []);
+    }
+
+  }, [postedMessages]);
 
   return (
     <div style={{display: 'flex', flexFlow: 'column nowrap', justifyContent: 'space-between', height: '100vh'}}>
