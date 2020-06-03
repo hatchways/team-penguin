@@ -9,6 +9,7 @@ require("dotenv").config();
 
 var app = require("../app");
 var http = require("http");
+const {saveMessageToConversation} = require('../util/socket_db');
 
 /**
  * Get port from environment and store in Express.
@@ -44,25 +45,23 @@ nsp.on('connection', function(socket){
   //socket.on('my other event', (data) => {
     //console.log(data);
   //});
-  socket.on('test90@t.com', (data) => {
-    console.log(data);
-  });
-  socket.on('test100@t.com', (data) => {
-    console.log(data);
-  });
+  // socket.on('test90@t.com', (data) => {
+  //   console.log(data);
+  // });
+  // socket.on('test100@t.com', (data) => {
+  //   console.log(data);
+  // });
   socket.on('message', (data) => {
     console.log(data)
     socket.broadcast.emit('server broadcast', data);
+    saveMessageToConversation({message: data, conversationId: ''})
   });
 
   // disconnect is fired when a client leaves the server
   socket.on("disconnect", () => {
     console.log("user disconnected");
   });
-
 });
-
-
 
 /**
  * Normalize a port into a number, string, or false.
