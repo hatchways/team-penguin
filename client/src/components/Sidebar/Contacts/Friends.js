@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
+import {Redirect} from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
 import Icon from '@material-ui/core/Icon';
@@ -10,6 +11,7 @@ import InvitationDialog from '../../Invitations/InvitationDialog';
 import {useAuth} from '../../../context/auth-context';
 
 const Friends = props => {
+  const [conversationId, setConversationId] = useState(null);
   const {user} = useAuth();
 
   const contactClickHandler = (contactEmail) => {
@@ -27,7 +29,11 @@ const Friends = props => {
         },
         body: JSON.stringify(body)
       })
-        .then(resp => console.log('resp', resp))
+        .then(resp => {
+          if (resp.conversationId) {
+            setConversationId(conversationId);
+          }
+        })
         .catch(err => console.error(err));
     }
   }
@@ -68,6 +74,14 @@ const Friends = props => {
       </Grid>
     </Grid>
   ));
+
+  useEffect(() => {
+
+  }, [conversationId])
+
+  if (conversationId) {
+    return (<Redirect to={`/conversations/${conversationId}`} />)
+  }
 
   return (
     <Grid 
