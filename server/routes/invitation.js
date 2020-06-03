@@ -170,9 +170,9 @@ router.get("/user/:from_email",
                 return handleError(err);
             }
             if (invitations && invitations.length) {
-                res.json({ type: "success", invitations})
+                res.status(200).json({ type: "success", invitations})
             } else {
-                res.json({ type: "success", message: "There are no pending invitations"})
+                res.status(200).json({ type: "success", message: "There are no pending invitations"})
             }
           }
         )
@@ -191,16 +191,14 @@ router.get("/user/requests/:to_email",
                 return handleError(err);
             }
             if (invitations && invitations.length) {
-                res.json({ type: "success", invitations})
+                res.status(200).json({ type: "success", invitations})
             } else {
-                res.json({ type: "success", message: "There are no pending invitation requests"})
+                res.status(200).json({ type: "success", message: "There are no pending invitation requests"})
             }
           }
         )
     }
 );
-
-
 
 //Returns contacts that the current user accepted invitations from
 router.get("/user/:to_email/contacts",
@@ -227,7 +225,18 @@ router.get("/user/:to_email/contacts",
   }
 );
 
-
-
-
+//approve the request
+router.put("/user/:to_email/approve", (req, res) => {
+   const {to_email} = req.params;
+   const {from_email} = req.body;
+   Invitation.findOne({
+      "from_user_email": from_email,
+      "to_user_email": to_email
+   }, (err, invitation) => {
+     if(err) return console.error(err);
+     invitation.approved = true;
+     invitation.save();
+     res.status(200).json({"approved": invitation.approved, "from_user_email": invitation.from_user_email});
+   });
+});
 module.exports = router;
