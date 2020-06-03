@@ -1,19 +1,23 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import io from 'socket.io-client';
 
 const SocketContext = React.createContext([{}, () => {}])
 const socket = io.connect('http://localhost:3001/chat');
 
 function SocketProvider({children}) {
+  const [curChatId, setCurChatId] = useState(null);
+  const [allChatIds, setAllChatIds] = useState([]);
   const sendChatMessage = (from_email, message) => {
-    // socket.on('chat', (data) => {
-    //   console.log(data);
-    //   //socket.emit(message);
-    // });
     socket.send(message);
   }
 
-  const socketShare = {socket, sendChatMessage};
+  const updateCurChatId = (id) => {
+    if (id.length) {
+      setCurChatId(id);
+    }
+  }
+
+  const socketShare = {socket, sendChatMessage, curChatId, updateCurChatId};
 
   return (
     <SocketContext.Provider value={socketShare}>
