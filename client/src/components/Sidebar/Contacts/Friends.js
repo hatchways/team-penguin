@@ -10,6 +10,12 @@ import InvitationDialog from '../../Invitations/InvitationDialog';
 
 
 const Friends = props => {
+
+  const contactClickHandler = (contactEmail) => {
+    console.log('contactEmail', contactEmail)
+    //call API to either create a conversation (or find existing) and get back conversation id
+  }
+
   const entries = (selected, select) => props.friends.map(curr => (
     <Grid
       container
@@ -21,7 +27,8 @@ const Friends = props => {
   //     //   : props.classes.friend
   //     // }
       key={curr}
-      onClick={() => {select(curr.index)}}
+      onClick={(ev) => contactClickHandler(curr)}
+      //() => {select(curr.index)}
     >
   {/* 
   //     <Grid item>
