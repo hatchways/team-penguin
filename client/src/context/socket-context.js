@@ -7,7 +7,8 @@ const socket = io.connect('http://localhost:3001/chat');
 function SocketProvider({children}) {
   const [curChatId, setCurChatId] = useState(null);
   const [allChatIds, setAllChatIds] = useState([]);
-  const sendChatMessage = (from_email, message) => {
+
+  const sendChatMessage = ({from_email, message, conversationId}) => {
     socket.send(message);
   }
 

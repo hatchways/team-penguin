@@ -32,7 +32,7 @@ const Chat = props => {
         translations: {}
       };
       e.preventDefault();
-      sendChatMessage(user, message);
+      sendChatMessage({from_email: user.email, message, conversationId});
       setPostedMessages(postedMessages.concat([message]));
       setCurMessage('');
     }
