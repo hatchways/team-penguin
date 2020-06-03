@@ -4,6 +4,8 @@ import Typography from '@material-ui/core/Typography';
 
 const Pending = props => {
   const entries = props.pending.map(curr => (
+    curr.from_user_email
+    ?
     <Grid 
       item 
       key={curr.to_user_email}
@@ -13,6 +15,8 @@ const Pending = props => {
         <b>{curr.to_user_email.split('@')[0]}</b> has received your friend request
       </Typography>
     </Grid>
+    :
+    <p>No pending invitations</p>
   ));
 
   return (
