@@ -53,6 +53,7 @@ const Chat = props => {
   }
 
   useEffect(() => {
+    setPostedMessages([]);
     if (conversationId) {
       fetch(`http://localhost:3001/conversations/${conversationId}`)
         .then(resp => resp.json())

@@ -12,7 +12,6 @@ import {useAuth} from '../../../context/auth-context';
 
 const Friends = props => {
   const {user} = useAuth();
-  const [conversationId, setConversationId] = useState(null)
   let history = useHistory();
 
   const contactClickHandler = (contactEmail) => {
@@ -33,7 +32,7 @@ const Friends = props => {
         .then(resp => resp.json())
         .then(json => {
           if (json.conversationId) {
-            setConversationId(json.conversationId);
+            history.push(`/conversations/${json.conversationId}`);
           }
         })
         .catch(err => console.error(err));
@@ -57,10 +56,6 @@ const Friends = props => {
       </Grid>
     </Grid>
   ));
-
-  if (conversationId) {
-    return (<Redirect to={`/conversations/${conversationId}`} />)
-  }
 
   return (
     <Grid 
