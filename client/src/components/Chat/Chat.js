@@ -18,6 +18,12 @@ const Chat = props => {
   const [curMessage, setCurMessage] = useState('');
   const [postedMessages, setPostedMessages] = useState([]);
 
+  if (socket && conversationId) {
+    socket.on(conversationId, (data) => {
+      setPostedMessages(postedMessages.concat([data]));
+    })
+  }
+
   const messageInputOnChangeHandler = e => {
     setCurMessage(e.target.value)
   };
@@ -37,20 +43,6 @@ const Chat = props => {
       setCurMessage('');
     }
   }
-
-  // useEffect(() => {
-  //   if (conversationId) {
-  //   }
-  // }, []);
-
-  useEffect(() => {
-    if (socket && conversationId) {
-      socket.on(conversationId, (data) => {
-//      socket.on('server broadcast', (data) => {
-        setPostedMessages(postedMessages.concat([data]));
-      })
-    }
-  }, [postedMessages]);
 
   return (
     <div style={{display: 'flex', flexFlow: 'column nowrap', justifyContent: 'space-between', height: '100vh'}}>
