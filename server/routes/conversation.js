@@ -22,7 +22,7 @@ router.post("/",
         res.status(200).json({type: "success", conversationId: conversations[0]._id.toString(), message: "An existing conversation was found."});
       } else {
       //else create converation, returning _id
-        let newChat = new Conversation({user_emails});
+        let newChat = new Conversation({user_emails: emailsAr});
         newChat.save(function(err, conversation) {
           if (err) console.error('Conversation could not be created', err);
           if (conversation) {
