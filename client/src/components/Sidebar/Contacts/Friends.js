@@ -13,7 +13,6 @@ import {useSocket} from '../../../context/socket-context';
 
 const Friends = props => {
   const {user} = useAuth();
-  const {updateCurChatId} = useSocket();
   const [conversationId, setConversationId] = useState(null)
   let history = useHistory();
 
@@ -35,8 +34,6 @@ const Friends = props => {
         .then(resp => resp.json())
         .then(json => {
           if (json.conversationId) {
-            //updateCurChatId(json.conversationId);
-            //history.push(`/conversations/${json.conversationId}`);
             setConversationId(json.conversationId);
           }
         })
