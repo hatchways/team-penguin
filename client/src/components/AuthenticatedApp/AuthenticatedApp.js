@@ -38,37 +38,43 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AuthenticatedApp = () => {
+const AppContainer = () => {
   let {user} = useAuth();
   const classes = useStyles();
 
   return (
+    <Grid container 
+    spacing={0} direction='row' 
+    className={classes.root}>
+      <Grid item xs={12} sm={4} style={appStyle}>
+        <Sidebar/>
+      </Grid>
+      <Grid item xs={12} sm={8} style={appStyle}>
+        <Chat messages={messages} user={user.email} selectedContacts={selectedContacts} />
+      </Grid>
+      <Grid item xs={12} sm={8} style={appStyle}>
+        <Chat messages={messages} user={user.email} selectedContacts={selectedContacts} />
+      </Grid>
+    </Grid>
+  )
+}
+
+const AuthenticatedApp = () => {
+  return (
     <MuiThemeProvider theme={theme}>
       <SocketProvider>
         <Router>
-          <Grid container 
-            spacing={0} direction='row' 
-            className={classes.root}>
-            <Grid item xs={12} sm={4} style={appStyle}>
-              <Sidebar/>
-            </Grid>
-
-            <Switch>
-              <Route exact path="/">
-                  <Grid item xs={12} sm={8} style={appStyle}>
-                    <Chat messages={messages} user={user.email} selectedContacts={selectedContacts} />
-                  </Grid>
-              </Route>
-              <Route exact path="/conversations/:conversationId">
-                  <Grid item xs={12} sm={8} style={appStyle}>
-                    <Chat messages={messages} user={user.email} selectedContacts={selectedContacts} />
-                  </Grid>
-              </Route>
-              <Route exact path="/login">
-                <Redirect to="/" />
-              </Route>
-            </Switch>
-          </Grid>
+          <Switch>
+            <Route exact path="/">
+              <AppContainer />
+            </Route>
+            <Route exact path="/conversations/:conversationId">
+              <AppContainer />
+            </Route>
+            <Route exact path="/login">
+              <Redirect to="/" />
+            </Route>
+          </Switch>
         </Router>
       </SocketProvider>
     </MuiThemeProvider>
