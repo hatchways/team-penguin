@@ -26,6 +26,7 @@ const Sidebar = props => {
                                       {  'from_email': fromEmail });
       if(approvedRes.data.approved && approvedRes.data.from_user_email === fromEmail){
         setApproveInvite(`${fromEmail} is now your friend`);
+        loadFriends();
       }
     }
     else if(action === 'reject') {
@@ -35,6 +36,8 @@ const Sidebar = props => {
         setApproveInvite(`You have declined ${fromEmail}'s request`);
       }
     }
+    loadPendingRequests();
+    loadPendingInvites();
   }
 
   const loadPendingRequests = async() => {
@@ -68,17 +71,19 @@ const Sidebar = props => {
   }
  
   useEffect(() => {
-    loadFriends()
-  }, [friends.length]);
+    console.log('loadfriends triggered');
+    loadFriends();
+  },[friends.length]);
  
 
   useEffect(() => {
-    console.log('pending requests triggered');
     loadPendingRequests();
+    console.log('pending requests triggered');
   }, [pendingRequests.length]);
   
   useEffect(() => {
     loadPendingInvites();
+    console.log('pending invites triggered');
   }, [pendingInvites.length]);
 
   return (

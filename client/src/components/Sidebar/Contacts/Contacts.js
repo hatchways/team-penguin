@@ -3,7 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import axios from 'axios';
 import Friends from './Friends';
 import Requests from './Requests';
 import Pending from './Pending';
