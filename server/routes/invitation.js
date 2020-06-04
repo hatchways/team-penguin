@@ -6,7 +6,7 @@ const Invitation = require("../models/invitation");
 const User = require("../models/user");
 const {sendEmail, getSuccessCount} = require("../util/sendgrid_helpers")
 const router = express.Router();
-
+const invitationRejectApproveHelper = require('../controllers/invitationRejectApproveHelper');
 //send an invite to user
 router.post("/user/:fromEmail",
     //passport.authenticate('jwt', { session: false }),
@@ -170,9 +170,9 @@ router.get("/user/:from_email",
                 return handleError(err);
             }
             if (invitations && invitations.length) {
-                res.json({ type: "success", invitations})
+                res.status(200).json({ type: "success", invitations})
             } else {
-                res.json({ type: "success", message: "There are no pending invitations"})
+                res.status(200).json({ type: "success", message: "There are no pending invitations"})
             }
           }
         )
@@ -191,16 +191,14 @@ router.get("/user/requests/:to_email",
                 return handleError(err);
             }
             if (invitations && invitations.length) {
-                res.json({ type: "success", invitations})
+                res.status(200).json({ type: "success", invitations})
             } else {
-                res.json({ type: "success", message: "There are no pending invitation requests"})
+                res.status(200).json({ type: "success", message: "There are no pending invitation requests"})
             }
           }
         )
     }
 );
-
-
 
 //Returns contacts that the current user accepted invitations from
 router.get("/user/:to_email/contacts",
@@ -227,7 +225,13 @@ router.get("/user/:to_email/contacts",
   }
 );
 
+//approve the request
+router.put("/user/:to_email/approve", (req, res) => {
+  invitationRejectApproveHelper(req,res,'approved');
+});
 
-
-
+//reject the request
+router.put("/user/:to_email/reject", (req, res) => {
+  invitationRejectApproveHelper(req,res,'rejected');
+});
 module.exports = router;
