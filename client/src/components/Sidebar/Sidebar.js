@@ -6,6 +6,7 @@ import axios from 'axios';
 
 const Sidebar = props => {
   const email = localStorage.getItem('email');
+  const [friends, setFriends] = useState([]);
   const [approveInvite, setApproveInvite] = useState('');
   const [pendingRequests, setPendingRequests] = useState([]);
   const [pendingInvites, setPendingInvites] = useState([]);
@@ -56,6 +57,21 @@ const Sidebar = props => {
     }
   }
 
+  const loadFriends = async() => {
+    const res = await axios.get(`http://localhost:3001/invitations/user/${email}/contacts`);
+    if(res.data.contacts.length !== 0){
+     setFriends(res.data.contacts);
+    }
+    else {
+      setFriends(['You dont have any contacts. Send invites to initiate a conversation']);
+    }
+  }
+ 
+  useEffect(() => {
+    loadFriends()
+  }, [friends.length]);
+ 
+
   useEffect(() => {
     console.log('pending requests triggered');
     loadPendingRequests();
@@ -69,7 +85,7 @@ const Sidebar = props => {
     <div>
       <h1>user avatar</h1>
       <Contacts 
-        contacts={props.contacts}
+        friends={friends}
         selected={props.selected}
         requestContact={props.requestContact}
         updateContact={updateContact}
