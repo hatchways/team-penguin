@@ -39,9 +39,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const AuthenticatedApp = () => {
-  //let {logout, user} = useAuth();
-  //REPLACE
-  let user = 'test100@t.com';
+  let {user} = useAuth();
   const classes = useStyles();
 
   return (
@@ -58,12 +56,12 @@ const AuthenticatedApp = () => {
             <Switch>
               <Route exact path="/">
                   <Grid item xs={12} sm={8} style={appStyle}>
-                    <Chat messages={messages} user={user} selectedContacts={selectedContacts} />
+                    <Chat messages={messages} user={user.email} selectedContacts={selectedContacts} />
                   </Grid>
               </Route>
               <Route exact path="/conversations/:conversationId">
                   <Grid item xs={12} sm={8} style={appStyle}>
-                    <Chat messages={messages} user={user} selectedContacts={selectedContacts} />
+                    <Chat messages={messages} user={user.email} selectedContacts={selectedContacts} />
                   </Grid>
               </Route>
               <Route exact path="/login">
