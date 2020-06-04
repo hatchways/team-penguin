@@ -16,12 +16,21 @@ const Sidebar = props => {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
   }
 
-  const updateContact = async(approvedEmail) => {
-    const approvedRes = await axios.put(`http://localhost:3001/invitations/user/${email}/approve`, 
-                                      {  'from_email': approvedEmail });
-    if(approvedRes.data.approved && approvedRes.data.from_user_email === approvedEmail){
-      //add snackbar alert
-      setApproveInvite(`${approvedEmail} is now your friend`);
+  const updateContact = async(fromEmail, action) => {
+
+    if(action === 'approve') {
+      const approvedRes = await axios.put(`http://localhost:3001/invitations/user/${email}/approve`, 
+                                      {  'from_email': fromEmail });
+      if(approvedRes.data.approved && approvedRes.data.from_user_email === fromEmail){
+        setApproveInvite(`${fromEmail} is now your friend`);
+      }
+    }
+    else if(action === 'reject') {
+      const rejectedRes = await axios.put(`http://localhost:3001/invitations/user/${email}/reject`, 
+                                      {  'from_email': fromEmail });
+      if(rejectedRes.data.rejected){
+        setApproveInvite(`You have declined ${fromEmail}'s request`);
+      }
     }
   }
 

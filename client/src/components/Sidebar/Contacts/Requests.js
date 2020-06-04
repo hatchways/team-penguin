@@ -29,7 +29,7 @@ const Requests = props => {
           <Button 
             variant='contained' 
             color='primary'
-            onClick={() => {props.updateContact(curr.from_user_email)}}
+            onClick={() => {props.updateContact(curr.from_user_email, 'approve')}}
           >
             Accept
           </Button>
@@ -38,7 +38,7 @@ const Requests = props => {
           <Button 
             variant='contained' 
             color='secondary'
-            // onClick={() => {props.updateContact(curr.username, 'reject')}}
+            onClick={() => {props.updateContact(curr.from_user_email, 'reject')}}
           >
             Decline
           </Button>
