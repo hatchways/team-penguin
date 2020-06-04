@@ -64,18 +64,15 @@ const AntSwitch = withStyles((theme) => ({
 }))(Switch);
 
 const ChatHeader = props => {
-  const {selectedContacts} = props;
-  const classes = useStyles();
+  let friendEmails = props && props.friendEmails ? props.friendEmails : [];
+  const {user, logout} = useAuth();
   const [state, setState] = useState({
     checkedC: true,
   });
-  const {user, logout} = useAuth();
-  let initial;
-  let email;
-  if (selectedContacts.length === 1) {
-    initial = selectedContacts[0].email[0].toUpperCase();
-    email = selectedContacts[0].email;
-  };
+  const classes = useStyles();
+
+  let initial = friendEmails && friendEmails.length === 1 ? friendEmails[0][0].toUpperCase() : '';
+  let email = friendEmails && friendEmails.length === 1 ? friendEmails[0] : '';
 
   const handleChange = (event) => {
     const {name, checked} = event.target;
@@ -86,7 +83,7 @@ const ChatHeader = props => {
     logout();
   }
 
-  if (selectedContacts.length === 1) {
+  if (friendEmails && friendEmails.length === 1) {
     return (
         <div className="chatHeaderContainer">
           <div className="chatHeaderLeft">
@@ -109,6 +106,8 @@ const ChatHeader = props => {
         </div>
     );
   }
+
+  return (null);
 }
 
 export default ChatHeader;
