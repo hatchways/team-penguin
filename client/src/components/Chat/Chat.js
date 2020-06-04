@@ -17,6 +17,7 @@ const Chat = props => {
 
   const [curMessage, setCurMessage] = useState('');
   const [postedMessages, setPostedMessages] = useState([]);
+  const [chatUserEmails, setChatUserEmails] = useState([]);
 
   //socket client listener for server broadcasts
   if (socket && conversationId) {
@@ -46,13 +47,21 @@ const Chat = props => {
     }
   }
 
+  const getFriendEmail = () => {
+    let friend = chatUserEmails.filter(email => email !== user.email);
+    return friend;
+  }
+
   useEffect(() => {
     if (conversationId) {
       fetch(`http://localhost:3001/conversations/${conversationId}`)
         .then(resp => resp.json())
         .then(json => {
           if (json.messages && json.messages.length) {
-            setPostedMessages(json.messages)
+            setPostedMessages(json.messages);
+          }
+          if (json.user_emails && json.user_emails.length) {
+            setChatUserEmails(json.user_emails);
           }
         })
         .catch(err => console.error('Could not find old messages', err))
@@ -62,7 +71,8 @@ const Chat = props => {
   return (
     <div style={{display: 'flex', flexFlow: 'column nowrap', justifyContent: 'space-between', height: '100vh'}}>
       <ChatHeader 
-        selectedContacts={selectedContacts}
+        //selectedContacts={selectedContacts}
+        friendEmails={getFriendEmail()}
       />
       <MessageDisplay
         userEmail={user.email} 
