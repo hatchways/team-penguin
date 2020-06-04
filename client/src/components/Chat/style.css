@@ -53,3 +53,7 @@
   border-radius: 8px;
   background-color: rgba(0, 0, 0, 0.04);
 }
+
+.messageAuthorTime {
+  color: #616161;
+}

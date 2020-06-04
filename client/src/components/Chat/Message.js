@@ -27,7 +27,7 @@ const Message = props => {
       <div style={{display: 'flex', flexFlow: 'row nowrap', justifyContent: 'flex-start', alignItems: 'flex-start', margin: '18px 0'}}>
         <Avatar>{getUserInitial()}</Avatar>
         <div style={{display: 'flex', flexFlow: 'column nowrap', marginLeft: '8px'}}>
-          <Typography variant='body1'>{userEmail} {getPrettyTime(messageTime)}</Typography>
+          <Typography variant='body1' className="messageAuthorTime">{userEmail} {getPrettyTime(messageTime)}</Typography>
           <div className={msgClass}>{props.message}</div>
         </div>
       </div>
@@ -36,7 +36,7 @@ const Message = props => {
     return (
       <div style={{display: 'flex', flexFlow: 'row nowrap', justifyContent: 'flex-end', alignItems: 'flex-end', margin: '18px 0'}}>
         <div style={{display: 'flex', flexFlow: 'column nowrap', marginLeft: '8px', alignItems: 'flex-end'}}>
-          <Typography variant='body1'>{getPrettyTime(messageTime)}</Typography>
+          <Typography variant='body1' className="messageAuthorTime">{getPrettyTime(messageTime)}</Typography>
           <div className={msgClass}>{props.message}</div>
         </div>
       </div>
