@@ -24,6 +24,9 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.getContrastText(deepPurple[500]),
     backgroundColor: deepPurple[500],
   },
+  chatHeaderName: {
+    padding: '0 5px',
+  },
 }));
 
 const AntSwitch = withStyles((theme) => ({
@@ -88,10 +91,10 @@ const ChatHeader = props => {
         <div className="chatHeaderContainer">
           <div className="chatHeaderLeft">
             <Avatar className={classes.orange}>{initial}</Avatar>
-            <Typography variant='h5'>{email}</Typography>
+            <Typography variant='h5' className={classes.chatHeaderName}>{email}</Typography>
             <Typography variant='h5'>online status todo</Typography>
           </div>
-          <div className="chatHeaderSpacer"></div>
+          <div className="chatHeaderSpacer" />
           <div className="chatHeaderRight">
             <Typography component="div">
               <Grid component="label" container alignItems="center" spacing={1}>
