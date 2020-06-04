@@ -36,7 +36,8 @@ router.post("/",
   }
 );
 
-/* on successful return, json includes this object, dictUidToObj
+/*  gets conversations for a given user id
+    on successful return, json includes this object, dictUidToObj
     {uid_as_string: {email, language}}
     as well as the conversations
 */
@@ -81,5 +82,23 @@ router.get("/user/:id",
         )
     }
 );
+
+//gets a conversation by conversationId
+router.get("/:conversation_id",
+    //passport.authenticate('jwt', { session: false }),
+    function(req, res, next) {
+        const {conversation_id} = req.params;
+        let id = mongoose.Types.ObjectId(conversation_id);
+        Conversation.findOne({_id: id}, 'messages', function(err, conversation) {
+          if (err) console.error('Could not get conversation', err);
+          if (conversation && conversation.messages.length) {
+            res.status(200).json({type: 'success', messages: conversation.messages, message: 'An existing conversation was found.'})
+          } else {
+            res.json({type: 'error', message: 'That conversation was not found'})
+          }
+        }) 
+    }
+)
+
 
 module.exports = router;
