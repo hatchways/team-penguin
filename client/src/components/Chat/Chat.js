@@ -38,11 +38,11 @@ const Chat = props => {
     }
   }
 
-  useEffect(() => {
-    if (conversationId) {
-      setChatRoom({conversationId});
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (conversationId) {
+  //     //setChatRoom({conversationId});
+  //   }
+  // }, []);
 
   useEffect(() => {
     if (socket) {
