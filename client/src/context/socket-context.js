@@ -5,13 +5,11 @@ const SocketContext = React.createContext([{}, () => {}])
 const socket = io.connect('http://localhost:3001/chat');
 
 function SocketProvider({children}) {
-  const [curChatId, setCurChatId] = useState(null);
-  const [allChatIds, setAllChatIds] = useState([]);
-
   const setChatRoom = ({conversationId}) => {
     socket.on('connect', function() {
       // Connected, let's sign-up for to receive messages for this room
       socket.emit('room', conversationId);
+      console.log('gets here')
    });
   }
 
@@ -19,13 +17,7 @@ function SocketProvider({children}) {
     socket.send({message, conversationId});
   }
 
-  const updateCurChatId = (id) => {
-    if (id.length) {
-      setCurChatId(id);
-    }
-  }
-
-  const socketShare = {socket, sendChatMessage, curChatId, updateCurChatId, setChatRoom};
+  const socketShare = {socket, sendChatMessage, setChatRoom};
 
   return (
     <SocketContext.Provider value={socketShare}>
