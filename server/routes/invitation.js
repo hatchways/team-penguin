@@ -6,7 +6,7 @@ const Invitation = require("../models/invitation");
 const User = require("../models/user");
 const {sendEmail, getSuccessCount} = require("../util/sendgrid_helpers")
 const router = express.Router();
-
+const invitationRejectApproveHelper = require('../controllers/invitationRejectApproveHelper');
 //send an invite to user
 router.post("/user/:fromEmail",
     //passport.authenticate('jwt', { session: false }),
@@ -227,42 +227,11 @@ router.get("/user/:to_email/contacts",
 
 //approve the request
 router.put("/user/:to_email/approve", (req, res) => {
-   const {to_email} = req.params;
-   const {from_email} = req.body;
-   console.log('executed approval route');
-   Invitation.findOne({
-      "from_user_email": from_email,
-      "to_user_email": to_email
-   }, (err, invitation) => {
-     if(err) return console.error(err);
-     if(invitation){
-       invitation.approved=true;
-       invitation.save();
-       res.status(200).json({"approved": invitation.approved, "from_user_email": invitation.from_user_email});
-     }
-     else {
-       res.status(400).json({"error": "Could not find approved property"})
-     }
-   });
+  invitationRejectApproveHelper(req,res,'approved');
 });
 
 //reject the request
 router.put("/user/:to_email/reject", (req, res) => {
-  const {to_email} = req.params;
-  const {from_email} = req.body;
-  Invitation.findOne({
-     "from_user_email": from_email,
-     "to_user_email": to_email
-  }, (err, invitation) => {
-    if(err) return console.error(err);
-    if(invitation){
-      invitation.rejected = true;
-      invitation.save();
-      res.status(200).json({"rejected": invitation.rejected});
-    }
-    else {
-      res.status(400).json({"error": "Could not find rejected property"})
-    }
-  });
+  invitationRejectApproveHelper(req,res,'rejected');
 });
 module.exports = router;
