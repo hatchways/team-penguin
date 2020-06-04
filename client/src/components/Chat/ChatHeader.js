@@ -70,7 +70,7 @@ const AntSwitch = withStyles((theme) => ({
 const ChatHeader = props => {
   const {selectedContacts} = props;
   const classes = useStyles();
-  const [state, setState] = React.useState({
+  const [state, setState] = useState({
     checkedC: true,
   });
   const {user, logout} = useAuth();
@@ -82,7 +82,8 @@ const ChatHeader = props => {
   };
 
   const handleChange = (event) => {
-    setState({ ...state, [event.target.name]: event.target.checked });
+    const {name, checked} = event.target;
+    setState({ ...state, [name]: checked });
   };
 
   const handleLogout = (evt) => {
