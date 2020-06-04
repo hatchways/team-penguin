@@ -25,34 +25,22 @@ const Contacts = props => {
       container
       direction='column'
     >
-      {/*  className={props.classes.tabsContainer} */}
       <Grid item >
         <Tabs 
           value={display} 
           onChange={toggleDisplay} 
           variant='scrollable' 
           scrollButtons='auto' 
-          // classes={{
-          //   indicator: props.classes.tabsIndicator
-          // }}
         >
           <Tab 
             value='friends' 
             label='Friends' 
             disableRipple
-            // className={props.classes.tab}
-            // classes={{
-            //   selected: props.classes.selectedTab
-            // }}
           />
           <Tab 
             value='invitations' 
             label='Invitations'
             disableRipple 
-            // className={props.classes.tab}
-            // classes={{
-            //   selected: props.classes.selectedTab
-            // }}
           />
         </Tabs>
       </Grid>

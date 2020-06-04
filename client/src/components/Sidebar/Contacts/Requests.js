@@ -12,7 +12,6 @@ const Requests = props => {
       container
       direction='column'
       spacing={1}
-      // className={props.classes.entry}
       key={curr.from_user_email}
     >
       <Grid item container>

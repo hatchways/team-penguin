@@ -9,7 +9,6 @@ const Pending = props => {
     <Grid 
       item 
       key={curr.to_user_email}
-      // className={props.classes.entry}
     >
       <Typography variant='body1'>
         <b>{curr.to_user_email.split('@')[0]}</b> has received your friend request

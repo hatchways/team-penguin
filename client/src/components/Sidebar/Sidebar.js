@@ -71,19 +71,16 @@ const Sidebar = props => {
   }
  
   useEffect(() => {
-    console.log('loadfriends triggered');
     loadFriends();
   },[friends.length]);
  
 
   useEffect(() => {
     loadPendingRequests();
-    console.log('pending requests triggered');
   }, [pendingRequests.length]);
   
   useEffect(() => {
     loadPendingInvites();
-    console.log('pending invites triggered');
   }, [pendingInvites.length]);
 
   return (
