@@ -40,14 +40,14 @@ const Chat = props => {
 
   // useEffect(() => {
   //   if (conversationId) {
-  //     //setChatRoom({conversationId});
   //   }
   // }, []);
 
   useEffect(() => {
-    if (socket) {
-      socket.on('server broadcast', (data) => {
-        setPostedMessages(postedMessages.concat([data.message]));
+    if (socket && conversationId) {
+      socket.on(conversationId, (data) => {
+//      socket.on('server broadcast', (data) => {
+        setPostedMessages(postedMessages.concat([data]));
       })
     }
   }, [postedMessages]);
