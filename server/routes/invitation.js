@@ -229,14 +229,20 @@ router.get("/user/:to_email/contacts",
 router.put("/user/:to_email/approve", (req, res) => {
    const {to_email} = req.params;
    const {from_email} = req.body;
+   console.log('executed approval route');
    Invitation.findOne({
       "from_user_email": from_email,
       "to_user_email": to_email
    }, (err, invitation) => {
      if(err) return console.error(err);
-     invitation.approved = true;
-     invitation.save();
-     res.status(200).json({"approved": invitation.approved, "from_user_email": invitation.from_user_email});
+     if(invitation){
+       invitation.approved=true;
+       invitation.save();
+       res.status(200).json({"approved": invitation.approved, "from_user_email": invitation.from_user_email});
+     }
+     else {
+       res.status(400).json({"error": "Could not find approved property"})
+     }
    });
 });
 
@@ -249,9 +255,14 @@ router.put("/user/:to_email/reject", (req, res) => {
      "to_user_email": to_email
   }, (err, invitation) => {
     if(err) return console.error(err);
-    invitation.rejected = true;
-    invitation.save();
-    res.status(200).json({"rejected": invitation.rejected});
+    if(invitation){
+      invitation.rejected = true;
+      invitation.save();
+      res.status(200).json({"rejected": invitation.rejected});
+    }
+    else {
+      res.status(400).json({"error": "Could not find rejected property"})
+    }
   });
 });
 module.exports = router;
