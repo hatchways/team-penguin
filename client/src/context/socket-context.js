@@ -8,8 +8,15 @@ function SocketProvider({children}) {
   const [curChatId, setCurChatId] = useState(null);
   const [allChatIds, setAllChatIds] = useState([]);
 
+  const setChatRoom = ({conversationId}) => {
+    socket.on('connect', function() {
+      // Connected, let's sign-up for to receive messages for this room
+      socket.emit('room', conversationId);
+   });
+  }
+
   const sendChatMessage = ({from_email, message, conversationId}) => {
-    socket.send(message);
+    socket.send({message, conversationId});
   }
 
   const updateCurChatId = (id) => {
@@ -18,7 +25,7 @@ function SocketProvider({children}) {
     }
   }
 
-  const socketShare = {socket, sendChatMessage, curChatId, updateCurChatId};
+  const socketShare = {socket, sendChatMessage, curChatId, updateCurChatId, setChatRoom};
 
   return (
     <SocketContext.Provider value={socketShare}>
