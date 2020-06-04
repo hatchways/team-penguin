@@ -3,17 +3,15 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
-
-
-
 const Requests = props => {
   const entries = props.requests.map(curr => (
+    curr.from_user_email 
+    ?
     <Grid
       item
       container
       direction='column'
       spacing={1}
-      // className={props.classes.entry}
       key={curr.from_user_email}
     >
       <Grid item container>
@@ -27,7 +25,7 @@ const Requests = props => {
           <Button 
             variant='contained' 
             color='primary'
-            // onClick={() => {props.updateContact(curr.username, 'accept')}}
+            onClick={() => {props.updateContact(curr.from_user_email, 'approve')}}
           >
             Accept
           </Button>
@@ -36,13 +34,16 @@ const Requests = props => {
           <Button 
             variant='contained' 
             color='secondary'
-            // onClick={() => {props.updateContact(curr.username, 'reject')}}
+            onClick={() => {props.updateContact(curr.from_user_email, 'reject')}}
           >
             Decline
           </Button>
         </Grid>
       </Grid>
     </Grid>
+
+    :
+    <p>No invitations received </p>
   ));
 
   return (
