@@ -51,6 +51,7 @@ const Contacts = props => {
           selected={props.selected} 
           requestContact={props.requestContact}
           selectContact={props.selectContact}
+          loadPendingInvites = {props.loadPendingInvites}
         />
       }
       {display === 'invitations' && 

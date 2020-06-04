@@ -31,7 +31,7 @@ const Friends = props => {
       spacing={2}
     >
       <Grid item >
-        <InvitationDialog />
+        <InvitationDialog loadPendingInvites={props.loadPendingInvites} />
       </Grid>
       {entries(props.selected, props.selectContact)}
     </Grid>

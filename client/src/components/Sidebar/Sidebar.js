@@ -88,6 +88,7 @@ const Sidebar = props => {
       <h1>user avatar</h1>
       <Contacts 
         friends={friends}
+        loadPendingInvites = {loadPendingInvites}
         selected={props.selected}
         requestContact={props.requestContact}
         updateContact={updateContact}

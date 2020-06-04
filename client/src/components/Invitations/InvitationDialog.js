@@ -87,7 +87,7 @@ const DialogTitle = withStyles(dialogTitleStyles)((props) => {
   );
 });
 
-export default function InvitationDialog() {
+export default function InvitationDialog(props) {
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState('');
   const [emailErrorMessage, setEmailErrorMessage] = useState('Required');
@@ -162,6 +162,7 @@ export default function InvitationDialog() {
           .then(resp => {
             setEmail('');
             setOpen(false);
+            props.loadPendingInvites();
           })
           .catch(err => {
             console.error(err)
