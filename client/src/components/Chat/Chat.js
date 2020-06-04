@@ -46,6 +46,19 @@ const Chat = props => {
     }
   }
 
+  useEffect(() => {
+    if (conversationId) {
+      fetch(`http://localhost:3001/conversations/${conversationId}`)
+        .then(resp => resp.json())
+        .then(json => {
+          if (json.messages && json.messages.length) {
+            setPostedMessages(json.messages)
+          }
+        })
+        .catch(err => console.error('Could not find old messages', err))
+    }
+  }, [conversationId]);
+
   return (
     <div style={{display: 'flex', flexFlow: 'column nowrap', justifyContent: 'space-between', height: '100vh'}}>
       <ChatHeader 
