@@ -5,43 +5,23 @@ import Icon from '@material-ui/core/Icon';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Modal from '@material-ui/core/Modal';
-
+import userPlaceholderImg from '../../../assets/user-placeholder.png';
 import InvitationDialog from '../../Invitations/InvitationDialog';
-
 
 const Friends = props => {
   const entries = (selected, select) => props.friends.map(curr => (
     <Grid
+      item
       container
-      spacing={3}
-      alignItems='center'
-  //     // className={
-  //     //   selected === curr.username 
-  //     //   ? props.classes.friend + ' ' + props.classes.selected 
-  //     //   : props.classes.friend
-  //     // }
+      spacing={2}
       key={curr}
       onClick={() => {select(curr.index)}}
     >
-  {/* 
-  //     <Grid item>
-  //       {curr.image ? (
-  //         <Avatar 
-  //           alt='avatar' 
-  //           src={(curr.image.data.data, curr.image.contentType)} 
-  //           //className={props.classes.avatar} 
-  //         />
-  //       ) : (
-  //         <Avatar 
-  //           alt='avatar' 
-  //           //className={props.classes.avatar}
-  //         >
-            
-  //         </Avatar>
-  //       )}
-  //     </Grid>*/}
       <Grid item>
-        <Typography variant='h5'>{curr.split('@')[0]}</Typography>
+        <Avatar src={userPlaceholderImg} alt="" />
+      </Grid>
+      <Grid item>       
+        <Typography variant='h6'>{curr.split('@')[0]}</Typography>
       </Grid>
     </Grid>
   ));
@@ -50,6 +30,8 @@ const Friends = props => {
     <Grid 
       container
       direction='column'
+      justify='center'
+      spacing={2}
     >
       <Grid item >
         <InvitationDialog />

@@ -7,6 +7,7 @@ const User = require("../models/user");
 const {sendEmail, getSuccessCount} = require("../util/sendgrid_helpers")
 const router = express.Router();
 
+//send an invite to user
 router.post("/user/:fromEmail",
     //passport.authenticate('jwt', { session: false }),
     function(req, res, next) {
@@ -157,13 +158,12 @@ router.post("/user/:fromEmail",
 );
 
 // Returns pending invitations that were sent to the given user
-router.get("/user/:id",
+router.get("/user/:from_email",
     //passport.authenticate('jwt', { session: false }),
     function(req, res, next) {
-        const {id} = req.params;
-        var objId = mongoose.Types.ObjectId;
+        const {from_email} = req.params;
 
-        Invitation.find({"to_user": new objId(id), "approved": false, "rejected": {$ne: true}})
+        Invitation.find({"from_user_email": from_email, "approved": false, "rejected": {$ne: true}})
           .sort({createdOn: 1})
           .exec(function (err, invitations) {
             if (err) {
@@ -179,7 +179,30 @@ router.get("/user/:id",
     }
 );
 
-// Returns contacts that the current user accepted invitations from
+//Returns invitation requests for the user
+router.get("/user/requests/:to_email",
+    function(req, res, next) {
+        const {to_email} = req.params;
+
+        Invitation.find({"to_user_email": to_email, "approved": false, "rejected": {$ne: true}})
+          .sort({createdOn: 1})
+          .exec(function (err, invitations) {
+            if (err) {
+                return handleError(err);
+            }
+            if (invitations && invitations.length) {
+                res.json({ type: "success", invitations})
+            } else {
+                res.json({ type: "success", message: "There are no pending invitation requests"})
+            }
+          }
+        )
+    }
+);
+
+
+
+//Returns contacts that the current user accepted invitations from
 router.get("/user/:to_email/contacts",
   //passport.authenticate('jwt', { session: false }),
   function(req, res, next) {
@@ -203,5 +226,8 @@ router.get("/user/:to_email/contacts",
     });
   }
 );
+
+
+
 
 module.exports = router;
