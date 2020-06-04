@@ -9,7 +9,7 @@ const saveMessageToConversation = ({message, conversationId}) => {
                       }
                     }, function(err, chat) {
                       if (err) return console.error('Could not save post', err);
-                      if (chat) console.log('Conversation was updated', chat);
+                      if (chat) console.log('Conversation was updated'); //, chat
                     })
 }
 
