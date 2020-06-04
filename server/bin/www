@@ -37,29 +37,25 @@ server.on("listening", onListening);
 //   console.log('connected on default namespace')
 // });
 
+console.log('socket rooms', io.rooms)
+
 const nsp = io.of('/chat');
 nsp.on('connection', function(socket){
   console.log('someone connected on /chat');
-  socket.broadcast.emit('testing broadcast')
-  socket.emit('chat', { hello: 'world chat' });
-  //socket.on('my other event', (data) => {
-    //console.log(data);
-  //});
-  // socket.on('test90@t.com', (data) => {
-  //   console.log(data);
-  // });
-  // socket.on('test100@t.com', (data) => {
-  //   console.log(data);
-  // });
-  socket.on('message', (data) => {
-    //REMOVE
-    const testId = '5ed67f6a7e0334fa48d92549';
-    console.log(data)
-    socket.broadcast.emit('server broadcast', data);
-    saveMessageToConversation({message: data, conversationId: testId})
+
+  socket.on('room', function(room) {
+    socket.join(room);
+    console.log('socket rooms', io.rooms)
   });
 
-  // disconnect is fired when a client leaves the server
+  socket.on('message', (data) => {
+    let {conversationId, message} = data;
+    console.log(data)
+    socket.to(conversationId).emit(data);
+    saveMessageToConversation({message, conversationId})
+    //socket.broadcast.emit('server broadcast', data);
+  });
+
   socket.on("disconnect", () => {
     console.log("user disconnected");
   });
