@@ -45,7 +45,7 @@ nsp.on('connection', function(socket){
   socket.on('message', (data) => {
     console.log('data', data)
     let {conversationId, message} = data;
-    socket.broadcast.emit(conversationId, message);
+    socket.broadcast.emit(conversationId, data);
     //socket.broadcast.emit('server broadcast', data);
     saveMessageToConversation({message, conversationId})
   });

@@ -20,7 +20,7 @@ const Chat = props => {
 
   if (socket && conversationId) {
     socket.on(conversationId, (data) => {
-      setPostedMessages(postedMessages.concat([data]));
+      setPostedMessages(postedMessages.concat([data.message]));
     })
   }
 
