@@ -1,3 +1,35 @@
+/* Chat header style */
+
+.chatHeaderContainer {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-basis: 70px;
+  flex-shrink: 0;
+  background-color: #fff;
+  margin-bottom: 5px;
+  padding: 18px;
+}
+
+.chatHeaderLeft {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: start;
+  align-items: center;
+}
+
+.chatHeaderSpacer {
+  flex-grow: 1;
+}
+
+.chatHeaderRight {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: end;
+  align-items: center;
+}
+
 /* Message style */
 
 .messageBubble {

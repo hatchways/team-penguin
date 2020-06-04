@@ -24,13 +24,6 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.getContrastText(deepPurple[500]),
     backgroundColor: deepPurple[500],
   },
-  sectionHeader: {
-    flexBasis: '70px',
-    flexShrink: '0',
-    backgroundColor: '#fff',
-    marginBottom: '5px',
-    padding: '18px',
-  },
 }));
 
 const AntSwitch = withStyles((theme) => ({
@@ -90,27 +83,16 @@ const ChatHeader = props => {
     logout();
   }
 
-  return (
-    <Grid
-      item
-      container
-      spacing={0}
-      direction="row"
-      alignItems='center'
-      className={classes.sectionHeader}
-    >
-      {selectedContacts.length === 1 && (
-        <React.Fragment>
-          <Grid item>
+  if (selectedContacts.length === 1) {
+    return (
+        <div className="chatHeaderContainer">
+          <div className="chatHeaderLeft">
             <Avatar className={classes.orange}>{initial}</Avatar>
-          </Grid>
-          <Grid item>
             <Typography variant='h5'>{email}</Typography>
-          </Grid>
-          <Grid item>
             <Typography variant='h5'>online status todo</Typography>
-          </Grid>
-          <Grid item>
+          </div>
+          <div className="chatHeaderSpacer"></div>
+          <div className="chatHeaderRight">
             <Typography component="div">
               <Grid component="label" container alignItems="center" spacing={1}>
                 <Grid item>Off</Grid>
@@ -119,14 +101,11 @@ const ChatHeader = props => {
                 </Grid>
               </Grid>
             </Typography>
-          </Grid>
-          <Grid item>
             <Icon onClick={handleLogout}>more_horiz</Icon>
-          </Grid>
-        </React.Fragment>
-      )}
-    </Grid>
-  );
+          </div>
+        </div>
+    );
+  }
 }
 
 export default ChatHeader;
