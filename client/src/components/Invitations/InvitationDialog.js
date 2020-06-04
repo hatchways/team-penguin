@@ -149,7 +149,7 @@ export default function InvitationDialog() {
         toEmailAr = [email];
       }
 
-      if (user.length && jwtToken.length) {
+      if (user && user.email.length && jwtToken.length) {
         let body = {toEmailAr, referralId};
         fetch(`http://localhost:3001/invitations/user/${user.email}`, {
           method: 'POST',
