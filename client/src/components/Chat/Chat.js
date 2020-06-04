@@ -13,7 +13,7 @@ const Chat = props => {
   const {messages, selectedContacts} = props;
   let { conversationId } = useParams();
   const {user} = useAuth();
-  const {socket, sendChatMessage, getMessage} = useSocket();
+  const {socket, sendChatMessage, getMessage, setChatRoom} = useSocket();
 
   const [curMessage, setCurMessage] = useState('');
   const [postedMessages, setPostedMessages] = useState([]);
@@ -39,16 +39,21 @@ const Chat = props => {
   }
 
   useEffect(() => {
+    if (conversationId) {
+      setChatRoom({conversationId});
+    }
+  }, []);
+
+  useEffect(() => {
     if (socket) {
       socket.on('server broadcast', (data) => {
-        setPostedMessages(postedMessages.concat([data]));
+        setPostedMessages(postedMessages.concat([data.message]));
       })
     }
   }, [postedMessages]);
 
   return (
     <div style={{display: 'flex', flexFlow: 'column nowrap', justifyContent: 'space-between', height: '100vh'}}>
-      <Link to="/conversations/5ed67f6a7e0334fa48d92549">Test Chat Link</Link>
       <ChatHeader 
         selectedContacts={selectedContacts}
       />
