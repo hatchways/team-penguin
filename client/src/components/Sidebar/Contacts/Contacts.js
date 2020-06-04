@@ -28,7 +28,7 @@ const Contacts = props => {
  const loadFriends = async() => {
    const res = await axios.get(`http://localhost:3001/invitations/user/${email}/contacts`);
    if(res.data.contacts.length !== 0){
-    setFriends([...res.data.contacts]);
+    setFriends(res.data.contacts);
    }
    else {
      setFriends(['You dont have any contacts. Send invites to initiate a conversation']);
@@ -38,7 +38,7 @@ const Contacts = props => {
  const loadPendingInvites = async() => {
   const res = await axios.get(`http://localhost:3001/invitations/user/${email}`);
   if(res.data.invitations.length !== 0){
-   setPendingInvites([...res.data.invitations]);
+   setPendingInvites(res.data.invitations);
   }
   else {
     setPendingInvites(['No pending invitations']);
@@ -48,7 +48,7 @@ const Contacts = props => {
 const loadPendingRequests = async() => {
   const res = await axios.get(`http://localhost:3001/invitations/user/requests/${email}`);
   if(res.data.invitations.length !== 0){
-   setPendingRequests([...res.data.invitations]);
+   setPendingRequests(res.data.invitations);
   }
   else {
     setPendingRequests(['No pending invitation requests']);
