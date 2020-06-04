@@ -37,15 +37,19 @@ const nsp = io.of('/chat');
 nsp.on('connection', function(socket){
   console.log('someone connected on /chat');
 
-  socket.on('room', function(room) {
-    socket.join(room);
-  });
+  // socket.on('room', function(room) {
+  //   socket.join(room);
+  //   console.log('socket room', socket.rooms)
+  // });
 
   socket.on('message', (data) => {
     let {conversationId, message} = data;
-    socket.to(conversationId).emit(data);
+    socket.broadcast.emit('server broadcast', data);
     saveMessageToConversation({message, conversationId})
   });
+
+  //socket.emit('message', 'test message server to room');//to(`${conversationId}`)
+  // socket.to(conversationId).emit('message', JSON.stringify(data));
 
   socket.on("disconnect", () => {
     console.log("user disconnected");
