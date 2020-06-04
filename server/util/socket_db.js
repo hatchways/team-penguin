@@ -3,7 +3,7 @@ const Conversation = require("../models/conversation");
 
 const saveMessageToConversation = ({message, conversationId}) => {
   const id = mongoose.Types.ObjectId(conversationId);
-  Conversation.update({_id: id}, {
+  Conversation.updateOne({_id: id}, {
                       $push: {
                         messages: message
                       }
