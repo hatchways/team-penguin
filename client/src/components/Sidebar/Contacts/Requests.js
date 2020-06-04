@@ -14,15 +14,15 @@ const Requests = props => {
       direction='column'
       spacing={1}
       // className={props.classes.entry}
-      key={curr.username}
+      key={curr.from_user_email}
     >
-      <Grid item>
-        <Typography variant='body1' align='center'>
-          <b>{curr.username}</b> would like to add you as a friend
+      <Grid item container>
+        <Typography variant='body1'>
+          <b>{curr.from_user_email.split('@')[0]}</b> would like to add you as a friend
         </Typography>
       </Grid>
 
-      <Grid item container justify='center' spacing={2}>
+      <Grid item container spacing={2}>
         <Grid item>
           <Button 
             variant='contained' 
@@ -49,7 +49,9 @@ const Requests = props => {
     <Grid 
       container
       direction='column'
+      spacing = {2}
     >
+      <h4 className={props.classes.invitationHeadings}>Invitations Received </h4>
       {entries}
     </Grid>
   );

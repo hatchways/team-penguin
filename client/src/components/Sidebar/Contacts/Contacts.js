@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -7,43 +8,66 @@ import Friends from './Friends';
 import Requests from './Requests';
 import Pending from './Pending';
 
+const useStyles = makeStyles(theme => ({
+  invitationHeadings: {
+    marginBottom: 0
+  }
+}));
+
 const Contacts = props => {
-  const [display, setDisplay] = React.useState('friends');
+  const classes = useStyles();
+  const [display, setDisplay] = useState('friends');
   const toggleDisplay = (event, setting) => {
     setDisplay(setting);
   }
- const [friends, setFriends] = React.useState([]);
+ const [friends, setFriends] = useState([]);
+ const [pendingInvites, setPendingInvites] = useState([]);
+ const [pendingRequests, setPendingRequests] = useState([]);
+
  const email = localStorage.getItem('email'); 
  const loadFriends = async() => {
    const res = await axios.get(`http://localhost:3001/invitations/user/${email}/contacts`);
    if(res.data.contacts.length !== 0){
-    setFriends([...res.data.contacts])
+    setFriends(res.data.contacts);
    }
    else {
-     setFriends([]);
+     setFriends(['You dont have any contacts. Send invites to initiate a conversation']);
    }
  }
 
+ const loadPendingInvites = async() => {
+  const res = await axios.get(`http://localhost:3001/invitations/user/${email}`);
+  if(res.data.invitations.length !== 0){
+   setPendingInvites(res.data.invitations);
+  }
+  else {
+    setPendingInvites(['No pending invitations']);
+  }
+}
+
+const loadPendingRequests = async() => {
+  const res = await axios.get(`http://localhost:3001/invitations/user/requests/${email}`);
+  if(res.data.invitations.length !== 0){
+   setPendingRequests(res.data.invitations);
+  }
+  else {
+    setPendingRequests(['No pending invitation requests']);
+  }
+}
+
  useEffect(() => {
    loadFriends()
- }, []);
+ }, [friends.length]);
 
+ useEffect(() => {
+   loadPendingInvites();
+ }, [pendingInvites.length]);
 
-  const requests = [
-    {username: 'test request1'},
-    {username: 'test request2'},
-    {username: 'test request3'}
-  ];
-  const pending = [
-    {username: 'test pending1'},
-    {username: 'test pending2'},
-    {username: 'test pending3'}
-  ];
+ useEffect(() => {
+  loadPendingRequests();
+}, [pendingRequests.length]);
+
   
-  //const friends = props.contacts.filter(curr => curr.status === 3);
-  //const requests = props.contacts.filter(curr => curr.status === 2);
-  //const pending = props.contacts.filter(curr => curr.status === 1);
-
   return (
     <Grid
       container
@@ -70,17 +94,8 @@ const Contacts = props => {
             // }}
           />
           <Tab 
-            value='requests' 
-            label='Requests'
-            disableRipple 
-            // className={props.classes.tab}
-            // classes={{
-            //   selected: props.classes.selectedTab
-            // }}
-          />
-          <Tab 
-            value='pending' 
-            label='Pending'
+            value='invitations' 
+            label='Invitations'
             disableRipple 
             // className={props.classes.tab}
             // classes={{
@@ -98,13 +113,16 @@ const Contacts = props => {
           selectContact={props.selectContact}
         />
       }
-      {display === 'requests' && 
+      {display === 'invitations' && 
+        <Fragment>
         <Requests 
-          requests={requests} 
+          requests={pendingRequests} 
           updateContact={props.updateContact}
+          classes={classes}
         />
+        <Pending pending={pendingInvites} classes={classes}/>
+        </Fragment>
       }
-      {display === 'pending' && <Pending pending={pending} />}
     </Grid>
   );
 }

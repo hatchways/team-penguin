@@ -6,11 +6,11 @@ const Pending = props => {
   const entries = props.pending.map(curr => (
     <Grid 
       item 
-      key={curr.username}
+      key={curr.to_user_email}
       // className={props.classes.entry}
     >
       <Typography variant='body1'>
-        <b>{curr.username}</b> has received your friend request
+        <b>{curr.to_user_email.split('@')[0]}</b> has received your friend request
       </Typography>
     </Grid>
   ));
@@ -19,7 +19,9 @@ const Pending = props => {
     <Grid
       container
       direction='column'
+      spacing={2}
     >
+      <h4 className={props.classes.invitationHeadings}>Invitations Pending</h4>
       {entries}
     </Grid>
   );
