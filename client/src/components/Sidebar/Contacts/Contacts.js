@@ -22,7 +22,6 @@ const Contacts = props => {
   }
  const [friends, setFriends] = useState([]);
  const [pendingInvites, setPendingInvites] = useState([]);
- const [pendingRequests, setPendingRequests] = useState([]);
 
  const email = localStorage.getItem('email'); 
  const loadFriends = async() => {
@@ -45,16 +44,6 @@ const Contacts = props => {
   }
 }
 
-const loadPendingRequests = async() => {
-  const res = await axios.get(`http://localhost:3001/invitations/user/requests/${email}`);
-  if(res.data.invitations && res.data.invitations.length !== 0){
-   setPendingRequests(res.data.invitations);
-  }
-  else {
-    setPendingRequests(['No pending invitation requests']);
-  }
-}
-
  useEffect(() => {
    loadFriends()
  }, [friends.length]);
@@ -63,9 +52,9 @@ const loadPendingRequests = async() => {
    loadPendingInvites();
  }, [pendingInvites.length]);
 
- useEffect(() => {
-  loadPendingRequests();
-}, [pendingRequests.length]);
+//  useEffect(() => {
+//   loadPendingRequests();
+// }, [pendingRequests.length]);
 
   
   return (
@@ -116,7 +105,7 @@ const loadPendingRequests = async() => {
       {display === 'invitations' && 
         <Fragment>
         <Requests 
-          requests={pendingRequests} 
+          requests={props.requests} 
           updateContact={props.updateContact}
           classes={classes}
         />

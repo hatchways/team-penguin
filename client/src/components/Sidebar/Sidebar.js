@@ -7,6 +7,8 @@ import axios from 'axios';
 const Sidebar = props => {
   const email = localStorage.getItem('email');
   const [approveInvite, setApproveInvite] = useState('');
+  const [pendingRequests, setPendingRequests] = useState([]);
+
 
   function closeAlertHandler() {
     setApproveInvite('');
@@ -34,6 +36,22 @@ const Sidebar = props => {
     }
   }
 
+  const loadPendingRequests = async() => {
+    const res = await axios.get(`http://localhost:3001/invitations/user/requests/${email}`);
+    if(res.data.invitations && res.data.invitations.length !== 0){
+     setPendingRequests(res.data.invitations);
+    }
+    else {
+      setPendingRequests(['No pending invitation requests']);
+    }
+  }
+
+  useEffect(() => {
+    console.log('pending requests triggered');
+    loadPendingRequests();
+  }, [pendingRequests.length]);
+  
+
   return (
     <div>
       <h1>user avatar</h1>
@@ -43,6 +61,7 @@ const Sidebar = props => {
         requestContact={props.requestContact}
         updateContact={updateContact}
         selectContact={props.selectContact}
+        requests={pendingRequests}
       />
        <Snackbar open = {approveInvite.length !== 0} autoHideDuration={3000} onClose = { closeAlertHandler }>
                           <Alert onClose={closeAlertHandler} severity="success">
