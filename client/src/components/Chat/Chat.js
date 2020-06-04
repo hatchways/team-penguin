@@ -18,6 +18,7 @@ const Chat = props => {
   const [curMessage, setCurMessage] = useState('');
   const [postedMessages, setPostedMessages] = useState([]);
 
+  //socket client listener for server broadcasts
   if (socket && conversationId) {
     socket.on(conversationId, (data) => {
       setPostedMessages(postedMessages.concat([data.message]));
@@ -35,6 +36,7 @@ const Chat = props => {
         author_email: user.email,
         original_message: curMessage,
         language: user.language,
+        created_on: Date.now(),
         translations: {}
       };
       e.preventDefault();
