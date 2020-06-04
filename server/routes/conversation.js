@@ -89,10 +89,13 @@ router.get("/:conversation_id",
     function(req, res, next) {
         const {conversation_id} = req.params;
         let id = mongoose.Types.ObjectId(conversation_id);
-        Conversation.findOne({_id: id}, 'messages', function(err, conversation) {
+        Conversation.findOne({_id: id}, function(err, conversation) {
           if (err) console.error('Could not get conversation', err);
-          if (conversation && conversation.messages.length) {
-            res.status(200).json({type: 'success', messages: conversation.messages, message: 'An existing conversation was found.'})
+          if (conversation && conversation.messages && conversation.user_emails) {
+            res.status(200).json({type: 'success',
+              messages: conversation.messages,
+              user_emails: conversation.user_emails,
+              message: 'An existing conversation was found.'})
           } else {
             res.json({type: 'error', message: 'That conversation was not found'})
           }
