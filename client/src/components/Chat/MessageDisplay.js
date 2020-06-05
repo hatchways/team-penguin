@@ -2,26 +2,27 @@ import React from 'react';
 import Grid from '@material-ui/core/Grid';
 
 import Message from './Message';
+import {useAuth} from '../../context/auth-context';
 
 const MessageDisplay = props => {
-  const messages = props.messages.map(curr => (
-    <Message 
-      message={curr} 
-      username={props.username}
-      key={curr.id}
+  const {user} = useAuth();
+
+  const messages = props.messages.map((msg, idx) => (
+    <Message
+      message={msg.original_message}
+      messageTime={msg.created_on}
+      userEmail={msg.author_email}
+      key={`${idx}-${msg}`}
+      isAuthorUser={msg.author_email === user.email}
     />
   ))
 
   return (
-    <Grid
-      item
-      container
-      direction='column'
-      // className={props.classes.root}
-    >
-      <br /><br /><br /><br /><br /><br />
+    <div
+      style={{backgroundColor: '#fff', padding: '18px', 
+      overflow: 'scroll', flexGrow: '1'}}>
       {messages}
-    </Grid>
+    </div>
 )};
 
 export default MessageDisplay;

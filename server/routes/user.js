@@ -67,6 +67,10 @@ router.post('/login', (req, res) => {
                     res.json({
                       success: `${user.email} is logged in successfully`,
                       token: `Bearer ${token}`,
+                      user: {email: user.email,
+                        language: user.language,
+                        referralId: user.referral_id.toString(),
+                        id: user._id.toString()},
                       email: user.email
                     });
                   }

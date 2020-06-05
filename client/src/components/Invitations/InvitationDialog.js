@@ -94,8 +94,6 @@ export default function InvitationDialog(props) {
   const [copyBtnErrorMessage, setCopyBtnErrorMessage] = useState('');
   const [sendRequestErrorMessage, setSendRequestErrorMessage] = useState('');
   const [submitError, setSubmitError] = useState('');
-  const [referralId, setReferralId] = useState('');
-  const [referralUrl, setReferralUrl] = useState('');
   const classes = useStyles();
   const {user} = useAuth();
 
@@ -112,7 +110,6 @@ export default function InvitationDialog(props) {
     setEmail('');
     setEmailErrorMessage('');
     setSubmitError('');
-    setReferralUrl('');
     setCopyBtnErrorMessage('');
     setOpen(false);
   }
@@ -122,7 +119,7 @@ export default function InvitationDialog(props) {
     navigator.permissions.query({name: "clipboard-write"}).then(result => {
       if (result.state == "granted" || result.state == "prompt") {
         if (navigator.clipboard) {
-          let url = referralUrl
+          let url = getReferralUrl();
           navigator.clipboard.writeText(url).then(function() {
           }, function() {
             setCopyBtnErrorMessage('Cannot copy url to the clipboard. Please copy it manually.');
@@ -149,9 +146,9 @@ export default function InvitationDialog(props) {
         toEmailAr = [email];
       }
 
-      if (user.length && jwtToken.length) {
-        let body = {toEmailAr, referralId};
-        fetch(`http://localhost:3001/invitations/user/${user}`, {
+      if (user && user.email.length && user.referralId && jwtToken.length) {
+        let body = {toEmailAr, referralId: user.referralId};
+        fetch(`http://localhost:3001/invitations/user/${user.email}`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -184,27 +181,9 @@ export default function InvitationDialog(props) {
   }
 
   const getReferralUrl = () => {
-    return `http://localhost:3001/join/${referralId}`
+    if (user && user.referralId)
+    return `http://localhost:3001/join/${user.referralId}`
   }
-
-  useEffect(() => {
-    let jwtToken = localStorage.getItem('authToken');
-    fetch(`http://localhost:3001/user/${user}/referralId`, {
-      method: 'GET',
-      headers: {
-        'Authorization': `${jwtToken}`
-      },
-    })
-      .then(resp => resp.json())
-      .then(json => {
-          if (json.referralId) {
-            setReferralId(json.referralId);
-          }
-      })
-      .catch(err => {
-        console.error(err)
-      })
-  }, [])
 
   return (
     <div>
@@ -268,7 +247,7 @@ export default function InvitationDialog(props) {
             color="primary" 
             variant="contained"
             id="referral-url-btn"
-            value={referralUrl}
+            value={getReferralUrl()}
             onClick={handleClickCopyBtn}
             className={classes.btnOverlay}>
             Copy Link

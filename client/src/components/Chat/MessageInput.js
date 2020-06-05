@@ -1,43 +1,39 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import Grid from "@material-ui/core/Grid";
 import InputBase from '@material-ui/core/InputBase';
+import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
 
-class MessageInput extends Component {
-  state = { 
-    msg: ''
-  }
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  textField: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+  },
+}));
 
-  onChange = e => {
-    this.setState({
-      [e.target.name]: e.target.value
-    });
-  };
+const MessageInput = (props) => {
+  const classes = useStyles();
+  const {messageInputOnChangeHandler, messageInputSubmitHandler, curMessage} = props;
 
-  send = e => {
-    if (e.key === 'Enter') {
-      this.props.sendMessage(this.state.msg);
-      this.setState({
-        msg: ''
-      });
-    }
-  }
-
-  //className={this.props.classes.root}
-  render() {
     return (
-      <Grid item >
-        <InputBase 
-          name='msg'
-          value={this.state.msg}
-          onChange={this.onChange}
-          onKeyPress={this.send}
-          //className={this.props.classes.input}
-          placeholder='Type something...'
-          fullWidth
+      <form className={classes.root} style={{backgroundColor: '#fff', padding: '18px',
+        flexBasis: '50px', flexShrink: '0' }}>
+        <TextField name='msg'
+          value={curMessage}
+          onChange={messageInputOnChangeHandler}
+          onKeyPress={messageInputSubmitHandler}
+          placeholder="Type something"
+          fullWidth 
+          margin="normal"
+          variant="filled"
+          className={classes.textField}
         />
-      </Grid>
+      </form>
     );
-  }
 }
 
 export default MessageInput;
