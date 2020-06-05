@@ -1,3 +1,11 @@
+/* Chat style */
+
+.spacer {
+  flex-grow: 1;
+  padding: 18px;
+  background-color: #fff;
+}
+
 /* Chat header style */
 
 .chatHeaderContainer {
