@@ -9,6 +9,7 @@ require("dotenv").config();
 
 var app = require("../app");
 var http = require("http");
+const {saveMessageToConversation} = require('../util/socket_db');
 
 /**
  * Get port from environment and store in Express.
@@ -32,16 +33,28 @@ server.listen(port);
 server.on("error", onError);
 server.on("listening", onListening);
 
-io.on('connection', (socket) => {
-  console.log('connected on default namespace')
-});
-
 const nsp = io.of('/chat');
 nsp.on('connection', function(socket){
   console.log('someone connected on /chat');
-  socket.emit('chat', { hello: 'world chat' });
-  socket.on('my other event', (data) => {
-    console.log(data);
+
+  // socket.on('room', function(room) {
+  //   socket.join(room);
+  //   console.log('socket room', socket.rooms)
+  // });
+
+  socket.on('message', (data) => {
+    console.log('data', data)
+    let {conversationId, message} = data;
+    socket.broadcast.emit(conversationId, data);
+    //socket.broadcast.emit('server broadcast', data);
+    saveMessageToConversation({message, conversationId})
+  });
+
+  //socket.emit('message', 'test message server to room');//to(`${conversationId}`)
+  // socket.to(conversationId).emit('message', JSON.stringify(data));
+
+  socket.on("disconnect", () => {
+    console.log("user disconnected");
   });
 });
 

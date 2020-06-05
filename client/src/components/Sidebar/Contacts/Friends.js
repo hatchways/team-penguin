@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
+import {Redirect, useHistory} from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
 import TextField from '@material-ui/core/TextField';
@@ -7,17 +8,45 @@ import userPlaceholderImg from '../../../assets/user-placeholder.png';
 import InvitationDialog from '../../Invitations/InvitationDialog';
 import SearchIcon from '@material-ui/icons/Search';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import { borders } from '@material-ui/system';
-
+import {useAuth} from '../../../context/auth-context';
 
 const Friends = props => {
+  const {user} = useAuth();
+  let history = useHistory();
+
+  const contactClickHandler = (contactEmail) => {
+    let jwtToken = localStorage.getItem('authToken');
+    let emailsAr = [contactEmail, user.email];
+    let body = {emailsAr};
+
+    if (jwtToken.length && emailsAr.length) {
+      //call API to either create a conversation (or find existing) and get back conversation id
+      fetch('http://localhost:3001/conversations', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `${jwtToken}`
+        },
+        body: JSON.stringify(body)
+      })
+        .then(resp => resp.json())
+        .then(json => {
+          if (json.conversationId) {
+            history.push(`/conversations/${json.conversationId}`);
+          }
+        })
+        .catch(err => console.error(err));
+    }
+  }
+
   const entries = (selected, select) => props.friends.map(curr => (
     <Grid
       item
       container
       spacing={2}
       key={curr}
-      onClick={() => {select(curr.index)}}
+      onClick={(ev) => contactClickHandler(curr)}
+      //() => {select(curr.index)}
     >
       <Grid item>
         <Avatar src={userPlaceholderImg} alt="" />

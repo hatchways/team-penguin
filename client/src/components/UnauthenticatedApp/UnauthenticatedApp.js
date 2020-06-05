@@ -4,7 +4,8 @@ import { MuiThemeProvider } from "@material-ui/core";
 import {
   BrowserRouter as Router,
   Switch,
-  Route
+  Route,
+  Redirect
 } from "react-router-dom";
 import {theme} from "../../themes/theme";
 import Login from "../Login/Login";
@@ -20,6 +21,9 @@ const UnauthenticatedApp = () => {
           <Route exact path="/signup" component={Signup} />
           <Route exact path="/login" component={Login} />
           <Route path="/join/:referralId" component={Signup} />
+          <Route path="/conversations">
+            <Redirect to="/" />
+          </Route>
         </Switch>
       </Router>
     </MuiThemeProvider>

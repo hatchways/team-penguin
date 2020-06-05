@@ -4,70 +4,81 @@ import { MuiThemeProvider } from "@material-ui/core";
 import {
   BrowserRouter as Router,
   Switch,
-  Route
+  Route,
+  useParams,
+  Redirect
 } from "react-router-dom";
+import { makeStyles } from '@material-ui/core/styles';
 import {theme} from "../../themes/theme";
 import Sidebar from '../Sidebar/Sidebar';
-import Chat from '../Chat/Chat.js';
+import Chat from '../Chat/Chat';
 import { useAuth } from '../../context/auth-context';
-import "../../index.css";
+import {SocketProvider} from '../../context/socket-context';
 
 const messages = [
-    {id: '0', body: 'test msg 1'},
-    {id: '1', body: 'test msg 2'},
-    {id: '2', body: 'test msg 3'}
+    {id: '0', original_message: 'test msg 1', author_email: 'test101@t.com'},
+    {id: '1', original_message: 'test msg 2', author_email: 'test100@t.com'},
+    {id: '2', original_message: 'test msg 3', author_email: 'test101@t.com'}
 ];
-//selectedContact should probably be an array to handle group convos too
-const selectedContact = {username: 'test selected contact'};
 
-const divStyle = {
-  backgroundColor: 'rgba(0, 0, 0, 0.04)',
-  height: '100vh',
+//selectedContact should probably be an array to handle group convos too
+const selectedContacts = [{email: 'friend'}];
+//[{email: 'friend1'}, {email: 'friend2'}, {email: 'friend2'}]
+
+const appStyle = {
+  backgroundColor: 'rgba(0, 0, 0, 0.04)'
+};
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+    '& > *': {
+      margin: '0',
+    },
+  },
+}));
+
+const AppContainer = () => {
+  let {user} = useAuth();
+  const classes = useStyles();
+
+  return (
+    <Grid container 
+    spacing={0} direction='row' 
+    className={classes.root}>
+      <Grid item xs={12} sm={4} style={appStyle}>
+        <Sidebar/>
+      </Grid>
+      <Grid item xs={12} sm={8} style={appStyle}>
+        <Chat messages={messages} user={user.email} selectedContacts={selectedContacts} />
+      </Grid>
+      <Grid item xs={12} sm={8} style={appStyle}>
+        <Chat messages={messages} user={user.email} selectedContacts={selectedContacts} />
+      </Grid>
+    </Grid>
+  )
 }
 
 const AuthenticatedApp = () => {
-    let {logout, user} = useAuth();
-
-    return (
-        <div className="app-authenticated">
-            <MuiThemeProvider theme={theme}>
-                <Grid container 
-                    spacing={3} direction='row' 
-                    >
-                    <Grid item xs={3} style={divStyle}>
-                        <Sidebar/>
-                    </Grid>
-
-                    <Grid item xs={9}>
-                    <Router>
-                      <Switch>
-                        <Route exact path="/" component={Chat} />
-                        <Route exact path="/conversations" component={Chat} />
-                      </Switch>
-                    </Router>
-                    </Grid>
-                </Grid>
-            </MuiThemeProvider>
-        </div>
-    )
+  return (
+    <MuiThemeProvider theme={theme}>
+      <SocketProvider>
+        <Router>
+          <Switch>
+            <Route exact path="/">
+              <AppContainer />
+            </Route>
+            <Route exact path="/conversations/:conversationId">
+              <AppContainer />
+            </Route>
+            <Route exact path="/login">
+              <Redirect to="/" />
+            </Route>
+          </Switch>
+        </Router>
+      </SocketProvider>
+    </MuiThemeProvider>
+  )
 }
 
 export default AuthenticatedApp;
-
-/*
-    <h1>Username: {user.username}</h1>
-    <button onClick={logout}>test logout
-    </button> 
-*/
-/*
-shared state, user and/or contacts
-    <MuiThemeProvider theme={theme}>
-      <Router>
-        <Switch>
-          <Route exact path="/" component={Chat} />
-          <Route exact path="/conversations" component={Chat} />
-        </Switch>
-      </Router>
-    </MuiThemeProvider>
-*/
-//                        {/* <Chat messages={messages} user={user} selectedContact={selectedContact} /> */}
