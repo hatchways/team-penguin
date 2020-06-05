@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import clsx from 'clsx';
 import {theme} from "../../themes/theme";
 import Button from '@material-ui/core/Button';
@@ -9,14 +9,12 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
-import NavigationIcon from '@material-ui/icons/Navigation';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
-import SvgIcon from '@material-ui/core/SvgIcon';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import FormControl from '@material-ui/core/FormControl';
@@ -249,7 +247,8 @@ export default function InvitationDialog(props) {
             Or share referral link:
           </DialogContentText>
 
-          <FormControl fullWidth className={clsx(classes.margin, classes.textField)} variant="filled">
+          <FormControl fullWidth className={clsx(classes.margin, classes.textField)} 
+            size="small" variant="filled">
             <FilledInput
               error={copyBtnErrorMessage.length > 0}
               id="referral-url"
@@ -272,61 +271,13 @@ export default function InvitationDialog(props) {
                     onClick={handleClickCopyBtn}
                     edge="end"
                   >
-                    <FileCopyIcon />
+                    <FileCopyIcon color="primary"/>
                   </IconButton>
                 </InputAdornment>
               }
             />
           </FormControl>
-
-
-
-
-
-          {/*<TextField
-            margin="dense"
-            id="referral-url"
-            value={getReferralUrl()}
-            InputProps={{
-              readOnly: true,
-            }}
-            variant="filled"
-            fullWidth
-            helperText={copyBtnErrorMessage}
-            InputLabelProps={{
-              classes: {
-                root: classes.labelRoot,
-                focused: classes.labelRoot
-              }
-            }}
-            endAdornment={
-              <InputAdornment position="end">
-               <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={handleClickCopyBtn}
-                  edge="end"
-                  id="referral-url-btn"
-                  value={getReferralUrl()}
-                >
-                  <FileCopyIcon onClick={handleClickCopyBtn}/>
-                </IconButton>
-              </InputAdornment>
-            }
-          />*/}
-
         </DialogContent>
-        {/* <DialogActions>
-          <Button
-            size="small"
-            color="primary" 
-            variant="contained"
-            id="referral-url-btn"
-            value={getReferralUrl()}
-            onClick={handleClickCopyBtn}
-            className={classes.btnOverlay}>
-            Copy Link
-          </Button>
-        </DialogActions> */}
         <DialogActions className={classes.dialogActionsRoot}>
           <Button onClick={handleSave} color="primary" variant="contained"
             size="large" className={classes.btnMixedCase}>
