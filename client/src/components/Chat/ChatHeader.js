@@ -107,7 +107,7 @@ const ChatHeader = props => {
       <div className="chatHeaderLeft">
         <Avatar className={classes.orange}>{initial}</Avatar>
         <Typography variant='h5' className={classes.chatHeaderName}>{email}</Typography>
-        <Typography variant='h5'>online status todo</Typography>
+        <Typography variant='p2'>online status todo</Typography>
       </div>
       <div className="chatHeaderSpacer" />
       <div className="chatHeaderRight">
