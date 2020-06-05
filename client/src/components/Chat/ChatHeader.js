@@ -103,25 +103,25 @@ const ChatHeader = props => {
   }
 
   return (
-      <div className="chatHeaderContainer">
-        <div className="chatHeaderLeft">
-          <Avatar className={classes.orange}>{initial}</Avatar>
-          <Typography variant='h5' className={classes.chatHeaderName}>{email}</Typography>
-          <Typography variant='h5'>online status todo</Typography>
-        </div>
-        <div className="chatHeaderSpacer" />
-        <div className="chatHeaderRight">
-          <Typography component="div">
-            <Grid component="label" container alignItems="center" spacing={1}>
-              <Grid item>Off</Grid>
-              <Grid item>
-                <AntSwitch checked={state.checkedC} onChange={handleChange} name="checkedC" />
-              </Grid>
-            </Grid>
-          </Typography>
-          <Icon onClick={handleLogout}>more_horiz</Icon>
-        </div>
+    <div className="chatHeaderContainer">
+      <div className="chatHeaderLeft">
+        <Avatar className={classes.orange}>{initial}</Avatar>
+        <Typography variant='h5' className={classes.chatHeaderName}>{email}</Typography>
+        <Typography variant='h5'>online status todo</Typography>
       </div>
+      <div className="chatHeaderSpacer" />
+      <div className="chatHeaderRight">
+        <Typography component="div">
+          <Grid component="label" container alignItems="center" spacing={1}>
+            <Grid item>Off</Grid>
+            <Grid item>
+              <AntSwitch checked={state.checkedC} onChange={handleChange} name="checkedC" />
+            </Grid>
+          </Grid>
+        </Typography>
+        <Icon onClick={handleLogout}>more_horiz</Icon>
+      </div>
+    </div>
   );
 }
 
