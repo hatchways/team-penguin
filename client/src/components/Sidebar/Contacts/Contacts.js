@@ -52,6 +52,7 @@ const Contacts = props => {
           requestContact={props.requestContact}
           selectContact={props.selectContact}
           loadPendingInvites = {props.loadPendingInvites}
+          search = {props.search}
         />
       }
       {display === 'invitations' && 

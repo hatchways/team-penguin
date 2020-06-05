@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {Redirect, useHistory} from 'react-router-dom';
+import React from 'react';
+import {useHistory} from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
 import TextField from '@material-ui/core/TextField';
@@ -65,7 +65,7 @@ const Friends = props => {
       spacing={2}
     >
       <Grid item>
-        <TextField id="filled-search" placeholder="Search" type="search" variant="filled" margin="normal" border={0} fullWidth InputProps={{ 
+        <TextField id="filled-search" placeholder="Search" type="search" variant="filled" margin="normal" onChange={props.search} border={0} fullWidth InputProps={{ 
           startAdornment: (<InputAdornment position="start"><SearchIcon/></InputAdornment>)
         }}/>
       </Grid>
