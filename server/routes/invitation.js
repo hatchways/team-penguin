@@ -214,9 +214,15 @@ router.get("/user/:to_email/contacts",
     }, function(err, invitations) {
       if (err) return console.error('Contacts could not be retrieved.', err);
       if (invitations && invitations.length) {
-        let contacts = invitations.map(invite => {
+        let contacts = [];
+        contacts = invitations.map(invite => {
           return invite.to_user_email === to_email ? invite.from_user_email: invite.to_user_email;
         });
+        //if search query provided
+        if(req.query.q){
+          contacts = contacts.filter(contact => contact.includes(req.query.q))
+          console.log(contacts);
+        }
         res.status(201).json({type: 'success', contacts});
       } else {
         res.status(201).json({type: 'success', message: 'No contacts were found.', contacts: []})
