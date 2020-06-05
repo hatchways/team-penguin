@@ -7,6 +7,7 @@ import userPlaceholderImg from '../../../assets/user-placeholder.png';
 import InvitationDialog from '../../Invitations/InvitationDialog';
 import SearchIcon from '@material-ui/icons/Search';
 import InputAdornment from '@material-ui/core/InputAdornment';
+import { borders } from '@material-ui/system';
 
 
 const Friends = props => {
@@ -35,7 +36,7 @@ const Friends = props => {
       spacing={2}
     >
       <Grid item>
-        <TextField id="filled-search" placeholder="Search" type="search" variant="filled" margin="normal" InputProps={{ 
+        <TextField id="filled-search" placeholder="Search" type="search" variant="filled" margin="normal" border={0} fullWidth InputProps={{ 
           startAdornment: (<InputAdornment position="start"><SearchIcon/></InputAdornment>)
         }}/>
       </Grid>
