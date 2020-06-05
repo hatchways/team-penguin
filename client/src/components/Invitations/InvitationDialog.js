@@ -12,6 +12,8 @@ import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 
 import {isEmailValid} from '../../util/helpers';
@@ -87,6 +89,10 @@ const DialogTitle = withStyles(dialogTitleStyles)((props) => {
   );
 });
 
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
 export default function InvitationDialog(props) {
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState('');
@@ -129,6 +135,10 @@ export default function InvitationDialog(props) {
     });
   }
 
+  const closeAlertHandler = () => {
+    setSubmitError('');
+  }
+
   const handleSave = (ev) => {
     ev.preventDefault();
 
@@ -156,14 +166,20 @@ export default function InvitationDialog(props) {
           },
           body: JSON.stringify(body)
         })
-          .then(resp => {
-            setEmail('');
-            setEmailErrorMessage('');
-            setOpen(false);
-            props.loadPendingInvites();
+          .then(resp => resp.json())
+          .then(json => {
+            if (json.type === 'success') {
+              setEmail('');
+              setEmailErrorMessage('');
+              setOpen(false);
+              props.loadPendingInvites();
+            } else {
+              setSubmitError(json.message);
+            }
           })
           .catch(err => {
             console.error(err)
+            setSubmitError(err);
           })  
       } else {
         setSendRequestErrorMessage('The request could not be sent because your login seems invalid. Please log out and try again.')
@@ -261,6 +277,13 @@ export default function InvitationDialog(props) {
             Send Invite
           </Button>
         </DialogActions>
+
+        <Snackbar open = {submitError.length !== 0} autoHideDuration={5000} onClose = { closeAlertHandler }>
+          <Alert onClose={closeAlertHandler} severity="error">
+            {submitError}
+          </Alert>
+        </Snackbar>
+
       </Dialog>
     </div>
   );
