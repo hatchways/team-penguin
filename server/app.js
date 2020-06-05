@@ -38,7 +38,7 @@ require("./controllers/passportJwtStrategy")(passport);
 app.use("/", indexRouter);
 app.use("/ping", pingRouter);
 app.use("/conversations", conversationRouter);
-app.use("/invitations", invitationRouter);
+app.use("/invitations", passport.authenticate('jwt', { session: false}), invitationRouter);
 app.use("/user", userRouter);
 
 //connect to mongodb
