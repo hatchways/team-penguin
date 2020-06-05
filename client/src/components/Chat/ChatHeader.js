@@ -83,31 +83,46 @@ const ChatHeader = props => {
     logout();
   }
 
-  if (friendEmails && friendEmails.length === 1) {
+  if (!friendEmails.length) {
     return (
-        <div className="chatHeaderContainer">
-          <div className="chatHeaderLeft">
-            <Avatar className={classes.orange}>{initial}</Avatar>
-            <Typography variant='h5' className={classes.chatHeaderName}>{email}</Typography>
-            <Typography variant='h5'>online status todo</Typography>
-          </div>
-          <div className="chatHeaderSpacer" />
-          <div className="chatHeaderRight">
-            <Typography component="div">
-              <Grid component="label" container alignItems="center" spacing={1}>
-                <Grid item>Off</Grid>
-                <Grid item>
-                  <AntSwitch checked={state.checkedC} onChange={handleChange} name="checkedC" />
-                </Grid>
+      <div className="chatHeaderContainer">
+        <div className="chatHeaderSpacer" />
+        <div className="chatHeaderRight">
+          <Typography component="div">
+            <Grid component="label" container alignItems="center" spacing={1}>
+              <Grid item>Off</Grid>
+              <Grid item>
+                <AntSwitch checked={state.checkedC} onChange={handleChange} name="checkedC" />
               </Grid>
-            </Typography>
-            <Icon onClick={handleLogout}>more_horiz</Icon>
-          </div>
+            </Grid>
+          </Typography>
+          <Icon onClick={handleLogout}>more_horiz</Icon>
         </div>
-    );
+      </div>
+    )
   }
 
-  return (null);
+  return (
+      <div className="chatHeaderContainer">
+        <div className="chatHeaderLeft">
+          <Avatar className={classes.orange}>{initial}</Avatar>
+          <Typography variant='h5' className={classes.chatHeaderName}>{email}</Typography>
+          <Typography variant='h5'>online status todo</Typography>
+        </div>
+        <div className="chatHeaderSpacer" />
+        <div className="chatHeaderRight">
+          <Typography component="div">
+            <Grid component="label" container alignItems="center" spacing={1}>
+              <Grid item>Off</Grid>
+              <Grid item>
+                <AntSwitch checked={state.checkedC} onChange={handleChange} name="checkedC" />
+              </Grid>
+            </Grid>
+          </Typography>
+          <Icon onClick={handleLogout}>more_horiz</Icon>
+        </div>
+      </div>
+  );
 }
 
 export default ChatHeader;
