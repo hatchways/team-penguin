@@ -90,7 +90,7 @@ const DialogTitle = withStyles(dialogTitleStyles)((props) => {
 export default function InvitationDialog(props) {
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState('');
-  const [emailErrorMessage, setEmailErrorMessage] = useState('Required');
+  const [emailErrorMessage, setEmailErrorMessage] = useState('');
   const [copyBtnErrorMessage, setCopyBtnErrorMessage] = useState('');
   const [sendRequestErrorMessage, setSendRequestErrorMessage] = useState('');
   const [submitError, setSubmitError] = useState('');
@@ -158,6 +158,7 @@ export default function InvitationDialog(props) {
         })
           .then(resp => {
             setEmail('');
+            setEmailErrorMessage('');
             setOpen(false);
             props.loadPendingInvites();
           })
@@ -207,6 +208,7 @@ export default function InvitationDialog(props) {
           </DialogContentText>
           <TextField
             autoFocus
+            error={emailErrorMessage.length > 0}
             margin="dense"
             id="email"
             type="email"
