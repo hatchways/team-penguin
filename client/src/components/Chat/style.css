@@ -1,3 +1,11 @@
+/* Chat style */
+
+.spacer {
+  flex-grow: 1;
+  padding: 18px;
+  background-color: #fff;
+}
+
 /* Chat header style */
 
 .chatHeaderContainer {
@@ -15,7 +23,7 @@
 .chatHeaderLeft {
   display: flex;
   flex-flow: row nowrap;
-  justify-content: start;
+  justify-content: flex-start;
   align-items: center;
 }
 
@@ -26,7 +34,7 @@
 .chatHeaderRight {
   display: flex;
   flex-flow: row nowrap;
-  justify-content: end;
+  justify-content: flex-end;
   align-items: center;
 }
 

@@ -50,10 +50,7 @@ const AppContainer = () => {
         <Sidebar/>
       </Grid>
       <Grid item xs={12} sm={8} style={appStyle}>
-        <Chat messages={messages} user={user.email} selectedContacts={selectedContacts} />
-      </Grid>
-      <Grid item xs={12} sm={8} style={appStyle}>
-        <Chat messages={messages} user={user.email} selectedContacts={selectedContacts} />
+        <Chat user={user.email} />
       </Grid>
     </Grid>
   )
