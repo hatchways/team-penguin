@@ -4,6 +4,8 @@ import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import axios from 'axios';
 
+import SidebarHeader from './SidebarHeader';
+
 const Sidebar = props => {
   const email = localStorage.getItem('email');
   const authToken = localStorage.getItem('authToken');
@@ -91,23 +93,24 @@ const Sidebar = props => {
 
   return (
     <div>
-      <h1>user avatar</h1>
-      <Contacts 
-        friends={friends}
-        loadPendingInvites = {loadPendingInvites}
-        selected={props.selected}
-        requestContact={props.requestContact}
-        updateContact={updateContact}
-        selectContact={props.selectContact}
-        requests={pendingRequests}
-        pending = {pendingInvites}
-        search={searchContacts}
-      />
-       <Snackbar open = {approveInvite.length !== 0} autoHideDuration={3000} onClose = { closeAlertHandler }>
-                          <Alert onClose={closeAlertHandler} severity="success">
-                            {approveInvite} 
-                          </Alert>
-        </Snackbar>
+      <SidebarHeader />
+      <div className="sidebarContainer">
+        <Contacts 
+          friends={friends}
+          loadPendingInvites = {loadPendingInvites}
+          selected={props.selected}
+          requestContact={props.requestContact}
+          updateContact={updateContact}
+          selectContact={props.selectContact}
+          requests={pendingRequests}
+          pending = {pendingInvites}
+        />
+        <Snackbar open = {approveInvite.length !== 0} autoHideDuration={3000} onClose = { closeAlertHandler }>
+                            <Alert onClose={closeAlertHandler} severity="success">
+                              {approveInvite} 
+                            </Alert>
+          </Snackbar>
+      </div>
     </div>
   );
 }
