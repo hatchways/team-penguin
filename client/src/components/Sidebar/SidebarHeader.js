@@ -33,6 +33,9 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     marginRight: theme.spacing(2),
+  },
+  cursorPointer: {
+    cursor: 'pointer'
   }
 }));
 
@@ -82,7 +85,9 @@ const SidebarHeader = (props) => {
           ref={anchorRef}
           aria-controls={open ? 'menu-list-grow' : undefined}
           aria-haspopup="true"
-          onClick={handleToggle} />
+          onClick={handleToggle}
+          className={classes.cursorPointer}
+          color='primary' />
           <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
           {({ TransitionProps, placement }) => (
             <Grow
