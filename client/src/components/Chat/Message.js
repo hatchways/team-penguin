@@ -6,9 +6,12 @@ import classNames from 'classnames';
 
 import './style.css';
 import {getPrettyTime} from '../../util/helpers';
+import {useAuth} from '../../context/auth-context';
 
 const Message = props => {
   const {message, userEmail, messageTime} = props;
+  const {user} = useAuth();
+  const {language} = user;
   var msgClass = classNames({
     messageBubble: true,
     'messageBubbleFriend': !props.isAuthorUser,
@@ -23,12 +26,14 @@ const Message = props => {
   }
 
   if (!props.isAuthorUser) {
+    const translation = message.translations ? message.translations[language] : '';
+
     return (
       <div style={{display: 'flex', flexFlow: 'row nowrap', justifyContent: 'flex-start', alignItems: 'flex-start', margin: '18px 0'}}>
         <Avatar>{getUserInitial()}</Avatar>
         <div style={{display: 'flex', flexFlow: 'column nowrap', marginLeft: '8px'}}>
           <Typography variant='body1' className="messageAuthorTime">{userEmail} {getPrettyTime(messageTime)}</Typography>
-          <div className={msgClass}>{props.message}</div>
+          <div className={msgClass}>{translation}</div>
         </div>
       </div>
     )  
@@ -37,7 +42,7 @@ const Message = props => {
       <div style={{display: 'flex', flexFlow: 'row nowrap', justifyContent: 'flex-end', alignItems: 'flex-end', margin: '18px 0'}}>
         <div style={{display: 'flex', flexFlow: 'column nowrap', marginLeft: '8px', alignItems: 'flex-end'}}>
           <Typography variant='body1' className="messageAuthorTime">{getPrettyTime(messageTime)}</Typography>
-          <div className={msgClass}>{props.message}</div>
+          <div className={msgClass}>{props.message.original_message}</div>
         </div>
       </div>
     )  

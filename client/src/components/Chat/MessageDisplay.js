@@ -9,7 +9,7 @@ const MessageDisplay = props => {
 
   const messages = props.messages.map((msg, idx) => (
     <Message
-      message={msg.original_message}
+      message={msg}
       messageTime={msg.created_on}
       userEmail={msg.author_email}
       key={`${idx}-${msg}`}
