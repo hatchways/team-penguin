@@ -10,7 +10,7 @@ require("dotenv").config();
 var app = require("../app");
 var http = require("http");
 const {saveMessageToConversation} = require('../util/socket_db');
-const {languages, languages_codes, getFriendLanguageCodes} = require('../util/languages');
+const {languages, languages_codes, getFriendLanguageCodes, code_to_language} = require('../util/languages');
 const {getTranslation} = require('../util/translate_helpers');
 
 /**
@@ -45,7 +45,7 @@ nsp.on('connection', function(socket){
     let friendLanguageCodes = [];
 
     //save initial message
-    saveMessageToConversation({message, conversationId})
+    //saveMessageToConversation({message, conversationId})
 
     //get friend language; probably want to get the language from FE contact data
     friendLanguageCodes = getFriendLanguageCodes(chatLanguages, message.language);
@@ -56,18 +56,18 @@ nsp.on('connection', function(socket){
       getTranslation(message.original_message, code)
         .then(translations => {
           let translationObj = {};
-          message.translations = {...message.translations, 'language': translation}
-          console.log('message', message)
-          console.log('data', data)
+          let language = code_to_language[code];
+          //update data object with translated message
+          message.translations = {...message.translations, [language]: translations[0]};
+          socket.broadcast.emit(conversationId, data);
+          //save translated message
+          saveMessageToConversation({message, conversationId})
         })
         .catch(err => console.error('Translation API error', err))
     })
 
 
-    //update data object with translated message
 
-    socket.broadcast.emit(conversationId, data);
-    //save translations
   });
 
   socket.on("disconnect", () => {
