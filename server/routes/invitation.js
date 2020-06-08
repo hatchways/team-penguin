@@ -221,7 +221,7 @@ router.get("/user/:to_email/contacts",
         //if search query provided
         if(req.query.q){
           contacts = contacts.filter(contact => contact.includes(req.query.q))
-          console.log(contacts);
+                             .map(filteredContact => filteredContact.split('@')[0]);                             
         }
         res.status(201).json({type: 'success', contacts});
       } else {
