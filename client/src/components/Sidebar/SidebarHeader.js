@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
@@ -42,7 +42,7 @@ const SidebarHeader = (props) => {
   const initial = user.email[0].toUpperCase();
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-  const anchorRef = React.useRef(null);
+  const anchorRef = useRef(null);
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
@@ -55,8 +55,8 @@ const SidebarHeader = (props) => {
     setOpen(false);
   };
 
-  const prevOpen = React.useRef(open);
-  React.useEffect(() => {
+  const prevOpen = useRef(open);
+  useEffect(() => {
     if (prevOpen.current === true && open === false) {
       anchorRef.current.focus();
     }
