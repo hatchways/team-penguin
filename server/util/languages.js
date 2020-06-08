@@ -19,4 +19,9 @@ const language_codes = {
   'hindi': 'hi'
 }
 
-module.exports = {languages, language_codes};
+const getFriendLanguageCodes = (chatLanguages, originalLanguage) => {
+  let translationLanguages = chatLanguages.filter(lang => lang !== originalLanguage);
+  return translationLanguages.map(lang => language_codes[lang]);
+}
+
+module.exports = {languages, language_codes, getFriendLanguageCodes};
