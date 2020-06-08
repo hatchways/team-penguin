@@ -13,7 +13,7 @@ const Sidebar = props => {
   const [approveInvite, setApproveInvite] = useState('');
   const [pendingRequests, setPendingRequests] = useState([]);
   const [pendingInvites, setPendingInvites] = useState([]);
-
+  const [searchQuery, setSearchQuery] = useState('');
   function closeAlertHandler() {
     setApproveInvite('');
   }
@@ -44,38 +44,49 @@ const Sidebar = props => {
   }
 
   const loadPendingRequests = async() => {
-    const res = await axios.get(`http://localhost:3001/invitations/user/requests/${email}`, {headers: { Authorization: authToken}});
-    if(res.data.invitations && res.data.invitations.length !== 0){
-     setPendingRequests(res.data.invitations);
-    }
-    else {
-      setPendingRequests(['No pending invitation requests']);
+    if(email){
+      const res = await axios.get(`http://localhost:3001/invitations/user/requests/${email}`, {headers: { Authorization: authToken}});
+      if(res.data.invitations && res.data.invitations.length !== 0){
+      setPendingRequests(res.data.invitations);
+      }
+      else {
+        setPendingRequests(['No pending invitation requests']);
+      }
     }
   }
 
   const loadPendingInvites = async() => {
-    const res = await axios.get(`http://localhost:3001/invitations/user/${email}`, {headers: { Authorization: authToken}});
-    if(res.data.invitations && res.data.invitations.length !== 0){
-     setPendingInvites(res.data.invitations);
-    }
-    else {
-      setPendingInvites(['No pending invitations']);
+    if(email){
+      const res = await axios.get(`http://localhost:3001/invitations/user/${email}`, {headers: { Authorization: authToken}});
+      if(res.data.invitations && res.data.invitations.length !== 0){
+      setPendingInvites(res.data.invitations);
+      }
+      else {
+        setPendingInvites(['No pending invitations']);
+      }
     }
   }
 
-  const loadFriends = async() => {
-    const res = await axios.get(`http://localhost:3001/invitations/user/${email}/contacts`, {headers: { Authorization: authToken}});
-    if(res.data.contacts.length !== 0){
-     setFriends(res.data.contacts);
+  const loadFriends = async(q='') => {
+    if(email){
+      const res = await axios.get(`http://localhost:3001/invitations/user/${email}/contacts?q=${q}`, {headers: { Authorization: authToken}});
+      if(res.data.contacts.length !== 0){
+      setFriends(res.data.contacts);
+      }
+      else {
+        setFriends(['You dont have any contacts. Send invites to initiate a conversation']);
+      }
     }
-    else {
-      setFriends(['You dont have any contacts. Send invites to initiate a conversation']);
-    }
+  }
+
+  const searchContacts = async(e) => {
+    setSearchQuery(e.target.value);
+    loadFriends(searchQuery);
   }
  
   useEffect(() => {
-    loadFriends();
-  },[friends.length]);
+    loadFriends(searchQuery);
+  },[friends.length, searchQuery]);
  
 
   useEffect(() => {
@@ -99,6 +110,7 @@ const Sidebar = props => {
           selectContact={props.selectContact}
           requests={pendingRequests}
           pending = {pendingInvites}
+          search = {searchContacts}
         />
         <Snackbar open = {approveInvite.length !== 0} autoHideDuration={3000} onClose = { closeAlertHandler }>
                             <Alert onClose={closeAlertHandler} severity="success">
