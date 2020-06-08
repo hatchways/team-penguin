@@ -104,6 +104,7 @@ const Sidebar = props => {
           selectContact={props.selectContact}
           requests={pendingRequests}
           pending = {pendingInvites}
+          search = {searchContacts}
         />
         <Snackbar open = {approveInvite.length !== 0} autoHideDuration={3000} onClose = { closeAlertHandler }>
                             <Alert onClose={closeAlertHandler} severity="success">
