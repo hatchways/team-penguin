@@ -40,12 +40,7 @@ nsp.on('connection', function(socket){
   console.log('someone connected on /chat');
 
   socket.on('message', (data) => {
-    console.log('data', data)
-    console.log('type data', typeof data)
     let {conversationId, message} = data;
-    console.log('message', message)
-    console.log('type message', typeof message)
-    console.log('message.original_message', message.original_message)
     const chatLanguages = languages[conversationId];
     let friendLanguageCodes = [];
 
@@ -56,17 +51,17 @@ nsp.on('connection', function(socket){
     friendLanguageCodes = getFriendLanguageCodes(chatLanguages, message.language);
 
     //make api call to translate message
-    // friendLanguageCodes.forEach(code => {
-    //   let curTranslation;
-    //   getTranslation(message.original_message, code)
-    //     .then(translation => {
-    //       let translationObj = {};
-    //       message.translation = {...message.translation, 'language': translation}
-    //       console.log('message', message)
-    //       console.log('data', data)
-    //     })
-    //     .catch(err => console.error('Translation API error', err))
-    // })
+    friendLanguageCodes.forEach(code => {
+      let curTranslation;
+      getTranslation(message.original_message, code)
+        .then(translations => {
+          let translationObj = {};
+          message.translations = {...message.translations, 'language': translation}
+          console.log('message', message)
+          console.log('data', data)
+        })
+        .catch(err => console.error('Translation API error', err))
+    })
 
 
     //update data object with translated message
