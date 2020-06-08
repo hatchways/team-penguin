@@ -1,21 +1,28 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
+import clsx from 'clsx';
 import {theme} from "../../themes/theme";
 import Button from '@material-ui/core/Button';
+import FilledInput from '@material-ui/core/FilledInput';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
-import NavigationIcon from '@material-ui/icons/Navigation';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import FileCopyIcon from '@material-ui/icons/FileCopy';
+import FormControl from '@material-ui/core/FormControl';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 
 import {isEmailValid} from '../../util/helpers';
 import { useAuth } from '../../context/auth-context';
+//import { ReactComponent as CopyButton } from '../../assets/copy_btn_exp.svg';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -87,10 +94,14 @@ const DialogTitle = withStyles(dialogTitleStyles)((props) => {
   );
 });
 
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
 export default function InvitationDialog(props) {
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState('');
-  const [emailErrorMessage, setEmailErrorMessage] = useState('Required');
+  const [emailErrorMessage, setEmailErrorMessage] = useState('');
   const [copyBtnErrorMessage, setCopyBtnErrorMessage] = useState('');
   const [sendRequestErrorMessage, setSendRequestErrorMessage] = useState('');
   const [submitError, setSubmitError] = useState('');
@@ -129,6 +140,10 @@ export default function InvitationDialog(props) {
     });
   }
 
+  const closeAlertHandler = () => {
+    setSubmitError('');
+  }
+
   const handleSave = (ev) => {
     ev.preventDefault();
 
@@ -156,13 +171,20 @@ export default function InvitationDialog(props) {
           },
           body: JSON.stringify(body)
         })
-          .then(resp => {
-            setEmail('');
-            setOpen(false);
-            props.loadPendingInvites();
+          .then(resp => resp.json())
+          .then(json => {
+            if (json.type === 'success') {
+              setEmail('');
+              setEmailErrorMessage('');
+              setOpen(false);
+              props.loadPendingInvites();
+            } else {
+              setSubmitError(json.message);
+            }
           })
           .catch(err => {
             console.error(err)
+            setSubmitError(err);
           })  
       } else {
         setSendRequestErrorMessage('The request could not be sent because your login seems invalid. Please log out and try again.')
@@ -207,6 +229,7 @@ export default function InvitationDialog(props) {
           </DialogContentText>
           <TextField
             autoFocus
+            error={emailErrorMessage.length > 0}
             margin="dense"
             id="email"
             type="email"
@@ -223,42 +246,51 @@ export default function InvitationDialog(props) {
           <DialogContentText className={classes.dialogContentTextRoot}>
             Or share referral link:
           </DialogContentText>
-          <TextField
-            margin="dense"
-            id="referral-url"
-            value={getReferralUrl()}
-            InputProps={{
-              readOnly: true,
-            }}
-            variant="filled"
-            fullWidth
-            helperText={copyBtnErrorMessage}
-            InputLabelProps={{
-              classes: {
-                root: classes.labelRoot,
-                focused: classes.labelRoot
+
+          <FormControl fullWidth className={clsx(classes.margin, classes.textField)} 
+            size="small" variant="filled">
+            <FilledInput
+              error={copyBtnErrorMessage.length > 0}
+              id="referral-url"
+              value={getReferralUrl()}
+              type='text'
+              helperText={copyBtnErrorMessage}
+              InputProps={{
+                readOnly: true,
+              }}
+              InputLabelProps={{
+                classes: {
+                  root: classes.labelRoot,
+                  focused: classes.labelRoot
+                }
+              }}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickCopyBtn}
+                    edge="end"
+                  >
+                    <FileCopyIcon color="primary"/>
+                  </IconButton>
+                </InputAdornment>
               }
-            }}
-          />
+            />
+          </FormControl>
         </DialogContent>
-        <DialogActions>
-          <Button
-            size="small"
-            color="primary" 
-            variant="contained"
-            id="referral-url-btn"
-            value={getReferralUrl()}
-            onClick={handleClickCopyBtn}
-            className={classes.btnOverlay}>
-            Copy Link
-          </Button>
-        </DialogActions>
         <DialogActions className={classes.dialogActionsRoot}>
           <Button onClick={handleSave} color="primary" variant="contained"
             size="large" className={classes.btnMixedCase}>
             Send Invite
           </Button>
         </DialogActions>
+
+        <Snackbar open = {submitError.length !== 0} autoHideDuration={5000} onClose = { closeAlertHandler }>
+          <Alert onClose={closeAlertHandler} severity="error">
+            {submitError}
+          </Alert>
+        </Snackbar>
+
       </Dialog>
     </div>
   );

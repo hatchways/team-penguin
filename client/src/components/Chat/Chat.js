@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
+import { useParams, Link } from "react-router-dom";
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import { useParams, Link } from "react-router-dom";
+import Typography from '@material-ui/core/Typography';
 
 import ChatHeader from './ChatHeader';
 import MessageDisplay from './MessageDisplay';
@@ -68,6 +69,20 @@ const Chat = props => {
         .catch(err => console.error('Could not find old messages', err))
     }
   }, [conversationId]);
+
+  if (!conversationId) {
+    return (
+      <div style={{display: 'flex', flexFlow: 'column nowrap', justifyContent: 'space-between', height: '100vh'}}>
+        <ChatHeader 
+          //selectedContacts={selectedContacts}
+          friendEmails={[]}
+        />
+        <div className="spacer">
+        <Typography variant='p1'>No conversations have been started yet. Click on a contact to start chatting.</Typography>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div style={{display: 'flex', flexFlow: 'column nowrap', justifyContent: 'space-between', height: '100vh'}}>

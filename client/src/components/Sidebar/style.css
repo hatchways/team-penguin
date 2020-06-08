@@ -1,0 +1,36 @@
+/* Sidebar Header style */
+
+.headerContainer {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-evenly;
+  align-items: center;
+  height: 70px;
+  /* flex-basis: 70px;
+  flex-shrink: 0; */
+  padding: 18px;
+}
+
+.headerLeft {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.headerSpacer {
+  flex-grow: 1;
+}
+
+.headerRight {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+/* Sidebar style */
+
+.sidebarContainer {
+  padding: 18px;
+}
