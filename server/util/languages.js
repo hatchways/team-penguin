@@ -13,10 +13,18 @@ let languages = {
 //counting mandarin as simplified chinese
 const language_codes = {
   'english': 'en',
-  'spanish': 'sp',
+  'spanish': 'es',
   'mandarin': 'zh-CN',
   'french': 'fr',
   'hindi': 'hi'
+}
+
+const code_to_language = {
+  'en': 'english',
+  'es': 'spanish',
+  'zh-CN': 'mandarin',
+  'fr': 'french',
+  'hi': 'hindi'
 }
 
 const getFriendLanguageCodes = (chatLanguages, originalLanguage) => {
@@ -24,4 +32,4 @@ const getFriendLanguageCodes = (chatLanguages, originalLanguage) => {
   return translationLanguages.map(lang => language_codes[lang]);
 }
 
-module.exports = {languages, language_codes, getFriendLanguageCodes};
+module.exports = {languages, language_codes, code_to_language, getFriendLanguageCodes};
