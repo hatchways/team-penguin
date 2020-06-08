@@ -34,8 +34,11 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     marginRight: theme.spacing(2),
   },
-  cursorPointer: {
-    cursor: 'pointer'
+  moreHorizIcon: {
+    cursor: 'pointer',
+    '&:hover' : {
+      color: '#1976D2'
+    }
   }
 }));
 
@@ -86,8 +89,8 @@ const SidebarHeader = (props) => {
           aria-controls={open ? 'menu-list-grow' : undefined}
           aria-haspopup="true"
           onClick={handleToggle}
-          className={classes.cursorPointer}
-          color='primary' />
+          className={classes.moreHorizIcon}
+         />
           <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
           {({ TransitionProps, placement }) => (
             <Grow
