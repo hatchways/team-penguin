@@ -62,7 +62,7 @@ function AuthProvider({children}) {
 
   React.useEffect(() => {
     getUser();
-  }, [token, email]);
+  }, [token, email, user]);
   
   let authState = {...state, logout, login}
 
