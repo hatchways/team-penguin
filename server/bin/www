@@ -40,8 +40,16 @@ nsp.on('connection', function(socket){
   socket.on('message', (data) => {
     console.log('data', data)
     let {conversationId, message} = data;
-    socket.broadcast.emit(conversationId, data);
+
+    //save initial message
     saveMessageToConversation({message, conversationId})
+
+    //get friend language; probably want to get the language from FE contact data
+    //make api call to translate message
+    //update data object with translated message
+
+    socket.broadcast.emit(conversationId, data);
+    //save translations
   });
 
   socket.on("disconnect", () => {
