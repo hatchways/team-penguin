@@ -23,12 +23,15 @@ const Chat = props => {
   let { conversationId } = useParams();
   const {user} = useAuth();
   const {language} = user;
+  const userEmail = user.email;
   const {socket, sendChatMessage, getMessage, setChatRoom} = useSocket();
 
   const [curMessage, setCurMessage] = useState('');
   const [postedMessages, setPostedMessages] = useState([]);
   const [chatUserEmails, setChatUserEmails] = useState([]);
   const [messageInputError, setMessageInputError] = useState('');
+  const [friendLanguage, setFriendLanguage] = useState('');
+  const [languageError, setLanguageError] = useState('');
 
   //socket client listener for server broadcasts
   if (socket && conversationId) {
@@ -63,7 +66,9 @@ const Chat = props => {
       sendChatMessage({from_email: user.email,
         message,
         conversationId,
-        userEmails: chatUserEmails});
+        userEmails: chatUserEmails,
+        friendLanguage
+      });
       setPostedMessages(postedMessages.concat([message]));
       setCurMessage('');
       setMessageInputError('');
@@ -77,8 +82,15 @@ const Chat = props => {
 
   useEffect(() => {
     setPostedMessages([]);
+    let jwtToken = localStorage.getItem('authToken');
     if (conversationId) {
-      fetch(`http://localhost:3001/conversations/${conversationId}`)
+      fetch(`http://localhost:3001/conversations/${conversationId}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `${jwtToken}`
+        }
+      })
         .then(resp => resp.json())
         .then(json => {
           if (json.messages && json.messages.length) {
@@ -86,6 +98,25 @@ const Chat = props => {
           }
           if (json.user_emails && json.user_emails.length) {
             setChatUserEmails(json.user_emails);
+            //make api call to get friend language by email
+            let friendEmail = json.user_emails[0] === userEmail ? json.user_emails[1]: json.user_emails[0];
+            console.log('friendEmail', friendEmail)
+            fetch(`http://localhost:3001/user/${friendEmail}/language`, {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `${jwtToken}`
+              }
+            })
+            .then(resp => resp.json())
+            .then(json => {
+              if (json.language) {
+                setFriendLanguage(json.language);
+              } else {
+                setLanguageError(`Could not get the friend's language. Chat translations may not work.`)
+              }
+            })
+            .catch(err => console.error('Could not get language', err))
           }
         })
         .catch(err => console.error('Could not find old messages', err))
