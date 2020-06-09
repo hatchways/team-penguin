@@ -10,7 +10,7 @@ require("dotenv").config();
 var app = require("../app");
 var http = require("http");
 const {saveMessageToConversation} = require('../util/socket_db');
-const {languages_codes, getFriendLanguageCodes, getLanguagesByEmails} = require('../util/languages');
+const {languages_codes} = require('../util/languages');
 const {getTranslation} = require('../util/translate_helpers');
 
 /**
@@ -40,41 +40,29 @@ nsp.on('connection', function(socket){
   console.log('someone connected on /chat');
 
   socket.on('message', (data) => {
-    let {conversationId, message, userEmails} = data;
+    let {conversationId, message, userEmails, friendLanguage} = data;
     let chatLanguages = [];
     let friendLanguageCodes = [];
+    let friendLanguageCode = languages_codes[friendLanguage];
 
     //save initial message
     //saveMessageToConversation({message, conversationId})
 
-    //get friend language; probably want to get the language from FE contact data
-    //if (Object.keys(message.translations).length === 0) {
-      getLanguagesByEmails(userEmails)
-        .then(languages => {
-          let chatLanguages = languages.map(langAr => langAr[0].language);
-          friendLanguageCodes = getFriendLanguageCodes(chatLanguages, message.language);
-          //make api call to translate message
-          friendLanguageCodes.forEach(code => {
-            let curTranslation;
-            getTranslation(message.original_message, code)
-              .then(translations => {
-                let friendLanguage = chatLanguages[0] === message.language ? chatLanguages[1]: chatLanguages[0];
-                //update data object with translated message
-                message.translations = {...message.translations, [friendLanguage]: translations[0]};
-                socket.broadcast.emit(conversationId, data);
-                //save translated message
-                saveMessageToConversation({message, conversationId});
-              })
-              .catch(err => {
-                //save untranslated message
-                saveMessageToConversation({message, conversationId});
-                console.error('Translation API error', err);
-              })
-          })
-        })
-        .catch(err => console.error(err))
-    //}
-
+    let curTranslation;
+    getTranslation(message.original_message, friendLanguageCode)
+      .then(translations => {
+        let friendLanguage = chatLanguages[0] === message.language ? chatLanguages[1]: chatLanguages[0];
+        //update data object with translated message
+        message.translations = {...message.translations, [friendLanguage]: translations[0]};
+        socket.broadcast.emit(conversationId, data);
+        //save translated message
+        saveMessageToConversation({message, conversationId});
+      })
+      .catch(err => {
+        //save untranslated message
+        saveMessageToConversation({message, conversationId});
+        console.error('Translation API error', err);
+      })
   });
 
   socket.on("disconnect", () => {
