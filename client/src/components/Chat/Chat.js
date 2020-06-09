@@ -11,15 +11,25 @@ import MessageInput from './MessageInput';
 import {useAuth} from '../../context/auth-context';
 import {useSocket} from '../../context/socket-context';
 
+const MAX_MESSAGE_LENGTHS = {
+  'english': 200,
+  'french': 200,
+  'spanish': 200,
+  'mandarin': 66,
+  'hindi': 66
+};
+
 const Chat = props => {
   const {messages, selectedContacts} = props;
   let { conversationId } = useParams();
   const {user} = useAuth();
+  const {language} = user;
   const {socket, sendChatMessage, getMessage, setChatRoom} = useSocket();
 
   const [curMessage, setCurMessage] = useState('');
   const [postedMessages, setPostedMessages] = useState([]);
   const [chatUserEmails, setChatUserEmails] = useState([]);
+  const [messageInputError, setMessageInputError] = useState('');
 
   //socket client listener for server broadcasts
   if (socket && conversationId) {
@@ -29,24 +39,31 @@ const Chat = props => {
   }
 
   const messageInputOnChangeHandler = e => {
-    setCurMessage(e.target.value)
+    let {value} = e.target;
+    if (value.length <= MAX_MESSAGE_LENGTHS[language]) {
+      setCurMessage(e.target.value);
+    } else {
+      let error = `The max message length is ${MAX_MESSAGE_LENGTHS[language]}.`;
+      setMessageInputError(error);
+    }
   };
 
   const messageInputSubmitHandler = e => {
     if (e.key === 'Enter') {
+      e.preventDefault();
       let message = {
         id: uuidv4(),
         author_id: user.id,
         author_email: user.email,
         original_message: curMessage,
-        language: user.language,
+        language,
         created_on: Date.now(),
         translations: {}
       };
-      e.preventDefault();
       sendChatMessage({from_email: user.email, message, conversationId});
       setPostedMessages(postedMessages.concat([message]));
       setCurMessage('');
+      setMessageInputError('');
     }
   }
 
@@ -101,6 +118,7 @@ const Chat = props => {
         messageInputOnChangeHandler={messageInputOnChangeHandler}
         messageInputSubmitHandler={messageInputSubmitHandler}
         curMessage={curMessage}
+        error={messageInputError}
       />
     </div>
   );
