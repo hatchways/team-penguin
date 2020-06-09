@@ -9,12 +9,11 @@ function SocketProvider({children}) {
     socket.on('connect', function() {
       // Connected, let's sign-up for to receive messages for this room
       socket.emit('room', conversationId);
-      console.log('gets here')
    });
   }
 
-  const sendChatMessage = ({from_email, message, conversationId, userEmails}) => {
-    socket.send({message, conversationId, userEmails});
+  const sendChatMessage = ({from_email, message, conversationId, userEmails, friendLanguage}) => {
+    socket.send({message, conversationId, userEmails, friendLanguage});
   }
 
   const socketShare = {socket, sendChatMessage, setChatRoom};
