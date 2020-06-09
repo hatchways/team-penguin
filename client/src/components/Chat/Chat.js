@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import { useParams, Link } from "react-router-dom";
-import { v4 as uuidv4 } from 'uuid';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
@@ -54,7 +53,6 @@ const Chat = props => {
     if (e.key === 'Enter') {
       e.preventDefault();
       let message = {
-        id: uuidv4(),
         author_id: user.id,
         author_email: user.email,
         original_message: curMessage,
