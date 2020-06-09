@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import Grid from '@material-ui/core/Grid';
 
 import Message from './Message';
@@ -7,6 +7,17 @@ import {useAuth} from '../../context/auth-context';
 const MessageDisplay = props => {
   const {user} = useAuth();
   const {messages} = props;
+  const [messagesEnd, setMessagesEnd] = useState(null);
+
+  const scrollToBottom = () => {
+    messagesEnd.scrollIntoView({ behavior: "smooth" });
+  }
+
+  useEffect(() => {
+    if (messagesEnd) {
+      scrollToBottom();
+    }
+  }, [messagesEnd, messages]);
 
   const messageList = messages.map((msg, idx) => (
     <Message
@@ -23,6 +34,9 @@ const MessageDisplay = props => {
       style={{backgroundColor: '#fff', padding: '18px', 
       overflow: 'scroll', flexGrow: '1'}}>
       {messageList}
+      <div style={{ float:"left", clear: "both" }}
+        ref={(el) => { setMessagesEnd(el) }}>
+      </div>
     </div>
 )};
 
