@@ -10,7 +10,7 @@ require("dotenv").config();
 var app = require("../app");
 var http = require("http");
 const {saveMessageToConversation} = require('../util/socket_db');
-const {languages_codes} = require('../util/languages');
+const {language_codes} = require('../util/languages');
 const {getTranslation} = require('../util/translate_helpers');
 
 /**
@@ -41,18 +41,10 @@ nsp.on('connection', function(socket){
 
   socket.on('message', (data) => {
     let {conversationId, message, userEmails, friendLanguage} = data;
-    let chatLanguages = [];
-    let friendLanguageCodes = [];
-    let friendLanguageCode = languages_codes[friendLanguage];
+    let friendLanguageCode = language_codes[friendLanguage];
 
-    //save initial message
-    //saveMessageToConversation({message, conversationId})
-
-    let curTranslation;
     getTranslation(message.original_message, friendLanguageCode)
       .then(translations => {
-        let friendLanguage = chatLanguages[0] === message.language ? chatLanguages[1]: chatLanguages[0];
-        //update data object with translated message
         message.translations = {...message.translations, [friendLanguage]: translations[0]};
         socket.broadcast.emit(conversationId, data);
         //save translated message
