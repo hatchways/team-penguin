@@ -90,7 +90,7 @@ const ChatHeader = props => {
         <div className="chatHeaderRight">
           <Typography component="div">
             <Grid component="label" container alignItems="center" spacing={1}>
-              <Grid item>Off</Grid>
+              <Grid item>Original Language</Grid>
               <Grid item>
                 <AntSwitch checked={state.checkedC} onChange={handleChange} name="checkedC" />
               </Grid>
