@@ -13,8 +13,9 @@ function SocketProvider({children}) {
    });
   }
 
-  const sendChatMessage = ({from_email, message, conversationId}) => {
-    socket.send({message, conversationId});
+  const sendChatMessage = ({from_email, message, conversationId, userEmails}) => {
+    console.log('userEmails', userEmails);
+    socket.send({message, conversationId, userEmails});
   }
 
   const socketShare = {socket, sendChatMessage, setChatRoom};

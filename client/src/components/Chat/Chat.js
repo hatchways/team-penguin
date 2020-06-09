@@ -60,7 +60,10 @@ const Chat = props => {
         created_on: Date.now(),
         translations: {}
       };
-      sendChatMessage({from_email: user.email, message, conversationId});
+      sendChatMessage({from_email: user.email,
+        message,
+        conversationId,
+        userEmails: chatUserEmails});
       setPostedMessages(postedMessages.concat([message]));
       setCurMessage('');
       setMessageInputError('');
