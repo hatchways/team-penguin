@@ -10,7 +10,7 @@ require("dotenv").config();
 var app = require("../app");
 var http = require("http");
 const {saveMessageToConversation} = require('../util/socket_db');
-const {languages, languages_codes, getFriendLanguageCodes, code_to_language, getEmailsByConversationId, getLanguagesByEmails} = require('../util/languages');
+const {languages_codes, getFriendLanguageCodes, getEmailsByConversationId, getLanguagesByEmails} = require('../util/languages');
 const {getTranslation} = require('../util/translate_helpers');
 
 /**
@@ -41,7 +41,7 @@ nsp.on('connection', function(socket){
 
   socket.on('message', (data) => {
     let {conversationId, message} = data;
-    let chatLanguages = []//languages[conversationId];
+    let chatLanguages = [];
     let friendLanguageCodes = [];
 
     //save initial message
@@ -62,11 +62,9 @@ nsp.on('connection', function(socket){
             let curTranslation;
             getTranslation(message.original_message, code)
               .then(translations => {
-                //let translationObj = {};
-                let friendlanguage = chatLanguages[0] === message.language ? chatLanguages[1]: chatLanguages[0];
-                console.log('friendLanguage', friendLanguage)
+                let friendLanguage = chatLanguages[0] === message.language ? chatLanguages[1]: chatLanguages[0];
                 //update data object with translated message
-                message.translations = {...message.translations, [language]: translations[0]};
+                message.translations = {...message.translations, [friendLanguage]: translations[0]};
                 socket.broadcast.emit(conversationId, data);
                 //save translated message
                 saveMessageToConversation({message, conversationId});
@@ -74,8 +72,8 @@ nsp.on('connection', function(socket){
               .catch(err => {
                 //save untranslated message
                 saveMessageToConversation({message, conversationId});
-                console.error('Translation API error', err));
-              }
+                console.error('Translation API error', err);
+              })
           })
         })
         .catch(err => console.error(err))
