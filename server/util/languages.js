@@ -48,12 +48,7 @@ const getLanguagesByEmails = (emailAr) => {
     return User.find({email}, 'language', function(err, users) {
       if (err) console.error('Could not get languages', err);
       if (users.length) {
-        return users[0].language
-        // console.log('users lang', users)
-        // languages.push(users[0].language);
-        // if (idx === emailAr.length - 1) {
-        //   return languages;
-        // }
+        return users[0].language;
       }
     })
   }))
