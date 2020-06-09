@@ -39,14 +39,13 @@ const Friends = props => {
     }
   }
 
-  const entries = (selected, select) => props.friends.map(curr => (
+  const entries = () => props.friends.map(curr => (
     <Grid
       item
       container
       spacing={2}
       key={curr}
       onClick={(ev) => contactClickHandler(curr)}
-      //() => {select(curr.index)}
     >
       <Grid item>
         <Avatar src={userPlaceholderImg} alt="" />
