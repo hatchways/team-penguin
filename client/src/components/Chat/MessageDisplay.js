@@ -8,23 +8,6 @@ const MessageDisplay = props => {
   const {user} = useAuth();
   const {messages} = props;
 
-  // console.log('messages', messages);
-  // const refs = messages.reduce((acc, value) => {
-  //   acc[value._id] = React.createRef();
-  //   return acc;
-  // }, {});
-
-  const scrollToEnd = () => {
-      let lastIdx = messages.length - 1;
-      let lastMsg = document.querySelector(`div[ref=${lastIdx}]`);
-  //   const lastIdx = messages.length - 1;
-      lastMsg.scrollIntoView({block: 'end', behavior: 'smooth'});
-  }
-
-  // useEffect(() => {
-  //   scrollToEnd();
-  // }, []);
-
   const messageList = messages.map((msg, idx) => (
     <Message
       message={msg}
@@ -32,7 +15,6 @@ const MessageDisplay = props => {
       userEmail={msg.author_email}
       key={`${idx}-${msg}`}
       isAuthorUser={msg.author_email === user.email}
-      ref={idx}
     />
   ))
 
