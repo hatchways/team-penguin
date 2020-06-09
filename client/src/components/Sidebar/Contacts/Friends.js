@@ -9,10 +9,21 @@ import InvitationDialog from '../../Invitations/InvitationDialog';
 import SearchIcon from '@material-ui/icons/Search';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import {useAuth} from '../../../context/auth-context';
+import { makeStyles } from '@material-ui/core';
+
+const useStyles = makeStyles({
+  contactListItem : {
+    cursor: 'pointer',
+    '&:hover': {
+      backgroundColor: '#D5D5D5'
+    }
+  }
+});
 
 const Friends = props => {
   const {user} = useAuth();
   let history = useHistory();
+  const classes = useStyles();
 
   const contactClickHandler = (contactEmail) => {
     let jwtToken = localStorage.getItem('authToken');
@@ -46,6 +57,7 @@ const Friends = props => {
       spacing={2}
       key={curr}
       onClick={(ev) => contactClickHandler(curr)}
+      className={classes.contactListItem}
     >
       <Grid item>
         <Avatar src={userPlaceholderImg} alt="" />
