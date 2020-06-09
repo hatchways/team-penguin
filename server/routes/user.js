@@ -99,6 +99,23 @@ router.get("/:fromEmail/referralId",
   }
 );
 
+router.get("/:fromEmail/language",
+  passport.authenticate('jwt', { session: false }),
+  function(req, res, next) {
+    const {fromEmail} = req.params
+    User.findOne({email: fromEmail}, function(err, user) {
+      if (err) return console.error(err);
+      if (!user) {
+        res.status(500).json({type: 'error', message: 'A user with that email could not be found.'})
+      }
+      if (user) {
+        res.json({type: 'success', language: user.language})
+      }
+    });
+  }
+);
+
+
 router.post('/register/referral',
   //passport.authenticate('jwt', { session: false }),
   (req, res) => {
