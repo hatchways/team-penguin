@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const User = require('../models/user');
-const Conversation = require("../models/conversation");
 
 //counting mandarin as simplified chinese
 const language_codes = {
@@ -20,15 +19,6 @@ const language_codes = {
 //   '5edeb8a0b4ff34257970e4d3':  ['english', 'spanish']
 //}
 
-const getEmailsByConversationId = (conversationId) => {
-  return Conversation.find({_id: mongoose.Types.ObjectId(conversationId)}, 'user_emails', function(err, conversations) {
-    if (err) console.error('Could not find conversation email addresses', err);
-    if (conversations.length) {
-      return conversations;
-    }
-  })
-}
-
 const getLanguagesByEmails = (emailAr) => {
   //let user_emails = conversations[0].user_emails;
   let languages = [];
@@ -47,4 +37,4 @@ const getFriendLanguageCodes = (chatLanguages, originalLanguage) => {
   return translationLanguages.map(lang => language_codes[lang]);
 }
 
-module.exports = {language_codes, getFriendLanguageCodes, getEmailsByConversationId, getLanguagesByEmails};
+module.exports = {language_codes, getFriendLanguageCodes, getLanguagesByEmails};
