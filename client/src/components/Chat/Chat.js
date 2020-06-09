@@ -100,7 +100,6 @@ const Chat = props => {
             setChatUserEmails(json.user_emails);
             //make api call to get friend language by email
             let friendEmail = json.user_emails[0] === userEmail ? json.user_emails[1]: json.user_emails[0];
-            console.log('friendEmail', friendEmail)
             fetch(`http://localhost:3001/user/${friendEmail}/language`, {
               method: 'GET',
               headers: {
@@ -116,10 +115,10 @@ const Chat = props => {
                 setLanguageError(`Could not get the friend's language. Chat translations may not work.`)
               }
             })
-            .catch(err => console.error('Could not get language', err))
+            .catch(err => console.error('Could not get language.', err))
           }
         })
-        .catch(err => console.error('Could not find old messages', err))
+        .catch(err => console.error('Could not find existing conversation.', err))
     }
   }, [conversationId]);
 
