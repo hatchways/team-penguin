@@ -10,7 +10,7 @@ require("dotenv").config();
 var app = require("../app");
 var http = require("http");
 const {saveMessageToConversation} = require('../util/socket_db');
-const {languages_codes, getFriendLanguageCodes, getEmailsByConversationId, getLanguagesByEmails} = require('../util/languages');
+const {languages_codes, getFriendLanguageCodes, getLanguagesByEmails} = require('../util/languages');
 const {getTranslation} = require('../util/translate_helpers');
 
 /**
