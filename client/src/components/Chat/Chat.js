@@ -40,10 +40,12 @@ const Chat = props => {
 
   const messageInputOnChangeHandler = e => {
     let {value} = e.target;
-    if (value.length <= MAX_MESSAGE_LENGTHS[language]) {
+    let maxLength = MAX_MESSAGE_LENGTHS[language];
+    if (value.length <= maxLength) {
       setCurMessage(e.target.value);
     } else {
-      let error = `The max message length is ${MAX_MESSAGE_LENGTHS[language]}.`;
+      setCurMessage(e.target.value.slice(0, maxLength - 1))
+      let error = `The max message length is ${maxLength}.`;
       setMessageInputError(error);
     }
   };
