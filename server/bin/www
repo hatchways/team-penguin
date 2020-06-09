@@ -40,23 +40,21 @@ nsp.on('connection', function(socket){
   console.log('someone connected on /chat');
 
   socket.on('message', (data) => {
-    let {conversationId, message} = data;
+    let {conversationId, message, userEmails} = data;
     let chatLanguages = [];
     let friendLanguageCodes = [];
+    console.log('userEmails', userEmails)
 
     //save initial message
     //saveMessageToConversation({message, conversationId})
 
     //get friend language; probably want to get the language from FE contact data
     //if (Object.keys(message.translations).length === 0) {
-      getEmailsByConversationId(conversationId)
-        .then(emailAr => {return emailAr[0].user_emails})
-        .then(user_emails => {
-          return getLanguagesByEmails(user_emails);
-        })
+      getLanguagesByEmails(userEmails)
         .then(languages => {
           let chatLanguages = languages.map(langAr => langAr[0].language);
           friendLanguageCodes = getFriendLanguageCodes(chatLanguages, message.language);
+          console.log('friendLanguageCodes', friendLanguageCodes);
           //make api call to translate message
           friendLanguageCodes.forEach(code => {
             let curTranslation;
