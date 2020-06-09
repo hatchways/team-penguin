@@ -43,7 +43,6 @@ nsp.on('connection', function(socket){
     let {conversationId, message, userEmails} = data;
     let chatLanguages = [];
     let friendLanguageCodes = [];
-    console.log('userEmails', userEmails)
 
     //save initial message
     //saveMessageToConversation({message, conversationId})
@@ -54,7 +53,6 @@ nsp.on('connection', function(socket){
         .then(languages => {
           let chatLanguages = languages.map(langAr => langAr[0].language);
           friendLanguageCodes = getFriendLanguageCodes(chatLanguages, message.language);
-          console.log('friendLanguageCodes', friendLanguageCodes);
           //make api call to translate message
           friendLanguageCodes.forEach(code => {
             let curTranslation;
