@@ -10,6 +10,8 @@ require("dotenv").config();
 var app = require("../app");
 var http = require("http");
 const {saveMessageToConversation} = require('../util/socket_db');
+const {language_codes} = require('../util/languages');
+const {getTranslation} = require('../util/translate_helpers');
 
 /**
  * Get port from environment and store in Express.
@@ -37,21 +39,23 @@ const nsp = io.of('/chat');
 nsp.on('connection', function(socket){
   console.log('someone connected on /chat');
 
-  // socket.on('room', function(room) {
-  //   socket.join(room);
-  //   console.log('socket room', socket.rooms)
-  // });
-
   socket.on('message', (data) => {
-    console.log('data', data)
-    let {conversationId, message} = data;
-    socket.broadcast.emit(conversationId, data);
-    //socket.broadcast.emit('server broadcast', data);
-    saveMessageToConversation({message, conversationId})
-  });
+    let {conversationId, message, userEmails, friendLanguage} = data;
+    let friendLanguageCode = language_codes[friendLanguage];
 
-  //socket.emit('message', 'test message server to room');//to(`${conversationId}`)
-  // socket.to(conversationId).emit('message', JSON.stringify(data));
+    getTranslation(message.original_message, friendLanguageCode)
+      .then(translations => {
+        message.translations = {...message.translations, [friendLanguage]: translations[0]};
+        socket.broadcast.emit(conversationId, data);
+        //save translated message
+        saveMessageToConversation({message, conversationId});
+      })
+      .catch(err => {
+        //save untranslated message
+        saveMessageToConversation({message, conversationId});
+        console.error('Translation API error', err);
+      })
+  });
 
   socket.on("disconnect", () => {
     console.log("user disconnected");

@@ -17,12 +17,13 @@ const useStyles = makeStyles((theme) => ({
 
 const MessageInput = (props) => {
   const classes = useStyles();
-  const {messageInputOnChangeHandler, messageInputSubmitHandler, curMessage} = props;
+  const {messageInputOnChangeHandler, messageInputSubmitHandler, curMessage, error} = props;
 
     return (
       <form className={classes.root} style={{backgroundColor: '#fff', padding: '18px',
         flexBasis: '50px', flexShrink: '0' }}>
         <TextField name='msg'
+          error={error.length}
           value={curMessage}
           onChange={messageInputOnChangeHandler}
           onKeyPress={messageInputSubmitHandler}
@@ -31,6 +32,7 @@ const MessageInput = (props) => {
           margin="normal"
           variant="filled"
           className={classes.textField}
+          helperText={error}
         />
       </form>
     );

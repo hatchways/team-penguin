@@ -10,15 +10,28 @@ import MessageInput from './MessageInput';
 import {useAuth} from '../../context/auth-context';
 import {useSocket} from '../../context/socket-context';
 
+const MAX_MESSAGE_LENGTHS = {
+  'english': 200,
+  'french': 200,
+  'spanish': 200,
+  'mandarin': 66,
+  'hindi': 66
+};
+
 const Chat = props => {
   const {messages, selectedContacts} = props;
   let { conversationId } = useParams();
   const {user} = useAuth();
+  const {language} = user;
+  const userEmail = user.email;
   const {socket, sendChatMessage, getMessage, setChatRoom} = useSocket();
 
   const [curMessage, setCurMessage] = useState('');
   const [postedMessages, setPostedMessages] = useState([]);
   const [chatUserEmails, setChatUserEmails] = useState([]);
+  const [messageInputError, setMessageInputError] = useState('');
+  const [friendLanguage, setFriendLanguage] = useState('');
+  const [languageError, setLanguageError] = useState('');
 
   //socket client listener for server broadcasts
   if (socket && conversationId) {
@@ -28,23 +41,37 @@ const Chat = props => {
   }
 
   const messageInputOnChangeHandler = e => {
-    setCurMessage(e.target.value)
+    let {value} = e.target;
+    let maxLength = MAX_MESSAGE_LENGTHS[language];
+    if (value.length <= maxLength) {
+      setCurMessage(e.target.value);
+    } else {
+      setCurMessage(e.target.value.slice(0, maxLength - 1))
+      let error = `The max message length is ${maxLength}.`;
+      setMessageInputError(error);
+    }
   };
 
   const messageInputSubmitHandler = e => {
     if (e.key === 'Enter') {
+      e.preventDefault();
       let message = {
         author_id: user.id,
         author_email: user.email,
         original_message: curMessage,
-        language: user.language,
+        language,
         created_on: Date.now(),
         translations: {}
       };
-      e.preventDefault();
-      sendChatMessage({from_email: user.email, message, conversationId});
+      sendChatMessage({from_email: user.email,
+        message,
+        conversationId,
+        userEmails: chatUserEmails,
+        friendLanguage
+      });
       setPostedMessages(postedMessages.concat([message]));
       setCurMessage('');
+      setMessageInputError('');
     }
   }
 
@@ -55,8 +82,15 @@ const Chat = props => {
 
   useEffect(() => {
     setPostedMessages([]);
+    let jwtToken = localStorage.getItem('authToken');
     if (conversationId) {
-      fetch(`http://localhost:3001/conversations/${conversationId}`)
+      fetch(`http://localhost:3001/conversations/${conversationId}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `${jwtToken}`
+        }
+      })
         .then(resp => resp.json())
         .then(json => {
           if (json.messages && json.messages.length) {
@@ -64,9 +98,27 @@ const Chat = props => {
           }
           if (json.user_emails && json.user_emails.length) {
             setChatUserEmails(json.user_emails);
+            //make api call to get friend language by email
+            let friendEmail = json.user_emails[0] === userEmail ? json.user_emails[1]: json.user_emails[0];
+            fetch(`http://localhost:3001/user/${friendEmail}/language`, {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `${jwtToken}`
+              }
+            })
+            .then(resp => resp.json())
+            .then(json => {
+              if (json.language) {
+                setFriendLanguage(json.language);
+              } else {
+                setLanguageError(`Could not get the friend's language. Chat translations may not work.`)
+              }
+            })
+            .catch(err => console.error('Could not get language.', err))
           }
         })
-        .catch(err => console.error('Could not find old messages', err))
+        .catch(err => console.error('Could not find existing conversation.', err))
     }
   }, [conversationId]);
 
@@ -99,6 +151,7 @@ const Chat = props => {
         messageInputOnChangeHandler={messageInputOnChangeHandler}
         messageInputSubmitHandler={messageInputSubmitHandler}
         curMessage={curMessage}
+        error={messageInputError}
       />
     </div>
   );
