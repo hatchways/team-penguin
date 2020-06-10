@@ -9,7 +9,6 @@ import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles(() => ({
   sidebarContainer : {
-
     '&:hover': {
       maxHeight: '85vh',
       overflowY: 'auto',

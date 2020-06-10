@@ -46,6 +46,7 @@ const useStyles = makeStyles((theme) => ({
       textTransform: 'unset !important',
       fontWeight: '600',
       fontSize: theme.spacing(2),
+      marginLeft: '2rem'
     },
     btnMixedCaseCenter: {
       textTransform: 'unset !important',

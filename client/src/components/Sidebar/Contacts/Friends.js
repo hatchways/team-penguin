@@ -16,7 +16,12 @@ const useStyles = makeStyles({
     cursor: 'pointer',
     '&:hover': {
       backgroundColor: '#D5D5D5'
-    }
+    },
+    marginLeft: '2rem'
+  },
+  searchBar : {
+    width: '85%',
+    marginLeft: '1rem'
   }
 });
 
@@ -72,11 +77,10 @@ const Friends = props => {
     <Grid 
       container
       direction='column'
-      justify='center'
       spacing={2}
     >
       <Grid item>
-        <TextField id="filled-search" placeholder="Search" type="search" variant="filled" margin="normal" onChange={props.search} border={0} fullWidth InputProps={{ 
+        <TextField id="filled-search" className= {classes.searchBar} placeholder="Search" type="search" variant="filled" margin="normal" onChange={props.search} border={0} InputProps={{ 
           startAdornment: (<InputAdornment position="start"><SearchIcon/></InputAdornment>)
         }}/>
       </Grid>
