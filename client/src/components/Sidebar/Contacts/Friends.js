@@ -9,10 +9,26 @@ import InvitationDialog from '../../Invitations/InvitationDialog';
 import SearchIcon from '@material-ui/icons/Search';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import {useAuth} from '../../../context/auth-context';
+import { makeStyles } from '@material-ui/core';
+
+const useStyles = makeStyles({
+  contactListItem : {
+    cursor: 'pointer',
+    '&:hover': {
+      backgroundColor: '#D5D5D5'
+    },
+    marginLeft: '2rem'
+  },
+  searchBar : {
+    width: '85%',
+    marginLeft: '1rem'
+  }
+});
 
 const Friends = props => {
   const {user} = useAuth();
   let history = useHistory();
+  const classes = useStyles();
 
   const contactClickHandler = (contactEmail) => {
     let jwtToken = localStorage.getItem('authToken');
@@ -39,14 +55,14 @@ const Friends = props => {
     }
   }
 
-  const entries = (selected, select) => props.friends.map(curr => (
+  const entries = () => props.friends.map(curr => (
     <Grid
       item
       container
       spacing={2}
       key={curr}
       onClick={(ev) => contactClickHandler(curr)}
-      //() => {select(curr.index)}
+      className={classes.contactListItem}
     >
       <Grid item>
         <Avatar src={userPlaceholderImg} alt="" />
@@ -61,11 +77,10 @@ const Friends = props => {
     <Grid 
       container
       direction='column'
-      justify='center'
       spacing={2}
     >
       <Grid item>
-        <TextField id="filled-search" placeholder="Search" type="search" variant="filled" margin="normal" onChange={props.search} border={0} fullWidth InputProps={{ 
+        <TextField id="filled-search" className= {classes.searchBar} placeholder="Search" type="search" variant="filled" margin="normal" onChange={props.search} border={0} InputProps={{ 
           startAdornment: (<InputAdornment position="start"><SearchIcon/></InputAdornment>)
         }}/>
       </Grid>

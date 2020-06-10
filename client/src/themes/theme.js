@@ -6,6 +6,12 @@ export const theme = createMuiTheme({
     fontSize: 12,
     h1: {
       fontWeight: 600
+    },
+    h5: {
+      fontWeight: "bold"
+    },
+    h6: {
+      fontWeight: "bold"
     }
   },
   palette: {

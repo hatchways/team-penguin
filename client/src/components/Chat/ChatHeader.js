@@ -90,7 +90,7 @@ const ChatHeader = props => {
         <div className="chatHeaderRight">
           <Typography component="div">
             <Grid component="label" container alignItems="center" spacing={1}>
-              <Grid item>Off</Grid>
+              <Grid item>Original Language</Grid>
               <Grid item>
                 <AntSwitch checked={state.checkedC} onChange={handleChange} name="checkedC" />
               </Grid>
@@ -106,7 +106,7 @@ const ChatHeader = props => {
     <div className="chatHeaderContainer">
       <div className="chatHeaderLeft">
         <Avatar className={classes.orange}>{initial}</Avatar>
-        <Typography variant='h5' className={classes.chatHeaderName}>{email}</Typography>
+        <Typography variant='h5' className={classes.chatHeaderName}>{email.split('@')[0]}</Typography>
       </div>
       <div className="chatHeaderSpacer" />
       <div className="chatHeaderRight">

@@ -5,6 +5,17 @@ import MuiAlert from '@material-ui/lab/Alert';
 import axios from 'axios';
 
 import SidebarHeader from './SidebarHeader';
+import { makeStyles } from '@material-ui/core';
+
+const useStyles = makeStyles(() => ({
+  sidebarContainer : {
+    '&:hover': {
+      maxHeight: '85vh',
+      overflowY: 'auto',
+      overflowX: 'hidden'
+    }
+  }
+}));
 
 const Sidebar = props => {
   const email = localStorage.getItem('email');
@@ -17,10 +28,12 @@ const Sidebar = props => {
   function closeAlertHandler() {
     setApproveInvite('');
   }
+  const classes = useStyles();
 
   function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
   }
+
 
   const updateContact = async(fromEmail, action) => {
 
@@ -100,7 +113,7 @@ const Sidebar = props => {
   return (
     <div>
       <SidebarHeader />
-      <div className="sidebarContainer">
+      <div className={classes.sidebarContainer}>
         <Contacts 
           friends={friends}
           loadPendingInvites = {loadPendingInvites}
