@@ -184,8 +184,7 @@ export default function InvitationDialog(props) {
             }
           })
           .catch(err => {
-            console.error(err)
-            setSubmitError(err);
+            console.error(err);
           })  
       } else {
         setSendRequestErrorMessage('The request could not be sent because your login seems invalid. Please log out and try again.')

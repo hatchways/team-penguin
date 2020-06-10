@@ -41,8 +41,8 @@
 /* Message style */
 
 .messageBubble {
-  height: 28px;
-  padding: 8px 16px 0 16px;
+  min-height: 28px;
+  padding: 8px 16px 4px 16px;
 }
 
 .messageBubbleFriend {
