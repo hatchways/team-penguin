@@ -9,7 +9,8 @@ import Pending from './Pending';
 
 const useStyles = makeStyles(theme => ({
   invitationHeadings: {
-    marginBottom: 0
+    marginBottom: 0,
+    marginTop: '2rem'
   },
   tabsText: {
     fontSize: '1rem',

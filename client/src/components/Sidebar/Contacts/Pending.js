@@ -22,7 +22,7 @@ const Pending = props => {
     <Grid
       container
       direction='column'
-      spacing={2}
+      alignItems='center'
     >
       <h4 className={props.classes.invitationHeadings}>Invitations Pending</h4>
       {entries}
