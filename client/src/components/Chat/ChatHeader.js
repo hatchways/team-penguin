@@ -96,7 +96,6 @@ const ChatHeader = props => {
               </Grid>
             </Grid>
           </Typography>
-          <Icon onClick={handleLogout}>more_horiz</Icon>
         </div>
       </div>
     )
@@ -118,7 +117,6 @@ const ChatHeader = props => {
             </Grid>
           </Grid>
         </Typography>
-        <Icon onClick={handleLogout}>more_horiz</Icon>
       </div>
     </div>
   );
