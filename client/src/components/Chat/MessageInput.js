@@ -20,7 +20,8 @@ const MessageInput = (props) => {
   const {messageInputOnChangeHandler, messageInputSubmitHandler, curMessage, error} = props;
 
     return (
-      <form className={classes.root} style={{backgroundColor: '#fff', padding: '18px',
+      <form className={classes.root} autocomplete="off"
+        style={{backgroundColor: '#fff', padding: '18px',
         flexBasis: '50px', flexShrink: '0' }}>
         <TextField name='msg'
           error={error.length}
