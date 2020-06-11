@@ -132,7 +132,7 @@ const Chat = props => {
           friendEmails={[]}
         />
         <div className="spacer">
-        <Typography variant='p1'>No conversations have been started yet. Click on a contact to start chatting.</Typography>
+        <Typography variant='p1'>Click on a contact to start chatting.</Typography>
         </div>
       </div>
     )
