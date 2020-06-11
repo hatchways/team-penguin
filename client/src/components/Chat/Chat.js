@@ -31,7 +31,7 @@ const Chat = props => {
   const [messageInputError, setMessageInputError] = useState('');
   const [friendLanguage, setFriendLanguage] = useState('');
   const [languageError, setLanguageError] = useState('');
-  const [showMsgInOriginalLanguage, setShowMsgInOriginalLanguage] = useState(true);
+  const [showMsgInOriginalLanguage, setShowMsgInOriginalLanguage] = useState(false);
 
   const handleLanguageToggle = () => {
     setShowMsgInOriginalLanguage(!showMsgInOriginalLanguage);
