@@ -9,7 +9,7 @@ import InvitationDialog from '../../Invitations/InvitationDialog';
 import SearchIcon from '@material-ui/icons/Search';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import {useAuth} from '../../../context/auth-context';
-import { makeStyles } from '@material-ui/core';
+import { makeStyles, Badge } from '@material-ui/core';
 
 const useStyles = makeStyles({
   contactListItem : {
@@ -22,6 +22,9 @@ const useStyles = makeStyles({
   searchBar : {
     width: '85%',
     marginLeft: '1rem'
+  },
+  customBadge : {
+    backgroundColor: '#DDDDDD'
   }
 });
 
@@ -65,7 +68,19 @@ const Friends = props => {
       className={classes.contactListItem}
     >
       <Grid item>
-        <Avatar src={userPlaceholderImg} alt="" />
+      <Badge 
+          anchorOrigin={{ 
+            vertical: 'bottom', 
+            horizontal: 'right' 
+          }}  
+          badgeContent=" "
+          classes = {{
+            badge: classes.customBadge
+          }}
+          variant='dot'
+          >
+          <Avatar src={userPlaceholderImg} alt="" />
+        </Badge>
       </Grid>
       <Grid item>       
         <Typography variant='h6'>{curr.split('@')[0]}</Typography>
@@ -81,7 +96,8 @@ const Friends = props => {
     >
       <Grid item>
         <TextField id="filled-search" className= {classes.searchBar} placeholder="Search" type="search" variant="filled" margin="normal" onChange={props.search} border={0} InputProps={{ 
-          startAdornment: (<InputAdornment position="start"><SearchIcon/></InputAdornment>)
+          startAdornment: (<InputAdornment position="start"><SearchIcon/></InputAdornment>),
+          disableUnderline: true
         }}/>
       </Grid>
       <Grid item >
