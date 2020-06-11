@@ -19,7 +19,6 @@ const MAX_MESSAGE_LENGTHS = {
 };
 
 const Chat = props => {
-  const {messages, selectedContacts} = props;
   let { conversationId } = useParams();
   const {user} = useAuth();
   const {language} = user;
@@ -33,6 +32,10 @@ const Chat = props => {
   const [friendLanguage, setFriendLanguage] = useState('');
   const [languageError, setLanguageError] = useState('');
   const [showMsgInOriginalLanguage, setShowMsgInOriginalLanguage] = useState(true);
+
+  const handleLanguageToggle = () => {
+    setShowMsgInOriginalLanguage(!showMsgInOriginalLanguage);
+  }
 
   //socket client listener for server broadcasts
   if (socket && conversationId) {
@@ -144,7 +147,8 @@ const Chat = props => {
   return (
     <div style={{display: 'flex', flexFlow: 'column nowrap', justifyContent: 'space-between', height: '100vh'}}>
       <ChatHeader 
-        switchTranslations={switchTranslations}
+        handleLanguageToggle = {handleLanguageToggle}
+        showMsgInOriginalLanguage = {showMsgInOriginalLanguage}
         friendEmails={getFriendEmail()}
       />
       <MessageDisplay
