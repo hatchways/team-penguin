@@ -80,7 +80,6 @@ const SidebarHeader = (props) => {
       <div className="headerLeft">
         <Avatar className={classes.purple}>{initial}</Avatar>
         <Typography variant='h5' className={classes.chatHeaderName}>{email.split('@')[0]}</Typography>
-        <Typography variant='p2'>online status todo</Typography>
       </div>
       <div className="headerSpacer" />
       <div className="headerRight">
