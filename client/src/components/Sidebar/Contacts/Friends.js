@@ -64,7 +64,7 @@ const Friends = props => {
       container
       spacing={2}
       key={curr}
-      onClick={(ev) => contactClickHandler(curr)}
+      onClick={() => contactClickHandler(curr)}
       className={classes.contactListItem}
     >
       <Grid item>

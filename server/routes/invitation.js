@@ -257,8 +257,7 @@ router.get("/user/:to_email/contacts",
         });
         //if search query provided
         if(req.query.q){
-          contacts = contacts.filter(contact => contact.includes(req.query.q))
-                             .map(filteredContact => filteredContact.split('@')[0]);                             
+          contacts = contacts.filter(contact => contact.includes(req.query.q));                             
         }
         res.status(201).json({type: 'success', contacts});
       } else {

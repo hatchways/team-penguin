@@ -84,7 +84,7 @@ const Sidebar = props => {
     if(email){
       const res = await axios.get(`http://localhost:3001/invitations/user/${email}/contacts?q=${q}`, {headers: { Authorization: authToken}});
       if(res.data.contacts.length !== 0){
-      setFriends(res.data.contacts);
+        setFriends(res.data.contacts);
       }
       else {
         setFriends(['You dont have any contacts. Send invites to initiate a conversation']);
