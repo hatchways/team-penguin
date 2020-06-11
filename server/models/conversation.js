@@ -11,6 +11,7 @@ var conversationSchema = new Schema({
       required: true
     },
     messages: [{
+      guid: String,
       author_id: {
         type: mongoose.Types.ObjectId,
         ref: 'users'
