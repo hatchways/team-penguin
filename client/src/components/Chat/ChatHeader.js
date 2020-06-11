@@ -77,6 +77,7 @@ const ChatHeader = props => {
   const handleChange = (event) => {
     const {name, checked} = event.target;
     setState({ ...state, [name]: checked });
+    props.switchTranslations(event.target.checked);
   };
 
   const handleLogout = (evt) => {
@@ -112,7 +113,7 @@ const ChatHeader = props => {
       <div className="chatHeaderRight">
         <Typography component="div">
           <Grid component="label" container alignItems="center" spacing={1}>
-            <Grid item>Off</Grid>
+            <Grid item>Original Language</Grid>
             <Grid item>
               <AntSwitch checked={state.checkedC} onChange={handleChange} name="checkedC" />
             </Grid>

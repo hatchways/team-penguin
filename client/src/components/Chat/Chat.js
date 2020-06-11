@@ -32,6 +32,7 @@ const Chat = props => {
   const [messageInputError, setMessageInputError] = useState('');
   const [friendLanguage, setFriendLanguage] = useState('');
   const [languageError, setLanguageError] = useState('');
+  const [translation, setTranslation] = useState(true);
 
   //socket client listener for server broadcasts
   if (socket && conversationId) {
@@ -80,6 +81,10 @@ const Chat = props => {
     return friend;
   }
 
+  const switchTranslations = isChecked => {
+    setTranslation(isChecked);
+  }
+
   useEffect(() => {
     setPostedMessages([]);
     let jwtToken = localStorage.getItem('authToken');
@@ -126,7 +131,7 @@ const Chat = props => {
     return (
       <div style={{display: 'flex', flexFlow: 'column nowrap', justifyContent: 'space-between', height: '100vh'}}>
         <ChatHeader 
-          //selectedContacts={selectedContacts}
+          switchTranslations={switchTranslations}
           friendEmails={[]}
         />
         <div className="spacer">
@@ -139,10 +144,11 @@ const Chat = props => {
   return (
     <div style={{display: 'flex', flexFlow: 'column nowrap', justifyContent: 'space-between', height: '100vh'}}>
       <ChatHeader 
-        //selectedContacts={selectedContacts}
+        switchTranslations={switchTranslations}
         friendEmails={getFriendEmail()}
       />
       <MessageDisplay
+        translation = {translation}
         userEmail={user.email} 
         messages={postedMessages}
       />
