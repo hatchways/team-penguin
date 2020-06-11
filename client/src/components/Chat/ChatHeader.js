@@ -66,10 +66,6 @@ const ChatHeader = props => {
 
   let initial = friendEmails && friendEmails.length === 1 ? friendEmails[0][0].toUpperCase() : '';
   let email = friendEmails && friendEmails.length === 1 ? friendEmails[0] : '';
-  const handleChange = (event) => {
-    const {name, checked} = event.target;
-    setState({ ...state, [name]: checked });
-  };
   
   if (!friendEmails.length) {
     return (
