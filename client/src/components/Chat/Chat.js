@@ -20,7 +20,6 @@ const MAX_MESSAGE_LENGTHS = {
 };
 
 const Chat = props => {
-  const {messages, selectedContacts} = props;
   let { conversationId } = useParams();
   const {user} = useAuth();
   const {language} = user;
@@ -33,6 +32,11 @@ const Chat = props => {
   const [messageInputError, setMessageInputError] = useState('');
   const [friendLanguage, setFriendLanguage] = useState('');
   const [languageError, setLanguageError] = useState('');
+  const [showMsgInOriginalLanguage, setShowMsgInOriginalLanguage] = useState(false);
+
+  const handleLanguageToggle = () => {
+    setShowMsgInOriginalLanguage(!showMsgInOriginalLanguage);
+  }
 
   //socket client listener for server broadcasts
   if (socket && conversationId) {
@@ -82,6 +86,10 @@ const Chat = props => {
     return friend;
   }
 
+  const switchTranslations = isChecked => {
+    setShowMsgInOriginalLanguage(isChecked);
+  }
+
   useEffect(() => {
     //setPostedMessages([]);
     let jwtToken = localStorage.getItem('authToken');
@@ -128,7 +136,7 @@ const Chat = props => {
     return (
       <div style={{display: 'flex', flexFlow: 'column nowrap', justifyContent: 'space-between', height: '100vh'}}>
         <ChatHeader 
-          //selectedContacts={selectedContacts}
+          switchTranslations={switchTranslations}
           friendEmails={[]}
         />
         <div className="spacer">
@@ -141,10 +149,12 @@ const Chat = props => {
   return (
     <div style={{display: 'flex', flexFlow: 'column nowrap', justifyContent: 'space-between', height: '100vh'}}>
       <ChatHeader 
-        //selectedContacts={selectedContacts}
+        handleLanguageToggle = {handleLanguageToggle}
+        showMsgInOriginalLanguage = {showMsgInOriginalLanguage}
         friendEmails={getFriendEmail()}
       />
       <MessageDisplay
+        showMsgInOriginalLanguage = {showMsgInOriginalLanguage}
         userEmail={user.email} 
         messages={postedMessages}
       />

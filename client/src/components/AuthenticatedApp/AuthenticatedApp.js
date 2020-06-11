@@ -1,11 +1,13 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import Grid from '@material-ui/core/Grid';
-import { MuiThemeProvider } from "@material-ui/core";
+import { MuiThemeProvider, Hidden, IconButton, Drawer } from "@material-ui/core";
+import MenuIcon from '@material-ui/icons/Menu';
+import CloseIcon from '@material-ui/icons/Close';
+
 import {
   BrowserRouter as Router,
   Switch,
   Route,
-  useParams,
   Redirect
 } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
@@ -15,19 +17,11 @@ import Chat from '../Chat/Chat';
 import { useAuth } from '../../context/auth-context';
 import {SocketProvider} from '../../context/socket-context';
 
-const messages = [
-    {id: '0', original_message: 'test msg 1', author_email: 'test101@t.com'},
-    {id: '1', original_message: 'test msg 2', author_email: 'test100@t.com'},
-    {id: '2', original_message: 'test msg 3', author_email: 'test101@t.com'}
-];
-
-//selectedContact should probably be an array to handle group convos too
-const selectedContacts = [{email: 'friend'}];
-//[{email: 'friend1'}, {email: 'friend2'}, {email: 'friend2'}]
-
 const appStyle = {
   backgroundColor: 'rgba(0, 0, 0, 0.04)'
 };
+
+const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,21 +30,74 @@ const useStyles = makeStyles((theme) => ({
       margin: '0',
     },
   },
+  drawer: {
+    [theme.breakpoints.up('sm')]: {
+      width: drawerWidth,
+      flexShrink: 0,
+    },
+  },
+  menuButton: {
+    marginRight: theme.spacing(2),
+    [theme.breakpoints.up('md')]: {
+      display: 'none',
+    },
+  },
+  toolbar: theme.mixins.toolbar,
+  drawerPaper: {
+    width: drawerWidth
+  },
+  closeMenuButton: {
+    marginRight: 'auto',
+    marginLeft: 0,
+  }
+
 }));
 
 const AppContainer = () => {
   let {user} = useAuth();
   const classes = useStyles();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState('false');
+
+  const handleMobileMenuToggle = () => setMobileMenuOpen(!mobileMenuOpen);
+  const drawer = (<Sidebar/>);
 
   return (
     <Grid container 
     spacing={0} direction='row' 
     className={classes.root}>
-      <Grid item xs={12} sm={4} style={appStyle}>
-        <Sidebar/>
-      </Grid>
+      <Hidden smDown>
+        <Grid item xs={12} sm={4} style={appStyle}>
+            <Sidebar/>
+        </Grid>
+      </Hidden>
       <Grid item xs={12} sm={8} style={appStyle}>
-        <Chat user={user.email} />
+      <IconButton
+            color="inherit"
+            aria-label="Open drawer"
+            edge="start"
+            onClick={handleMobileMenuToggle}
+            className={classes.menuButton}
+          >
+            <MenuIcon />
+        </IconButton>
+      <Hidden mdUp>
+        <Drawer variant='temporary'
+                anchor={theme.direction === 'rtl' ? 'right' : 'left'}
+                open={mobileMenuOpen}
+                onClose={handleMobileMenuToggle}
+                classes = {{
+                  paper: classes.drawerPaper
+                }}
+                ModalProps= {{
+                  keepMounted: true
+                }}>      
+          <IconButton onClick={handleMobileMenuToggle} className={classes.closeMenuButton}>
+            <CloseIcon/>
+          </IconButton>
+          {drawer}        
+        </Drawer>
+      </Hidden>
+      <Chat user={user.email} />
       </Grid>
     </Grid>
   )

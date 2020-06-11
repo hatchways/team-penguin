@@ -4,10 +4,7 @@ import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import Switch from '@material-ui/core/Switch';
-import Icon from '@material-ui/core/Icon';
 import { deepOrange, deepPurple } from '@material-ui/core/colors';
-
-import {useAuth} from '../../context/auth-context';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -65,24 +62,15 @@ const AntSwitch = withStyles((theme) => ({
 
 const ChatHeader = props => {
   let friendEmails = props && props.friendEmails ? props.friendEmails : [];
-  const {user, logout} = useAuth();
-  const [state, setState] = useState({
-    checkedC: true,
-  });
   const classes = useStyles();
 
   let initial = friendEmails && friendEmails.length === 1 ? friendEmails[0][0].toUpperCase() : '';
   let email = friendEmails && friendEmails.length === 1 ? friendEmails[0] : '';
-
   const handleChange = (event) => {
     const {name, checked} = event.target;
     setState({ ...state, [name]: checked });
   };
-
-  const handleLogout = (evt) => {
-    logout();
-  }
-
+  
   if (!friendEmails.length) {
     return (
       <div className="chatHeaderContainer">
@@ -92,11 +80,10 @@ const ChatHeader = props => {
             <Grid component="label" container alignItems="center" spacing={1}>
               <Grid item>Original Language</Grid>
               <Grid item>
-                <AntSwitch checked={state.checkedC} onChange={handleChange} name="checkedC" />
+                <AntSwitch checked={props.showMsgInOriginalLanguage} onChange={props.handleLanguageToggle} name="checkedC" />
               </Grid>
             </Grid>
           </Typography>
-          <Icon onClick={handleLogout}>more_horiz</Icon>
         </div>
       </div>
     )
@@ -112,13 +99,12 @@ const ChatHeader = props => {
       <div className="chatHeaderRight">
         <Typography component="div">
           <Grid component="label" container alignItems="center" spacing={1}>
-            <Grid item>Off</Grid>
+            <Grid item>Original Language</Grid>
             <Grid item>
-              <AntSwitch checked={state.checkedC} onChange={handleChange} name="checkedC" />
+              <AntSwitch checked={props.showMsgInOriginalLanguage} onChange={props.handleLanguageToggle} name="checkedC" />
             </Grid>
           </Grid>
         </Typography>
-        <Icon onClick={handleLogout}>more_horiz</Icon>
       </div>
     </div>
   );
