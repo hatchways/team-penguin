@@ -12,6 +12,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import {useAuth} from '../../context/auth-context';
 import './style.css'
+import { Badge } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,6 +40,9 @@ const useStyles = makeStyles((theme) => ({
     '&:hover' : {
       color: '#1976D2'
     }
+  },
+  customBadge: {
+    backgroundColor: '#01FF70'
   }
 }));
 
@@ -78,8 +82,18 @@ const SidebarHeader = (props) => {
   return (
     <div className="headerContainer">
       <div className="headerLeft">
-        <Avatar className={classes.purple}>{initial}</Avatar>
-        <Typography variant='h5' className={classes.chatHeaderName}>{email.split('@')[0]}</Typography>
+        <Badge 
+          anchorOrigin={{ 
+            vertical: 'bottom', 
+            horizontal: 'right' 
+          }}  
+          badgeContent=" "
+          classes = {{
+            badge: classes.customBadge
+          }}>
+          <Avatar className={classes.purple}>{initial}</Avatar>
+        </Badge>
+        <Typography variant='h5' className={classes.chatHeaderName}>{email.split('@')[0]}</Typography>      
       </div>
       <div className="headerSpacer" />
       <div className="headerRight">
