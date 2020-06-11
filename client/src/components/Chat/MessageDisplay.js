@@ -17,14 +17,14 @@ const MessageDisplay = props => {
     if (messagesEnd) {
       scrollToBottom();
     }
-  }, [messagesEnd, messages]);
+  }, [messages]); 
 
   const messageList = messages.map((msg, idx) => (
     <Message
       message={msg}
       messageTime={msg.created_on}
       userEmail={msg.author_email}
-      key={`${idx}-${msg}`}
+      key={msg.guid}
       isAuthorUser={msg.author_email === user.email}
     />
   ))
