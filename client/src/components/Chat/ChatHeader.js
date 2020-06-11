@@ -62,20 +62,15 @@ const AntSwitch = withStyles((theme) => ({
 
 const ChatHeader = props => {
   let friendEmails = props && props.friendEmails ? props.friendEmails : [];
-  const [state, setState] = useState({
-    checkedC: true,
-  });
   const classes = useStyles();
 
   let initial = friendEmails && friendEmails.length === 1 ? friendEmails[0][0].toUpperCase() : '';
   let email = friendEmails && friendEmails.length === 1 ? friendEmails[0] : '';
-
   const handleChange = (event) => {
     const {name, checked} = event.target;
     setState({ ...state, [name]: checked });
   };
-
-
+  
   if (!friendEmails.length) {
     return (
       <div className="chatHeaderContainer">
@@ -85,7 +80,7 @@ const ChatHeader = props => {
             <Grid component="label" container alignItems="center" spacing={1}>
               <Grid item>Original Language</Grid>
               <Grid item>
-                <AntSwitch checked={state.checkedC} onChange={handleChange} name="checkedC" />
+                <AntSwitch checked={props.showMsgInOriginalLanguage} onChange={props.handleLanguageToggle} name="checkedC" />
               </Grid>
             </Grid>
           </Typography>
@@ -104,9 +99,9 @@ const ChatHeader = props => {
       <div className="chatHeaderRight">
         <Typography component="div">
           <Grid component="label" container alignItems="center" spacing={1}>
-            <Grid item>Off</Grid>
+            <Grid item>Original Language</Grid>
             <Grid item>
-              <AntSwitch checked={state.checkedC} onChange={handleChange} name="checkedC" />
+              <AntSwitch checked={props.showMsgInOriginalLanguage} onChange={props.handleLanguageToggle} name="checkedC" />
             </Grid>
           </Grid>
         </Typography>
