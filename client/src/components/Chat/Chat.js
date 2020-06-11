@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import { v4 as uuidv4 } from 'uuid';
 
 import ChatHeader from './ChatHeader';
 import MessageDisplay from './MessageDisplay';
@@ -56,6 +57,7 @@ const Chat = props => {
     if (e.key === 'Enter') {
       e.preventDefault();
       let message = {
+        guid: uuidv4(),
         author_id: user.id,
         author_email: user.email,
         original_message: curMessage,
@@ -81,7 +83,7 @@ const Chat = props => {
   }
 
   useEffect(() => {
-    setPostedMessages([]);
+    //setPostedMessages([]);
     let jwtToken = localStorage.getItem('authToken');
     if (conversationId) {
       fetch(`http://localhost:3001/conversations/${conversationId}`, {
