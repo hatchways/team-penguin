@@ -4,10 +4,7 @@ import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import Switch from '@material-ui/core/Switch';
-import Icon from '@material-ui/core/Icon';
 import { deepOrange, deepPurple } from '@material-ui/core/colors';
-
-import {useAuth} from '../../context/auth-context';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -65,7 +62,6 @@ const AntSwitch = withStyles((theme) => ({
 
 const ChatHeader = props => {
   let friendEmails = props && props.friendEmails ? props.friendEmails : [];
-  const {user, logout} = useAuth();
   const [state, setState] = useState({
     checkedC: true,
   });
@@ -79,9 +75,6 @@ const ChatHeader = props => {
     setState({ ...state, [name]: checked });
   };
 
-  const handleLogout = (evt) => {
-    logout();
-  }
 
   if (!friendEmails.length) {
     return (
