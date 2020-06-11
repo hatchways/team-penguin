@@ -96,7 +96,8 @@ const Friends = props => {
     >
       <Grid item>
         <TextField id="filled-search" className= {classes.searchBar} placeholder="Search" type="search" variant="filled" margin="normal" onChange={props.search} border={0} InputProps={{ 
-          startAdornment: (<InputAdornment position="start"><SearchIcon/></InputAdornment>)
+          startAdornment: (<InputAdornment position="start"><SearchIcon/></InputAdornment>),
+          disableUnderline: true
         }}/>
       </Grid>
       <Grid item >
