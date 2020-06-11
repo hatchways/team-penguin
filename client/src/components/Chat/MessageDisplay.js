@@ -21,7 +21,7 @@ const MessageDisplay = props => {
 
   const messageList = messages.map((msg, idx) => (
     <Message
-      translation = {props.translation}
+      showMsgInOriginalLanguage = {props.showMsgInOriginalLanguage}
       message={msg}
       messageTime={msg.created_on}
       userEmail={msg.author_email}

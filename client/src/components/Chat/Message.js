@@ -25,7 +25,7 @@ const Message = props => {
     return '';
   }
   if (!props.isAuthorUser) {
-    const translation = message.translations && props.translation ? message.translations[language] : message.original_message;
+    const translation = message.translations && props.showMsgInOriginalLanguage ? message.translations[language] : message.original_message;
     return (
       <div ref={ref} style={{display: 'flex', flexFlow: 'row nowrap', justifyContent: 'flex-start', alignItems: 'flex-start', margin: '18px 0'}}>
         <Avatar>{getUserInitial()}</Avatar>

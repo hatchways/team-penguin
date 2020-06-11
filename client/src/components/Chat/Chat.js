@@ -32,7 +32,7 @@ const Chat = props => {
   const [messageInputError, setMessageInputError] = useState('');
   const [friendLanguage, setFriendLanguage] = useState('');
   const [languageError, setLanguageError] = useState('');
-  const [translation, setTranslation] = useState(true);
+  const [showMsgInOriginalLanguage, setShowMsgInOriginalLanguage] = useState(true);
 
   //socket client listener for server broadcasts
   if (socket && conversationId) {
@@ -82,7 +82,7 @@ const Chat = props => {
   }
 
   const switchTranslations = isChecked => {
-    setTranslation(isChecked);
+    setShowMsgInOriginalLanguage(isChecked);
   }
 
   useEffect(() => {
@@ -148,7 +148,7 @@ const Chat = props => {
         friendEmails={getFriendEmail()}
       />
       <MessageDisplay
-        translation = {translation}
+        showMsgInOriginalLanguage = {showMsgInOriginalLanguage}
         userEmail={user.email} 
         messages={postedMessages}
       />
