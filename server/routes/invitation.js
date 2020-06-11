@@ -104,15 +104,42 @@ router.post("/user/:fromEmail",
                             }
                           })
                         } else if (curUserEmails.length) {
+                          //verify requested invite does not exist
+                          let query = {};
+                          let queryAr = [];
+                          curUserEmails.forEach(toEmail => {
+                            let queryObj1 = {};
+                            let queryObj2 = {};
+                            queryObj1.to_user_email = toEmail;
+                            queryObj1.from_user_email = fromEmail;
+                            queryAr.push(queryObj1);
+                            queryObj2.to_user_email = fromEmail;
+                            queryObj2.from_user_email = toEmail;
+                            queryAr.push(queryObj2);
+                          })
+                          query['$or'] = queryAr;
+                          Invitation.find(query, function(err, invitations) {
+
                           //verify that requested email does not exist
-                          Invitation.find({from_user_email: fromEmail}, 'to_user_email', function(err, invitations) {
+                          //Invitation.find({from_user_email: fromEmail}, 'to_user_email', function(err, invitations) {
                             if (err) console.error('Could not find invitations during duplicate invites check', err);
                             if (invitations && invitations.length) {
                               invitations.forEach(invite => {
-                                if (dupeInviteRecipients.indexOf(invite.to_user_email) === -1 && curUserEmails.indexOf(invite.to_user_email) > -1) {
-                                  dupeInviteRecipients.push(invite.to_user_email);
-                                }
+                                if (dupeInviteRecipients.indexOf(invite.to_user_email) === -1 &&curUserEmails.indexOf(invite.to_user_email) > -1) {
+                                    dupeInviteRecipients.push(invite.to_user_email);
+                                  }
+                                if (invite.to_user_email === fromEmail &&
+                                  dupeInviteRecipients.indexOf(invite.from_user_email) === -1 &&
+                                  curUserEmails.indexOf(invite.from_user_email) > -1) {
+                                    dupeInviteRecipients.push(invite.from_user_email);
+                                  }
                               });
+
+                              // invitations.forEach(invite => {
+                              //   if (dupeInviteRecipients.indexOf(invite.to_user_email) === -1 && curUserEmails.indexOf(invite.to_user_email) > -1) {
+                              //     dupeInviteRecipients.push(invite.to_user_email);
+                              //   }
+                              // });
                               nonDupeInviteRecipients = curUserEmails.filter(email =>   dupeInviteRecipients.indexOf(email) === -1);
                               if (nonDupeInviteRecipients.length) {
                                 let newInvites = nonDupeInviteRecipients.map(to_user_email => {
