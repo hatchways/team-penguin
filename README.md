@@ -18,7 +18,7 @@ Back End: Node, Express, MongoDB on the cloud, SendGrid for Emails, Google Trans
 [Rajat Bansal](https://github.com/rjtbansal) & [Carol Chung](https://github.com/cch5ng)
 
 # Screenshots
-![Sign Up](./screenshots/signup-page.png)
+![Sign Up](./screenshots/signup-page.PNG)
 
 ![Login](./screenshots/login-page.png)
 
