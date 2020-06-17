@@ -15,7 +15,7 @@ Back End: Node, Express, MongoDB on the cloud, SendGrid for Emails, Google Trans
 
 #Authors
 
-[Rajat Bansal](https://github.com/rjtbansal) & [Carol Chung] (https://github.com/cch5ng)
+[Rajat Bansal](https://github.com/rjtbansal) & [Carol Chung](https://github.com/cch5ng)
 
 #Screenshots
 ![Sign Up](./screenshots/signup-page.png)
