@@ -20,19 +20,19 @@ Back End: Node, Express, MongoDB on the cloud, SendGrid for Emails, Google Trans
 # Screenshots
 ![Sign Up](./screenshots/signup-page.PNG)
 
-![Login](./screenshots/login-page.png)
+![Login](./screenshots/login-page.PNG)
 
-![Chat Page](./screenshots/chat-page.png)
+![Chat Page](./screenshots/chat-page.PNG)
 
-![Conversation in Hindi](./screenshots/conversation-hindi.png)
+![Conversation in Hindi](./screenshots/conversation-hindi.PNG)
 
-![Switch To Original Language](./screenshots/switch-to-original-language.png)
+![Switch To Original Language](./screenshots/switch-to-original-language.PNG)
 
-![Email Invitation](./screenshots/email-invite.png)
+![Email Invitation](./screenshots/email-invite.PNG)
 
-![Search Friends Feature](./screenshots/search-feature.png)
+![Search Friends Feature](./screenshots/search-feature.PNG)
 
-![Invitations Tab](./screenshots/invitations-tab.png)
+![Invitations Tab](./screenshots/invitations-tab.PNG)
 
 Deployment link to appear very soon.
 
