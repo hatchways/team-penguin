@@ -18,20 +18,28 @@ Back End: Node, Express, MongoDB on the cloud, SendGrid for Emails, Google Trans
 [Rajat Bansal](https://github.com/rjtbansal) & [Carol Chung](https://github.com/cch5ng)
 
 # Screenshots
+## Signup
 ![Sign Up](./screenshots/signup-page.PNG)
 
+## Login
 ![Login](./screenshots/login-page.PNG)
 
+## Main Chat Page
 ![Chat Page](./screenshots/chat-page.PNG)
 
+## Conversation in translated language (hindi)
 ![Conversation in Hindi](./screenshots/conversation-hindi.PNG)
 
+## Ability to Switch to Original Language 
 ![Switch To Original Language](./screenshots/switch-to-original-language.PNG)
 
+## Email Invite
 ![Email Invitation](./screenshots/email-invite.PNG)
 
+## Search Friends
 ![Search Friends Feature](./screenshots/search-feature.PNG)
 
+## Invitation Tab - Sent and Received Invites
 ![Invitations Tab](./screenshots/invitations-tab.PNG)
 
 Deployment link to appear very soon.
